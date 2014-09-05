@@ -1,0 +1,346 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="GameAPI.cpp">
+      <Filter>api</Filter>
+    </ClCompile>
+    <ClCompile Include="GameCamera.cpp">
+      <Filter>api</Filter>
+    </ClCompile>
+    <ClCompile Include="GameData.cpp">
+      <Filter>api</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEvents.cpp">
+      <Filter>api</Filter>
+    </ClCompile>
+    <ClCompile Include="GameExtraData.cpp">
+      <Filter>api</Filter>
+    </ClCompile>
+    <ClCompile Include="GameFormComponents.cpp">
+      <Filter>api</Filter>
+    </ClCompile>
+    <ClCompile Include="GameForms.cpp">
+      <Filter>api</Filter>
+    </ClCompile>
+    <ClCompile Include="GameHandlers.cpp">
+      <Filter>api</Filter>
+    </ClCompile>
+    <ClCompile Include="GameInput.cpp">
+      <Filter>api</Filter>
+    </ClCompile>
+    <ClCompile Include="GameMenus.cpp">
+      <Filter>api</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects.cpp">
+      <Filter>api</Filter>
+    </ClCompile>
+    <ClCompile Include="GamePathing.cpp">
+      <Filter>api</Filter>
+    </ClCompile>
+    <ClCompile Include="GameReferences.cpp">
+      <Filter>api</Filter>
+    </ClCompile>
+    <ClCompile Include="GameRTTI.cpp">
+      <Filter>api</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSettings.cpp">
+      <Filter>api</Filter>
+    </ClCompile>
+    <ClCompile Include="GameStreams.cpp">
+      <Filter>api</Filter>
+    </ClCompile>
+    <ClCompile Include="GameThreads.cpp">
+      <Filter>api</Filter>
+    </ClCompile>
+    <ClCompile Include="GameTypes.cpp">
+      <Filter>api</Filter>
+    </ClCompile>
+    <ClCompile Include="Colors.cpp">
+      <Filter>internal</Filter>
+    </ClCompile>
+    <ClCompile Include="GlobalLocks.cpp">
+      <Filter>internal</Filter>
+    </ClCompile>
+    <ClCompile Include="HashUtil.cpp">
+      <Filter>internal</Filter>
+    </ClCompile>
+    <ClCompile Include="InputMap.cpp">
+      <Filter>internal</Filter>
+    </ClCompile>
+    <ClCompile Include="NiControllers.cpp">
+      <Filter>netimmerse</Filter>
+    </ClCompile>
+    <ClCompile Include="NiExtraData.cpp">
+      <Filter>netimmerse</Filter>
+    </ClCompile>
+    <ClCompile Include="NiGeometry.cpp">
+      <Filter>netimmerse</Filter>
+    </ClCompile>
+    <ClCompile Include="NiInterpolators.cpp">
+      <Filter>netimmerse</Filter>
+    </ClCompile>
+    <ClCompile Include="NiLight.cpp">
+      <Filter>netimmerse</Filter>
+    </ClCompile>
+    <ClCompile Include="NiMaterial.cpp">
+      <Filter>netimmerse</Filter>
+    </ClCompile>
+    <ClCompile Include="NiNodes.cpp">
+      <Filter>netimmerse</Filter>
+    </ClCompile>
+    <ClCompile Include="NiObjects.cpp">
+      <Filter>netimmerse</Filter>
+    </ClCompile>
+    <ClCompile Include="NiProperties.cpp">
+      <Filter>netimmerse</Filter>
+    </ClCompile>
+    <ClCompile Include="NiRenderer.cpp">
+      <Filter>netimmerse</Filter>
+    </ClCompile>
+    <ClCompile Include="NiRTTI.cpp">
+      <Filter>netimmerse</Filter>
+    </ClCompile>
+    <ClCompile Include="NiSerialization.cpp">
+      <Filter>netimmerse</Filter>
+    </ClCompile>
+    <ClCompile Include="NiTextures.cpp">
+      <Filter>netimmerse</Filter>
+    </ClCompile>
+    <ClCompile Include="NiTypes.cpp">
+      <Filter>netimmerse</Filter>
+    </ClCompile>
+    <ClCompile Include="CommandTable.cpp">
+      <Filter>internal</Filter>
+    </ClCompile>
+    <ClCompile Include="PapyrusArgs.cpp">
+      <Filter>papyrus</Filter>
+    </ClCompile>
+    <ClCompile Include="PapyrusNativeFunctions.cpp">
+      <Filter>papyrus</Filter>
+    </ClCompile>
+    <ClCompile Include="PapyrusVM.cpp">
+      <Filter>papyrus</Filter>
+    </ClCompile>
+    <ClCompile Include="SafeWrite.cpp">
+      <Filter>internal</Filter>
+    </ClCompile>
+    <ClCompile Include="ScaleformAPI.cpp">
+      <Filter>scaleform</Filter>
+    </ClCompile>
+    <ClCompile Include="ScaleformCallbacks.cpp">
+      <Filter>scaleform</Filter>
+    </ClCompile>
+    <ClCompile Include="ScaleformExtendedData.cpp">
+      <Filter>scaleform</Filter>
+    </ClCompile>
+    <ClCompile Include="ScaleformLoader.cpp">
+      <Filter>scaleform</Filter>
+    </ClCompile>
+    <ClCompile Include="ScaleformState.cpp">
+      <Filter>scaleform</Filter>
+    </ClCompile>
+    <ClCompile Include="ScaleformTypes.cpp">
+      <Filter>scaleform</Filter>
+    </ClCompile>
+    <ClCompile Include="Translation.cpp">
+      <Filter>internal</Filter>
+    </ClCompile>
+    <ClCompile Include="Utilities.cpp">
+      <Filter>internal</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\skse.h" />
+    <ClInclude Include="skse_version.h" />
+    <ClInclude Include="GameTypes.h">
+      <Filter>api</Filter>
+    </ClInclude>
+    <ClInclude Include="GameAPI.h">
+      <Filter>api</Filter>
+    </ClInclude>
+    <ClInclude Include="GameBSExtraData.h">
+      <Filter>api</Filter>
+    </ClInclude>
+    <ClInclude Include="GameCamera.h">
+      <Filter>api</Filter>
+    </ClInclude>
+    <ClInclude Include="GameData.h">
+      <Filter>api</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEvents.h">
+      <Filter>api</Filter>
+    </ClInclude>
+    <ClInclude Include="GameExtraData.h">
+      <Filter>api</Filter>
+    </ClInclude>
+    <ClInclude Include="GameFormComponents.h">
+      <Filter>api</Filter>
+    </ClInclude>
+    <ClInclude Include="GameForms.h">
+      <Filter>api</Filter>
+    </ClInclude>
+    <ClInclude Include="GameHandlers.h">
+      <Filter>api</Filter>
+    </ClInclude>
+    <ClInclude Include="GameInput.h">
+      <Filter>api</Filter>
+    </ClInclude>
+    <ClInclude Include="GameMenus.h">
+      <Filter>api</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects.h">
+      <Filter>api</Filter>
+    </ClInclude>
+    <ClInclude Include="GamePathing.h">
+      <Filter>api</Filter>
+    </ClInclude>
+    <ClInclude Include="GameReferences.h">
+      <Filter>api</Filter>
+    </ClInclude>
+    <ClInclude Include="GameResources.h">
+      <Filter>api</Filter>
+    </ClInclude>
+    <ClInclude Include="GameRTTI.h">
+      <Filter>api</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSettings.h">
+      <Filter>api</Filter>
+    </ClInclude>
+    <ClInclude Include="GameStreams.h">
+      <Filter>api</Filter>
+    </ClInclude>
+    <ClInclude Include="GameThreads.h">
+      <Filter>api</Filter>
+    </ClInclude>
+    <ClInclude Include="Colors.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="GlobalLocks.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="HashUtil.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="InputMap.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="NiTypes.h">
+      <Filter>netimmerse</Filter>
+    </ClInclude>
+    <ClInclude Include="NiControllers.h">
+      <Filter>netimmerse</Filter>
+    </ClInclude>
+    <ClInclude Include="NiExtraData.h">
+      <Filter>netimmerse</Filter>
+    </ClInclude>
+    <ClInclude Include="NiGeometry.h">
+      <Filter>netimmerse</Filter>
+    </ClInclude>
+    <ClInclude Include="NiInterpolators.h">
+      <Filter>netimmerse</Filter>
+    </ClInclude>
+    <ClInclude Include="NiLight.h">
+      <Filter>netimmerse</Filter>
+    </ClInclude>
+    <ClInclude Include="NiMaterial.h">
+      <Filter>netimmerse</Filter>
+    </ClInclude>
+    <ClInclude Include="NiNodes.h">
+      <Filter>netimmerse</Filter>
+    </ClInclude>
+    <ClInclude Include="NiObjects.h">
+      <Filter>netimmerse</Filter>
+    </ClInclude>
+    <ClInclude Include="NiProperties.h">
+      <Filter>netimmerse</Filter>
+    </ClInclude>
+    <ClInclude Include="NiRenderer.h">
+      <Filter>netimmerse</Filter>
+    </ClInclude>
+    <ClInclude Include="NiRTTI.h">
+      <Filter>netimmerse</Filter>
+    </ClInclude>
+    <ClInclude Include="NiSerialization.h">
+      <Filter>netimmerse</Filter>
+    </ClInclude>
+    <ClInclude Include="NiTextures.h">
+      <Filter>netimmerse</Filter>
+    </ClInclude>
+    <ClInclude Include="CommandTable.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="PapyrusArgs.h">
+      <Filter>papyrus</Filter>
+    </ClInclude>
+    <ClInclude Include="PapyrusNativeFunctions.h">
+      <Filter>papyrus</Filter>
+    </ClInclude>
+    <ClInclude Include="PapyrusVM.h">
+      <Filter>papyrus</Filter>
+    </ClInclude>
+    <ClInclude Include="PluginAPI.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="SafeWrite.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="ScaleformTypes.h">
+      <Filter>scaleform</Filter>
+    </ClInclude>
+    <ClInclude Include="ScaleformAPI.h">
+      <Filter>scaleform</Filter>
+    </ClInclude>
+    <ClInclude Include="ScaleformCallbacks.h">
+      <Filter>scaleform</Filter>
+    </ClInclude>
+    <ClInclude Include="ScaleformExtendedData.h">
+      <Filter>scaleform</Filter>
+    </ClInclude>
+    <ClInclude Include="ScaleformLoader.h">
+      <Filter>scaleform</Filter>
+    </ClInclude>
+    <ClInclude Include="ScaleformMovie.h">
+      <Filter>scaleform</Filter>
+    </ClInclude>
+    <ClInclude Include="ScaleformState.h">
+      <Filter>scaleform</Filter>
+    </ClInclude>
+    <ClInclude Include="Translation.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="Hooks_UI.h">
+      <Filter>hooks</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="PapyrusNativeFunctionDef.inl">
+      <Filter>papyrus</Filter>
+    </None>
+    <None Include="PapyrusNativeFunctionDef_Base.inl">
+      <Filter>papyrus</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="api">
+      <UniqueIdentifier>{e81ab10c-6f98-43c8-b42d-ae7a17a4c614}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="internal">
+      <UniqueIdentifier>{b8f5a79d-328a-474a-b54e-cb00ab95b8f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="netimmerse">
+      <UniqueIdentifier>{d01f0c67-2a30-4835-afa3-16f4b60c930e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="papyrus">
+      <UniqueIdentifier>{2ee8eff5-ce51-41ac-933c-2c7cff50301c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scaleform">
+      <UniqueIdentifier>{267fdb5c-dccb-4ef4-b7ae-db1d3f52078f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="hooks">
+      <UniqueIdentifier>{6f5b1ff4-b0f6-472f-8b91-98b8476f9962}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
