@@ -7,16 +7,16 @@
 // TESBookReadEvent																														0x012E3EF0
 // TESCellAttachDetachEvent																												0x012E3F20
 // TESCellFullyLoadedEvent																												0x012E3F50
-EventDispatcher<TESCombatEvent>* g_combatEventDispatcher = (EventDispatcher<TESCombatEvent>*) 0x012E4DB0;
+// EventDispatcher<TESCombatEvent>* g_combatEventDispatcher = (EventDispatcher<TESCombatEvent>*) 0x012E4DB0;
 // TESContainerChangedEvent																												0x012E3FE0
-EventDispatcher<TESDeathEvent>* g_deathEventDispatcher = (EventDispatcher<TESDeathEvent>*) 0x012E4E10;
+// EventDispatcher<TESDeathEvent>* g_deathEventDispatcher = (EventDispatcher<TESDeathEvent>*) 0x012E4E10;
 // TESDestructionStageChangedEvent																										0x012E4E40
 // TESEnterBleedoutEvent																												0x012E4E70
 // TESEquipEvent																														0x012E4EA0
 // TESFormDeleteEvent																													0x012E4ED0
 // TESFurnitureEvent																													0x012E4F00
 // TESGrabReleaseEvent																													0x012E4F30
-EventDispatcher<TESHitEvent>* g_hitEventDispatcher = (EventDispatcher<TESHitEvent>*) 0x012E4F60;
+// EventDispatcher<TESHitEvent>* g_hitEventDispatcher = (EventDispatcher<TESHitEvent>*) 0x012E4F60;
 // TESLoadGameEvent																														0x012E4FC0
 // TESLockChangedEvent																													0x012E4FF0
 // TESMagicEffectApplyEvent																												0x012E5020
@@ -28,7 +28,7 @@ EventDispatcher<TESHitEvent>* g_hitEventDispatcher = (EventDispatcher<TESHitEven
 // TESPackageEvent																														0x012E5140
 // TESPerkEntryRunEvent																													0x012E5170
 // TESQuestInitEvent																													0x012E51A0
-EventDispatcher<TESQuestStageEvent>* g_questStageEventDispatcher = (EventDispatcher<TESQuestStageEvent>*) 0x012E51D0;
+// EventDispatcher<TESQuestStageEvent>* g_questStageEventDispatcher = (EventDispatcher<TESQuestStageEvent>*) 0x012E51D0;
 // TESResetEvent																														0x012E5260
 // TESResolveNPCTemplatesEvent																											0x012E5290
 // TESSceneEvent																														0x012E52C0
@@ -49,15 +49,15 @@ EventDispatcher<TESQuestStageEvent>* g_questStageEventDispatcher = (EventDispatc
 // TESPlayerBowShotEvent																												0x012E5410
 
 
-EventDispatcher<BGSFootstepEvent>* g_footstepEventDispatcher = (EventDispatcher<BGSFootstepEvent>*) 0x01B2E9C0;
+// EventDispatcher<BGSFootstepEvent>* g_footstepEventDispatcher = (EventDispatcher<BGSFootstepEvent>*) 0x01B2E9C0;
 
 // Story based events
-EventDispatcher<TESHarvestEvent::ItemHarvested>* g_harvestEventDispatcher = (EventDispatcher<TESHarvestEvent::ItemHarvested>*) 0x012E5A74;
+// EventDispatcher<TESHarvestEvent::ItemHarvested>* g_harvestEventDispatcher = (EventDispatcher<TESHarvestEvent::ItemHarvested>*) 0x012E5A74;
 // Event	ActorKill																													0xDEADBEEF
 // Event	ActorItemEquipped																											0xDEADBEEF
 // Event	Pickpocket																													0xDEADBEEF
 // Event	BooksRead																													0xDEADBEEF
-EventDispatcher<LevelIncrease::Event>* g_levelIncreaseEventDispatcher = (EventDispatcher<LevelIncrease::Event>*) 0x01B39804;
+// EventDispatcher<LevelIncrease::Event>* g_levelIncreaseEventDispatcher = (EventDispatcher<LevelIncrease::Event>*) 0x01B39804;
 // Event	SkillIncrease																												0xDEADBEEF
 // Event	WordLearned																													0xDEADBEEF
 // Event	WordUnlocked																												0xDEADBEEF
@@ -94,3 +94,5 @@ EventDispatcher<LevelIncrease::Event>* g_levelIncreaseEventDispatcher = (EventDi
 // Event	LocksPicked																													0xDEADBEEF
 // Event	LocationCleared																												0xDEADBEEF
 // Event	ShoutMastered																												0xDEADBEEF
+
+BSTEventSource<BGSFootstepEvent>& g_footstepEventSource = *(BSTEventSource<BGSFootstepEvent>*)0x01B2E9C0;

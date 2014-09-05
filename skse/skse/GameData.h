@@ -104,6 +104,19 @@ class TES
 public:
 	virtual ~TES();
 
+	// himika
+	struct NPCDeadCount
+	{
+		struct Data
+		{
+			TESNPC*	npc;		// 00
+			UInt32	deadCount;	// 04
+		};
+
+		Data*			data;	// 00
+		NPCDeadCount*	next;	// 04
+	};
+
 	UInt32 unk04;
 	UInt32 unk08;
 	UInt32 unk0C;
@@ -116,7 +129,7 @@ public:
 	UInt32 unk28;
 	UInt32 unk2C;
 	UInt32 unk30;
-	UInt32 unk34;
+	UInt32 unk34; // EventSink<unknown>  // Dispatcher=0x01B410BC // AddEventSink 0x00A3C1D4
 	UInt32 unk38;
 	UInt32 unk3C;
 	UInt32 gridCellArray; //40 GridCellArray 0x24
@@ -158,8 +171,7 @@ public:
 	UInt32 unkB4; // 4579A000
 	UInt32 unkB8; // 457D2000
 	UInt32 worldSpace; // TESWorldSpace
-	UInt32 npcs; // TESNPC ** ??
-	UInt32 unkC4; // TESNPC next?
+	NPCDeadCount npcDeadCount;			// himika
 	UInt32 queuedFile; // QueuedFile
 	NiSourceTexture* someTexture;
 	UInt32 queuedFile1; // QueuedFile
@@ -641,12 +653,12 @@ extern const _CacheTRIFile CacheTRIFile;
 // 20
 class MagicFavorites
 {
+public:
 	//	void			** _vtbl;	// 00
 	UInt32			unk004;		// 04
 	UnkFormArray	spells;		// 08
 	UnkFormArray	hotkeys;	// 14
 
-public:
 	virtual	~MagicFavorites();
 
 	void		SetHotkey(TESForm * form, SInt8 idx);

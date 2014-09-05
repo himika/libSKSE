@@ -3,6 +3,7 @@
 // everything deriving from BaseFormComponent but not TESForm goes here
 
 #include "skse/GameTypes.h"
+#include "skse/GameEvents.h"
 
 class TESObjectSTAT;
 class BGSSoundDescriptorForm;
@@ -27,6 +28,8 @@ class TESGlobal;
 class TESRegion;
 class BGSMusicType;
 class TESWeather;
+class MagicItem;
+class NiNode;
 
 //// root
 
@@ -1410,4 +1413,76 @@ public:
 	};
 
 	tList<WeatherData*> weatherData;	// 08
+};
+
+class ActorMagicCaster
+{
+public:
+	virtual ~ActorMagicCaster();
+
+	virtual void	Unk_01(void);
+	virtual void	Unk_02(void);
+	virtual void	Unk_03(void);
+	virtual void	Unk_04(void);
+	virtual void	Unk_05(void);
+	virtual void	Unk_06(void);
+	virtual void	Unk_07(void);
+	virtual void	Unk_08(void);
+	virtual void	Unk_09(void);
+	virtual void	Unk_0A(void);
+	virtual void	Unk_0B(void);
+	virtual Actor	* GetCaster();	// { return caster; }
+	virtual void	Unk_0D(void);
+	virtual void	Unk_0E(void);
+	virtual void	Unk_0F(void);	// { unk6C = NULL; }
+	virtual void	Unk_10(void);
+	virtual void	Unk_11(void);
+	virtual void	Unk_12(void);
+	virtual void	Unk_13(void);	// { unk8C |= 2; }
+	virtual void	Unk_14(void);
+	virtual UInt32	GetSlot(void);	// SpellItem* spell = player->equippingMagicItems[this->GetSlot()]
+	virtual bool	Unk_16(void);	// { return unk8C & 1; }
+	virtual void	Unk_17(bool b);	// { if (b){ unk8C |= 0x00000001; } else { unk8C &= 0xFFFFFFFE; } }
+	virtual void	Unk_18(void);
+	virtual void	Unk_19(void);
+	virtual void	Unk_1A(void);
+	virtual void	Unk_1B(void);
+	virtual void	Unk_1C(void);
+	virtual void	Unk_1D(void);
+
+//	void		** _vtbl;
+	void		* unk04;		// ?
+	UInt32		unk08;			// 08 (always 5?)
+	UInt32		unk0C;			// 0C (always 5?)
+	UInt32		unk10;			// 10 Reference Handle
+	MagicItem	* magicItem;	// 14 SpellItem@@ / ScrollItem@@ / EnchantmentItem@@
+	UInt32		unk18;			// 18 current state? 1=cast start 7=???
+	float		unk1C;			// 1C 0
+	float		cost;			// 20 
+	UInt32		unk24;			// 24 (always 0?)
+	float		unk28;			// 28 3E800000 = 0.25
+	UInt32		unk2C;			// 2C 0
+	UInt32		unk30;			// 30 (vtbl 010C8C5C)
+	void		* unk34;		// 34
+	UInt32		unk38;			// 38 0
+	BSTEventSink<void*>	unk3C;	// 3C (vtbl 010C8C4C)
+	UInt32		unk40;			// 40 (vtbl 010C8C40)
+	NiNode		* unk44;		// 44
+	void		* unk48;		// 48
+	UInt32		unk4C;			// 4C (0 or 1)
+	UInt32		unk50;			// 50 0
+	TESRace		* unk54;		// 54 
+	UInt32		unk58;			// 58
+	UInt32		unk5C;			// 5C 9
+	UInt32		unk60;			// 60
+	UInt32		unk64;			// 64 0
+	Actor		* caster;		// 68 
+	UInt32		pad6C[(0x88 - 0x6C) >> 2];
+	UInt32		slot;			// 88 0:left hand 1:right hand 4:voice
+	UInt32		flags;			// 8C
+
+	MEMBER_FN_PREFIX(ActorMagicCaster);
+	DEFINE_MEMBER_FN(CastStart,   bool, 0x00662430, MagicItem*, UInt32, UInt32); 
+	DEFINE_MEMBER_FN(CastRelease, bool, 0x00662120, UInt32, UInt32)
+	DEFINE_MEMBER_FN(UsePower,    bool, 0x006622D0, MagicItem*, UInt32, UInt32, UInt32);
 };

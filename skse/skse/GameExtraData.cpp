@@ -201,6 +201,10 @@ static const UInt32 s_ExtraHotkeyVtbl =				0x01079258;
 static const UInt32 s_ExtraForcedTargetVtbl =		0x010797C0;
 static const UInt32 s_ExtraReferenceHandleVtbl =	0x01079740;
 static const UInt32 s_ExtraEnchantmentVtbl =		0x01079318;
+static const UInt32 s_ExtraTimeLeftVtbl =			0x01079218;	// himika
+static const UInt32 s_ExtraLinkedRefVtbl =			0x01079AF8; //
+static const UInt32 s_ExtraLinkedRefChildrenVtbl =	0x01079B08; //
+
 
 BSExtraData* BaseExtraList::GetByType(UInt32 type) const {
 	if (!HasType(type)) return NULL;
@@ -803,3 +807,24 @@ void ExtraContainerChanges::Data::GetEquipItemData(EquipItemData& stateOut, TESF
 		stateOut.itemCount = baseCount;
 	}
 }
+
+//=========================================
+// himika
+//=========================================
+ExtraTimeLeft* ExtraTimeLeft::Create()
+{
+	ExtraTimeLeft* xLeft = (ExtraTimeLeft*)BSExtraData::Create(sizeof(ExtraTimeLeft), s_ExtraTimeLeftVtbl);
+	xLeft->time = 0.0;
+	return xLeft;
+}
+
+ExtraLinkedRef* ExtraLinkedRef::Create()
+{
+	ExtraLinkedRef* xLinkedRef = (ExtraLinkedRef*)BSExtraData::Create(sizeof(ExtraLinkedRef), s_ExtraLinkedRefVtbl);
+}
+
+ExtraLinkedRefChildren* ExtraLinkedRefChildren::Create()
+{
+	ExtraLinkedRefChildren* xLinkedRefChildren = (ExtraLinkedRefChildren*)BSExtraData::Create(sizeof(ExtraLinkedRefChildren), s_ExtraLinkedRefChildrenVtbl);
+}
+

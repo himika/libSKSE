@@ -89,6 +89,9 @@
     <ClCompile Include="Colors.cpp" />
     <ClCompile Include="CommandTable.cpp" />
     <ClCompile Include="GameHandlers.cpp" />
+    <ClCompile Include="GamePapyrusEvents.cpp" />
+    <ClCompile Include="GamePlayerEvents.cpp" />
+    <ClCompile Include="GameTESEvents.cpp" />
     <ClCompile Include="GameThreads.cpp" />
     <ClCompile Include="GlobalLocks.cpp" />
     <ClCompile Include="HashUtil.cpp" />
@@ -123,6 +126,7 @@
     <ClCompile Include="GameStreams.cpp" />
     <ClCompile Include="GameTypes.cpp" />
     <ClCompile Include="InputMap.cpp" />
+    <ClCompile Include="PluginAPI.cpp" />
     <ClCompile Include="SafeWrite.cpp" />
     <ClCompile Include="ScaleformAPI.cpp" />
     <ClCompile Include="ScaleformCallbacks.cpp" />
@@ -141,11 +145,15 @@
     <ClInclude Include="Colors.h" />
     <ClInclude Include="CommandTable.h" />
     <ClInclude Include="GameHandlers.h" />
+    <ClInclude Include="GamePapyrusEvents.h" />
+    <ClInclude Include="GamePapyrusFunctions.h" />
+    <ClInclude Include="GamePlayerEvents.h" />
     <ClInclude Include="GameResources.h" />
+    <ClInclude Include="GameSKSEEvents.h" />
+    <ClInclude Include="GameTESEvents.h" />
     <ClInclude Include="GameThreads.h" />
     <ClInclude Include="GlobalLocks.h" />
     <ClInclude Include="HashUtil.h" />
-    <ClInclude Include="Hooks_UI.h" />
     <ClInclude Include="NiControllers.h" />
     <ClInclude Include="NiExtraData.h" />
     <ClInclude Include="NiGeometry.h" />
@@ -195,6 +203,9 @@
     <ClInclude Include="skse_version.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="GamePapyrusEventsDef.inl" />
+    <None Include="GamePapyrusFunctionsDef.inl" />
+    <None Include="GamePapyrusFunctionsDef_Base.inl" />
     <None Include="PapyrusNativeFunctionDef.inl" />
     <None Include="PapyrusNativeFunctionDef_Base.inl" />
   </ItemGroup>

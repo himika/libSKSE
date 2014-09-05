@@ -361,7 +361,7 @@ public:
 	virtual void			Unk_14(void);
 	virtual UInt32			GetFormType(void);
 	virtual void			GetFormDesc(char * buf, UInt32 bufLen);
-	virtual bool			GetFlag00000040(void);
+	virtual bool			PlayerKnows(void);			// himika   GetFlag00000040(void);
 	virtual bool			GetFlag00010000(void);
 	virtual bool			IsPlayable(void);
 	virtual bool			GetFlag00080000(void);
@@ -922,6 +922,31 @@ public:
 
 	bool Visit(BGSListForm::Visitor & visitor);
 	UInt32 GetSize();
+
+	// (himika)
+	template<typename Fn>
+	TESForm* Find(Fn f) {
+		// Base Added Forms
+		TESForm* childForm = NULL;
+		int i = 0;
+		while (forms.GetNthItem(i++, childForm)) {
+			if (childForm && f(childForm)) {
+				return childForm;
+			}
+		}
+		// Script Added Forms
+		if(addedForms) {
+			UInt32 formId = 0;
+			i = 0;
+			while (addedForms->GetNthItem(i++, formId))	{
+				TESForm* childForm = LookupFormByID(formId);
+				if (childForm && f(childForm)) {
+					return childForm;
+				}
+			}
+		}
+		return NULL;
+	}
 };
 
 // 88
@@ -1466,6 +1491,10 @@ public:
 	enum { kTypeID = kFormType_ReferenceAlias };
 
 	UInt32 unk14[0x04]; // One of these is the filltype/filltype filter
+
+	// (himika)
+	TESObjectREFR* GetReference(void);
+	Actor* GetActorReference(void);
 };
 
 class BGSLocAlias : public BGSBaseAlias
@@ -1560,6 +1589,11 @@ public:
 
 	MEMBER_FN_PREFIX(TESQuest);
 	DEFINE_MEMBER_FN(ForceRefTo, UInt32, 0x005728C0, UInt32 aliasId, TESObjectREFR * reference);	
+	DEFINE_MEMBER_FN(CreateRefHandleByAliasID, UInt32*, 0x0056EE10, UInt32*, UInt32);				// (himika)
+
+	// (himika)
+	bool IsRunning(void) const;
+	BGSBaseAlias* GetAlias(UInt32 iAliasID);
 };
 
 STATIC_ASSERT(sizeof(TESQuest) == 0x158);
@@ -2083,7 +2117,7 @@ public:
 	BSString	unk14;	// 14
 	UInt8		unk1C;	// 1C - type?
 	UInt8		pad[3];	// 1D
-	UInt32		unk20;	// 20
+	float		value;	// 20 (himika)
 };
 
 // 50

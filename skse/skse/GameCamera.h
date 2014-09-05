@@ -152,7 +152,7 @@ public:
 	PlayerInputHandler		inputHandler;		// 10
 	NiNode					* cameraNode;		// 18
 	NiNode					* controllerNode;	// 1C
-	UInt32					unk20;				// 20
+	float					unk20;				// 20 (himika) rotZ ?
 	float					unk24;				// 24
 	float					unk28;				// 28
 	UInt32					unk2C[0x03];		// 2C
@@ -178,16 +178,29 @@ public:
 	float					fOverShoulderPosX;	// 3C
 	float					fOverShoulderCombatAddY;	// 40
 	float					fOverShoulderPosZ;	// 44
-	float					unk48[0x03];		// 48
-	UInt32					unk54[0x11];		// 54
-	float					unk98[0x03];		// 98
-	UInt32					unkA4[0x04];		// A4
-	UInt8					unkB4[0x07];		// B4
-	UInt8					padBB;
+	float					basePosX;			// 48 | (himika)
+	float					basePosY;			// 4C |
+	float					basePosZ;			// 50 |
+	float					dstPosY;			// 54 | destination
+	float					curPosY;			// 58 | current position
+	float					unk5C;				// 5C | player->rot.z + diffRotZ
+	float					unk60;				// 60 | equal unk5C ?
+	float					unk64;				// 64 | initial position 1st->3rd
+	UInt32					pad68[(0xAC - 0x68) >> 2];
+	float					diffRotZ;			// AC | diff from player rotZ
+	float					diffRotX;			// B0 | diff from player rotX
+	bool					unkB4;				// B4 | weapon sheathed
+	bool					unkB5;				// B5 | auto switch 1st-person camera when dstPosY==curPosY
+	UInt8					unkB6;
+	UInt8					unkB7;
+	UInt8					unkB8;
+	UInt8					unkB9;
+	UInt8					unkBA;
+	UInt8					unkBB;
 };
 
 STATIC_ASSERT(offsetof(ThirdPersonState, fOverShoulderPosX) == 0x3C);
-STATIC_ASSERT(offsetof(ThirdPersonState, unk48) == 0x48);
+STATIC_ASSERT(offsetof(ThirdPersonState, basePosX) == 0x48);
 
 class BleedoutCameraState : public ThirdPersonState
 {
@@ -329,9 +342,12 @@ public:
 	UInt32	unkA8;										// A8
 	float	worldFOV;									// AC
 	float	firstPersonFOV;								// B0
-	UInt32	unkB4[(0xD0 - 0xB4) >> 2];					// B4
-	UInt8	unkD0;										// D0
-	UInt8	unkD1;										// D1
+//	UInt32	unkB4[(0xD0 - 0xB4) >> 2];					// B4 * (himika)
+	UInt32	padB4[(0xC4 - 0xB4) >> 2];					// B4 |
+	float	unkC4;										// C4 |
+	UInt32	padC8[(0xD0 - 0xC8) >> 2];					// C8 |
+	bool	allowTogglePov;								// D0 allow switch pov
+	bool	unkD1;										// D1 eagle eye related. reduce stamina
 	UInt8	unkD2;										// D2
 	UInt8	unkD3;										// D3
 	UInt8	unkD4;										// D4
@@ -340,7 +356,36 @@ public:
 
 	MEMBER_FN_PREFIX(PlayerCamera);
 	DEFINE_MEMBER_FN(UpdateThirdPerson, void, 0x0083C7E0, bool weaponDrawn);
+	DEFINE_MEMBER_FN(ToggleFlyCam, void, 0x0083E4C0, bool);		// (himika)
+
+	void ForceFirstPersonSmooth(void);
+	void ForceThirdPersonSmooth(void);
 };
 
 STATIC_ASSERT(offsetof(PlayerCamera, cameraStates) == 0x6C);
 STATIC_ASSERT(offsetof(PlayerCamera, padD6) == 0xD6);
+
+// ==== (himika) ====
+class TESCameraController
+{
+public:
+	TESCameraController() {}
+
+	UInt32 unk00;
+	float  startRotZ; // 04
+	float  startRotX; // 08
+	float  endRotZ;   // 0C
+	float  endRotX;   // 10
+	UInt32 unk14;     // 14
+	UInt32 unk18;     // 18
+	UInt8  unk1C;     // 1C
+	UInt8  pad1D[3];  // 1D
+
+	static TESCameraController* GetSingleton();
+	void Rotate(float startRotZ, float startRotX, float endRotZ, float endRotX, float fWait, float arg2) {
+		CALL_MEMBER_FN(this, Rotate)(startRotZ, startRotX, endRotZ, endRotX, fWait, arg2);
+	}
+
+	MEMBER_FN_PREFIX(TESCameraController);
+	DEFINE_MEMBER_FN(Rotate, void, 0x00736480, float, float, float, float, float, float);
+};

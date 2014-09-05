@@ -119,3 +119,42 @@ public:
 		return *((BSTaskPool **)0x01B38308);
 	}
 };
+
+// ==== (himika) ====
+template <class F>
+class SKSETaskFunctor : public TaskDelegate
+{
+public:
+	SKSETaskFunctor(F op) : m_op(op) {}
+	~SKSETaskFunctor() {}
+
+	virtual void Run() {
+		m_op();
+	}
+
+	virtual void Dispose() {
+		delete this;
+	}
+
+	static void * operator new(std::size_t size) {
+		return FormHeap_Allocate(size);
+	}
+	static void * operator new(std::size_t size, const std::nothrow_t &) {
+		return FormHeap_Allocate(size);
+	}
+	static void * operator new(std::size_t size, void * ptr) {
+		return ptr;
+	}
+	static void operator delete(void * ptr) {
+		FormHeap_Free(ptr);
+	}
+	static void operator delete(void * ptr, const std::nothrow_t &) {
+		FormHeap_Free(ptr);
+	}
+	static void operator delete(void *, void *) {
+		~SKSETaskFunctor();
+	}
+
+private:
+	F m_op;
+};

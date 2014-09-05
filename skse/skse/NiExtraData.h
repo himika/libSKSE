@@ -43,6 +43,9 @@ public:
 	NiExtraData();
 	~NiExtraData();
 
+	virtual bool Unk_21(void);							// (himika) always true
+	virtual bool Unk_22(void);							// (himika) always true
+
 	char *	m_pcName;	// 08
 };
 

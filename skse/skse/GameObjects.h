@@ -389,7 +389,7 @@ public:
 	virtual void	Unk_55(UInt32 arg);
 	virtual UInt32	Unk_56(void);	// pure
 	virtual bool	Unk_57(UInt32 arg);
-	virtual float	Unk_58(void);
+	virtual UInt32	Unk_58(void);	// (himika)  SpellItem::Unk_58(void) { return this->data.unk14; }
 	virtual float	Unk_59(void);
 	virtual bool	Unk_5A(void);
 	virtual bool	Unk_5B(void);

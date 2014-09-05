@@ -56,8 +56,14 @@ public:
 
 		Ref() :data(NULL) { }
 		Ref(const char * buf);
+		~Ref();						// (himika) fixed memory leak bug.
+
+		operator const char*() const { return data; }
+		Ref& operator=(const char* buf);
+		Ref& operator=(Ref& ref);
 
 		bool operator==(const Ref& lhs) const { return data == lhs.data; }
+		bool operator!=(const Ref& lhs) const { return data != lhs.data; }
 		bool operator<(const Ref& lhs) const { return data < lhs.data; }
 	};
 

@@ -50,368 +50,168 @@ public:
 };
 
 // 30
-template <typename T>
+template <typename EventT, typename EventArgT = EventT>
 class BSTEventSource
 {
 public:
-	virtual ~BSTEventSource();
+	typedef BSTEventSink<EventT> SinkT;
 
-//	void	** _vtbl;	// 00
-	UInt32 unk04[11];	// 04
+	BSTEventSource() : stateFlag(false) {}
+
+	void AddEventSink(SinkT * eventSink)		{ CALL_MEMBER_FN(this,AddEventSink_Internal)(eventSink); }
+	void RemoveEventSink(SinkT * eventSink)		{ CALL_MEMBER_FN(this,RemoveEventSink_Internal)(eventSink); }
+	void SendEvent(EventArgT * evn)				{ CALL_MEMBER_FN(this,SendEvent_Internal)(evn); }
+
+private:
+	template <typename Fn, typename Arguments, typename Compare>
+	class EventSink : public SinkT
+	{
+	public:
+		typedef decltype(TypeHelper::SourceType(&SinkT::ReceiveEvent)) SourceT;
+		EventSink(Fn f) : fn(f) {}
+		virtual ~EventSink() {}
+		virtual EventResult ReceiveEvent(EventArgT* evn, SourceT* source) {
+			return Arguments::Call(fn, evn, source, this);
+		}
+		static SinkT* Create(Fn f) {
+			return (SinkT*)new EventSink(f);
+		}
+		void Destroy() {
+			delete this;
+		}
+		bool operator==(SinkT& sink) {
+			void* vtblA = *reinterpret_cast<void**>(this);
+			void* vtblB = *reinterpret_cast<void**>(&sink);
+			return (vtblA == vtblB && Compare::Equal(this, reinterpret_cast<EventSink*>(&sink)));
+		}
+		Fn fn;
+	};
+
+	struct TypeHelper
+	{
+		typedef EventResult (*FuncPtr0)();
+		typedef EventResult (*FuncPtr1)(EventArgT*);
+		typedef EventResult (*FuncPtr2)(EventArgT*, BSTEventSource*);
+		typedef EventResult (*FuncPtr3)(EventArgT*, BSTEventSource*, SinkT*);
+
+		struct Arg0	{ template <typename Fn> static inline EventResult Call(Fn f, EventArgT* e, BSTEventSource* src, SinkT* snk) {return f();} };
+		struct Arg1	{ template <typename Fn> static inline EventResult Call(Fn f, EventArgT* e, BSTEventSource* src, SinkT* snk) {return f(e);} };
+		struct Arg2	{ template <typename Fn> static inline EventResult Call(Fn f, EventArgT* e, BSTEventSource* src, SinkT* snk) {return f(e, src);} };
+		struct Arg3	{ template <typename Fn> static inline EventResult Call(Fn f, EventArgT* e, BSTEventSource* src, SinkT* snk) {return f(e, src, snk);} };
+
+		struct CompFunction	{ template <typename Sn> static inline bool Equal(Sn* a, Sn* b) {return a->fn == b->fn;} };
+		struct CompFunctor	{ template <typename Sn> static inline bool Equal(Sn* a, Sn* b) {return &a->fn == &b->fn;} };
+		struct CompLambda	{ template <typename Sn> static inline bool Equal(Sn* a, Sn* b) {return true;} };
+
+		template <typename F> static EventSink<F&,Arg0,CompFunctor> ObjSinkType(EventResult (F::*)());
+		template <typename F> static EventSink<F, Arg0,CompLambda>  ObjSinkType(EventResult (F::*)() const);
+		template <typename F> static EventSink<F&,Arg1,CompFunctor> ObjSinkType(EventResult (F::*)(EventArgT*));
+		template <typename F> static EventSink<F, Arg1,CompLambda>  ObjSinkType(EventResult (F::*)(EventArgT*) const);
+		template <typename F> static EventSink<F&,Arg2,CompFunctor> ObjSinkType(EventResult (F::*)(EventArgT*, BSTEventSource*));
+		template <typename F> static EventSink<F, Arg2,CompLambda>  ObjSinkType(EventResult (F::*)(EventArgT*, BSTEventSource*) const);
+		template <typename F> static EventSink<F&,Arg3,CompFunctor> ObjSinkType(EventResult (F::*)(EventArgT*, BSTEventSource*, SinkT*));
+		template <typename F> static EventSink<F, Arg3,CompLambda>  ObjSinkType(EventResult (F::*)(EventArgT*, BSTEventSource*, SinkT*) const);
+
+		static EventSink<FuncPtr0,Arg0,CompFunction> SinkType(FuncPtr0);
+		static EventSink<FuncPtr1,Arg1,CompFunction> SinkType(FuncPtr1);
+		static EventSink<FuncPtr2,Arg2,CompFunction> SinkType(FuncPtr2);
+		static EventSink<FuncPtr3,Arg3,CompFunction> SinkType(FuncPtr3);
+		template <typename F> static auto SinkType(F f) -> decltype(TypeHelper::ObjSinkType(&F::operator())) {};
+
+		template <typename Sink, typename Disp> static Disp SourceType(EventResult (Sink::*)(EventArgT*, Disp*));
+	};
+
+public:
+	template <typename F>
+	BSTEventSource& operator+=(F& f) {
+		typedef decltype(TypeHelper::SinkType(f)) SinkType;
+		SinkT* sink = SinkType::Create(f);
+		AddEventSink(sink);
+		return *this;
+	}
+
+	template <typename F>
+	BSTEventSource& operator-=(F& f) {
+		typedef decltype(TypeHelper::SinkType(f)) SinkType;
+		SinkType tmpSink(f);
+		int i = 0;
+		SinkT* sink = NULL;
+		while (eventSinks.GetNthItem(i++, sink)) {
+			if (tmpSink == *sink) {
+				RemoveEventSink(sink);
+				reinterpret_cast<SinkType*>(sink)->Destroy();
+				break;
+			}
+		}
+		return *this;
+	}
+
+	void operator()(EventArgT e) {
+		SendEvent(e);
+	}
+
+private:
+	SimpleLock			lock;				// 000
+	tArray<SinkT*>		eventSinks;			// 008
+	tArray<SinkT*>		addBuffer;			// 014 - schedule for add
+	tArray<SinkT*>		removeBuffer;		// 020 - schedule for remove
+	bool				stateFlag;			// 02C - some internal state changed while sending
+	char				pad[3];
+
+	MEMBER_FN_PREFIX(BSTEventSource);
+	DEFINE_MEMBER_FN(AddEventSink_Internal, void, 0x006E3E30, SinkT * eventSink);
+	DEFINE_MEMBER_FN(RemoveEventSink_Internal, void, 0x008CE0C0, SinkT * eventSink);
+	DEFINE_MEMBER_FN(SendEvent_Internal, void, 0x006EBC10, EventArgT * evn);
 };
-
 STATIC_ASSERT(sizeof(BSTEventSource<void*>) == 0x30);
 
-// 08
-struct TESSleepStartEvent
-{
-	float startTime;	// 00
-	float endTime;		// 04
-};
+
+//===========================================================================
+// events
+//===========================================================================
 
 // 08
-struct MenuOpenCloseEvent
+class MenuOpenCloseEvent
 {
+public:
 	BSFixedString	menuName;	// 00
 	bool			opening;	// 04
 	char			pad[3];
 };
 
-struct TESFurnitureEvent
-{
-};
-
 // Todo
-struct MenuModeChangeEvent
+class MenuModeChangeEvent
 {
 };
 
-class TESObjectREFR;
-class TESForm;
-class ActiveEffect;
-
-struct TESActiveEffectApplyRemoveEvent
+class UserEventEnabledEvent
 {
-	TESObjectREFR	* caster;
-	TESObjectREFR	* target;
-	UInt32			unk08;
-	UInt32			unk0C;
-	UInt32			unk10;
-	UInt32			unk14;
-	UInt32			unk18; // Flags?
-	UInt32			unk1C; // Use effect2 if this is 1
-	TESForm			* source; // Not really sure what this is, probably the extra form
-	ActiveEffect	* effect1;
-	ActiveEffect	* effect2;
+	// 01B37FB4
 };
 
-struct TESQuestStageEvent
+
+class BSTransformDeltaEvent
 {
-	void			* finishedCallback;
-	UInt32			formId;
-	UInt32			stage;
 };
 
-// This isn't necessarily correct, just there to receive events
-struct TESHarvestEvent
+class bhkCharacterMoveFinishEvent
 {
-	struct ItemHarvested
-	{
-		// Unknown
-	};
 };
 
-struct LevelIncrease
+struct BGSActorCellEvent
 {
-	struct Event
-	{
-		TESForm		* character;
-		UInt32		level;
-	};
-};
-
-struct SkillIncrease
-{
-	struct Event
-	{
-		// Unknown
-	};
-};
-struct WordLearned
-{
-	struct Event
-	{
-		// Unknown
-	};
-};
-struct WordUnlocked
-{
-	struct Event
-	{
-		// Unknown
-	};
-};
-struct Inventory
-{
-	struct Event
-	{
-		// Unknown
-	};
-};
-struct Bounty
-{
-	struct Event
-	{
-		// Unknown
-	};
-};
-struct QuestStatus
-{
-	struct Event
-	{
-		// Unknown
-	};
-};
-struct ObjectiveState
-{
-	struct Event
-	{
-		// Unknown
-	};
-};
-struct Trespass
-{
-	struct Event
-	{
-		// Unknown
-	};
-};
-struct FinePaid
-{
-	struct Event
-	{
-		// Unknown
-	};
-};
-struct HoursPassed
-{
-	struct Event
-	{
-		// Unknown
-	};
-};
-struct DaysPassed
-{
-	struct Event
-	{
-		// Unknown
-	};
-};
-struct DaysJailed
-{
-	struct Event
-	{
-		// Unknown
-	};
-};
-struct CriticalHitEvent
-{
-	struct Event
-	{
-		// Unknown
-	};
-};
-struct DisarmedEvent
-{
-	struct Event
-	{
-		// Unknown
-	};
-};
-struct ItemsPickpocketed
-{
-	struct Event
-	{
-		// Unknown
-	};
-};
-struct ItemSteal
-{
-	struct Event
-	{
-		// Unknown
-	};
-};
-struct ItemCrafted
-{
-	struct Event
-	{
-		// Unknown
-	};
-};
-struct LocationDiscovery
-{
-	struct Event
-	{
-		// Unknown
-	};
-};
-struct Jailing
-{
-	struct Event
-	{
-		// Unknown
-	};
-};
-struct ChestsLooted
-{
-	struct Event
-	{
-		// Unknown
-	};
-};
-struct TimesTrained
-{
-	struct Event
-	{
-		// Unknown
-	};
-};
-struct TimesBartered
-{
-	struct Event
-	{
-		// Unknown
-	};
-};
-struct ContractedDisease
-{
-	struct Event
-	{
-		// Unknown
-	};
-};
-struct SpellsLearned
-{
-	struct Event
-	{
-		// Unknown
-	};
-};
-struct DragonSoulGained
-{
-	struct Event
-	{
-		// Unknown
-	};
-};
-struct SoulGemsUsed
-{
-	struct Event
-	{
-		// Unknown
-	};
-};
-struct SoulsTrapped
-{
-	struct Event
-	{
-		// Unknown
-	};
-};
-struct PoisonedWeapon
-{
-	struct Event
-	{
-		// Unknown
-	};
-};
-struct ShoutAttack
-{
-	struct Event
-	{
-		// Unknown
-	};
-};
-struct JailEscape
-{
-	struct Event
-	{
-		// Unknown
-	};
-};
-struct GrandTheftHorse
-{
-	struct Event
-	{
-		// Unknown
-	};
-};
-struct AssaultCrime
-{
-	struct Event
-	{
-		// Unknown
-	};
-};
-struct MurderCrime
-{
-	struct Event
-	{
-		// Unknown
-	};
-};
-struct LocksPicked
-{
-	struct Event
-	{
-		// Unknown
-	};
-};
-struct LocationCleared
-{
-	struct Event
-	{
-		// Unknown
-	};
-};
-struct ShoutMastered
-{
-	struct Event
-	{
-		// Unknown
-	};
-};
-
-struct TESCombatEvent 
-{
-	TESObjectREFR	* source;	// 00
-	TESObjectREFR	* target;	// 04
-	UInt32			state;		// 08
-};
-
-struct TESDeathEvent
-{
-	TESObjectREFR	* source;	// 00
-};
-
-struct TESHitEvent
-{
-	TESObjectREFR	* target;			// 00
-	TESObjectREFR	* caster;			// 04
-	UInt32			sourceFormID;		// 08
-	UInt32			projectileFormID;	// 0C
-
 	enum
 	{
-		kFlag_PowerAttack = (1 << 0),
-		kFlag_SneakAttack = (1 << 1),
-		kFlag_Bash		  = (1 << 2),
-		kFlag_Blocked	  = (1 << 3)
+		kFlags_Enter = 0,
+		kFlags_Leave = 1
 	};
+	UInt32	refHandle;
+	UInt32	cellID;
+	UInt32	flags;
+};
 
-	UInt32			flags;				// 10
-	void			* unk14[7];			// 14
+struct BGSActorDeathEvent
+{
 };
 
 struct BGSFootstepEvent
@@ -419,76 +219,100 @@ struct BGSFootstepEvent
 	UInt32	actorHandle;
 };
 
-template <>
-class BSTEventSink <TESCombatEvent>
+struct PositionPlayerEvent
 {
-public:
-	virtual ~BSTEventSink() {}; // todo?
-	virtual	EventResult ReceiveEvent(TESCombatEvent * evn, EventDispatcher<TESCombatEvent> * dispatcher) = 0;
 };
 
-template <>
-class BSTEventSink <TESDeathEvent>
+struct HavokImpulseEvent
 {
-public:
-	virtual ~BSTEventSink() {}; // todo?
-	virtual	EventResult ReceiveEvent(TESDeathEvent * evn, EventDispatcher<TESDeathEvent> * dispatcher) = 0;
+	// 0x01B380A0
 };
 
-template <>
-class BSTEventSink <TESSleepStartEvent>
+struct HavokThreadmemoryEvent
 {
-public:
-	virtual ~BSTEventSink() {}	// todo?
-	virtual	EventResult ReceiveEvent(TESSleepStartEvent * evn, EventDispatcher<TESSleepStartEvent> * dispatcher) = 0;
+	// 0x01B4AE14
 };
+
+struct ScriptArchiveRegisteredEvent
+{
+	// 0x01B417D8
+	const char* bsaFileName;
+};
+
+struct FavoriteWeaponEvent
+{
+	// 0x01B39C5C
+};
+
+struct FavoriteSpellEvent
+{
+	// 0x01B3B04C
+};
+
+struct FavoriteShoutEvent
+{
+	// 0x01B39C90
+};
+
+// EventSource Address
+//   EventSink
+
+// 01B107B4
+//   DefaultObjectInitListener@?A0x9360cbd9@@
+//   UIBlurManager@@
+
+// 01B410BC
+//   TES@@+34
+
+// 01B37F60
+//   PlayerContorols@@+0
+
+// 01B37F60
+//   BGSMoviePlayer@@+30
+
+// 01B37E88
+//   PathingCallbackMgr@SkyrimScript@@
+
+// 0x01B37FB4
+//   PlayerCharacter@@->userEventEnabled
+//   HUDMenu@@+1C
+
+// 01B417A8
+//   LooseAudioRegistrar@@
+
+
+//===========================================================================
+// sinks
+//===========================================================================
 
 template <>
 class BSTEventSink <MenuOpenCloseEvent>
 {
 public:
-	virtual ~BSTEventSink() {}	// todo?
+	virtual ~BSTEventSink() {}
 	virtual	EventResult ReceiveEvent(MenuOpenCloseEvent * evn, EventDispatcher<MenuOpenCloseEvent> * dispatcher) = 0;
 };
 
 template <>
-class BSTEventSink <TESQuestStageEvent>
+class BSTEventSink <MenuModeChangeEvent>
 {
 public:
-	virtual ~BSTEventSink() {}	// todo?
-	virtual	EventResult ReceiveEvent(TESQuestStageEvent * evn, EventDispatcher<TESQuestStageEvent> * dispatcher) = 0;
+	virtual ~BSTEventSink() {}
+	virtual	EventResult ReceiveEvent(MenuModeChangeEvent * evn, EventDispatcher<MenuModeChangeEvent> * dispatcher) = 0;
 };
 
 template <>
-class BSTEventSink <LevelIncrease::Event>
+class BSTEventSink <BGSActorCellEvent>
 {
 public:
-	virtual ~BSTEventSink() {}	// todo?
-	virtual	EventResult ReceiveEvent(LevelIncrease::Event * evn, EventDispatcher<LevelIncrease::Event> * dispatcher) = 0;
+	virtual ~BSTEventSink() {}
+	virtual	EventResult ReceiveEvent(BGSActorCellEvent * evn, BSTEventSource<BGSActorCellEvent> * source) = 0;
 };
 
 template <>
-class BSTEventSink <TESHarvestEvent::ItemHarvested>
+class BSTEventSink <BGSFootstepEvent>
 {
 public:
-	virtual ~BSTEventSink() {}	// todo?
-	virtual	EventResult ReceiveEvent(TESHarvestEvent::ItemHarvested * evn, EventDispatcher<TESHarvestEvent::ItemHarvested> * dispatcher) = 0;
+	virtual ~BSTEventSink() {}
+	virtual	EventResult ReceiveEvent(BGSFootstepEvent * evn, BSTEventSource<BGSFootstepEvent> * source) = 0;
 };
-
-template <>
-class BSTEventSink <TESHitEvent>
-{
-public:
-	virtual ~BSTEventSink() {}	// todo?
-	virtual	EventResult ReceiveEvent(TESHitEvent * evn, EventDispatcher<TESHitEvent> * dispatcher) = 0;
-};
-
-// For testing
-//extern EventDispatcher<TESSleepStartEvent> * g_sleepStartEventDispatcher;
-extern EventDispatcher<TESCombatEvent> * g_combatEventDispatcher;
-extern EventDispatcher<TESDeathEvent> * g_deathEventDispatcher;
-extern EventDispatcher<BGSFootstepEvent> * g_footstepEventDispatcher;
-extern EventDispatcher<TESQuestStageEvent> * g_questStageEventDispatcher;
-extern EventDispatcher<TESHarvestEvent::ItemHarvested> * g_harvestEventDispatcher;
-extern EventDispatcher<LevelIncrease::Event> * g_levelIncreaseEventDispatcher;
-extern EventDispatcher<TESHitEvent> * g_hitEventDispatcher;

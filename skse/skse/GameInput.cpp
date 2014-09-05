@@ -1,11 +1,13 @@
 #include "GameInput.h"
 
-bool InputEventDispatcher::IsGamepadEnabled(void)
+bool InputEventSource::IsGamepadEnabled(void)
 {
 	return (gamepad != NULL) && gamepad->IsEnabled();
 }
 
-InputEventDispatcher ** g_inputEventDispatcher = (InputEventDispatcher **)0x01B2E724;
+InputEventSource ** g_inputEventDispatcher = (InputEventSource **)0x01B2E724;
+
+InputEventSource& g_inputEventSource = *(InputEventSource*)0x01B37F60;
 
 InputManager * InputManager::GetSingleton(void)
 {

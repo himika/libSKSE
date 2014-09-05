@@ -102,3 +102,34 @@ void Actor::UpdateSkinColor()
 		}
 	}
 }
+
+// ==== (himika) ====
+TESObjectREFR* BGSRefAlias::GetReference(void)
+{
+	UInt32 handle = 0;
+	TESObjectREFR* ref = NULL;
+
+	if (owner == NULL)
+		return NULL;
+	
+	CALL_MEMBER_FN(owner, CreateRefHandleByAliasID)(&handle, aliasId);
+	if (handle != *g_invalidRefHandle)
+	{
+		if (!LookupREFRByHandle(&handle, &ref))
+		{
+			ref = NULL;
+		}
+	}
+
+	return ref;
+}
+
+Actor* BGSRefAlias::GetActorReference(void)
+{
+	TESObjectREFR* actor = this->GetReference();
+
+	if (actor == NULL || actor->formType != kFormType_Character)
+		actor = NULL;
+
+	return (Actor*)actor;
+}

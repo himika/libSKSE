@@ -34,7 +34,13 @@
     <ClCompile Include="GameObjects.cpp">
       <Filter>api</Filter>
     </ClCompile>
+    <ClCompile Include="GamePapyrusEvents.cpp">
+      <Filter>api</Filter>
+    </ClCompile>
     <ClCompile Include="GamePathing.cpp">
+      <Filter>api</Filter>
+    </ClCompile>
+    <ClCompile Include="GamePlayerEvents.cpp">
       <Filter>api</Filter>
     </ClCompile>
     <ClCompile Include="GameReferences.cpp">
@@ -47,6 +53,9 @@
       <Filter>api</Filter>
     </ClCompile>
     <ClCompile Include="GameStreams.cpp">
+      <Filter>api</Filter>
+    </ClCompile>
+    <ClCompile Include="GameTESEvents.cpp">
       <Filter>api</Filter>
     </ClCompile>
     <ClCompile Include="GameThreads.cpp">
@@ -121,6 +130,9 @@
     <ClCompile Include="PapyrusVM.cpp">
       <Filter>papyrus</Filter>
     </ClCompile>
+    <ClCompile Include="PluginAPI.cpp">
+      <Filter>internal</Filter>
+    </ClCompile>
     <ClCompile Include="SafeWrite.cpp">
       <Filter>internal</Filter>
     </ClCompile>
@@ -191,7 +203,16 @@
     <ClInclude Include="GameObjects.h">
       <Filter>api</Filter>
     </ClInclude>
+    <ClInclude Include="GamePapyrusEvents.h">
+      <Filter>api</Filter>
+    </ClInclude>
+    <ClInclude Include="GamePapyrusFunctions.h">
+      <Filter>api</Filter>
+    </ClInclude>
     <ClInclude Include="GamePathing.h">
+      <Filter>api</Filter>
+    </ClInclude>
+    <ClInclude Include="GamePlayerEvents.h">
       <Filter>api</Filter>
     </ClInclude>
     <ClInclude Include="GameReferences.h">
@@ -207,6 +228,9 @@
       <Filter>api</Filter>
     </ClInclude>
     <ClInclude Include="GameStreams.h">
+      <Filter>api</Filter>
+    </ClInclude>
+    <ClInclude Include="GameTESEvents.h">
       <Filter>api</Filter>
     </ClInclude>
     <ClInclude Include="GameThreads.h">
@@ -311,11 +335,20 @@
     <ClInclude Include="Utilities.h">
       <Filter>internal</Filter>
     </ClInclude>
-    <ClInclude Include="Hooks_UI.h">
-      <Filter>hooks</Filter>
+    <ClInclude Include="GameSKSEEvents.h">
+      <Filter>api</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <None Include="GamePapyrusEventsDef.inl">
+      <Filter>api</Filter>
+    </None>
+    <None Include="GamePapyrusFunctionsDef.inl">
+      <Filter>api</Filter>
+    </None>
+    <None Include="GamePapyrusFunctionsDef_Base.inl">
+      <Filter>api</Filter>
+    </None>
     <None Include="PapyrusNativeFunctionDef.inl">
       <Filter>papyrus</Filter>
     </None>
@@ -338,9 +371,6 @@
     </Filter>
     <Filter Include="scaleform">
       <UniqueIdentifier>{267fdb5c-dccb-4ef4-b7ae-db1d3f52078f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="hooks">
-      <UniqueIdentifier>{6f5b1ff4-b0f6-472f-8b91-98b8476f9962}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

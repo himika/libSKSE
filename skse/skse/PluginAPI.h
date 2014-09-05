@@ -40,7 +40,7 @@ struct SKSEInterface
 
 struct SKSEScaleformInterface
 {
-	enum
+	enum InterfaceVersion
 	{
 		kInterfaceVersion = 1
 	};
@@ -61,7 +61,7 @@ struct SKSEScaleformInterface
 
 struct SKSESerializationInterface
 {
-	enum
+	enum InterfaceVersion
 	{
 		kVersion = 3,
 	};
@@ -90,7 +90,7 @@ struct SKSESerializationInterface
 
 struct SKSETaskInterface
 {
-	enum
+	enum InterfaceVersion
 	{
 		kInterfaceVersion = 2
 	};
@@ -113,7 +113,7 @@ class VMClassRegistry;
 
 struct SKSEPapyrusInterface
 {
-	enum
+	enum InterfaceVersion
 	{
 		kInterfaceVersion = 1
 	};
@@ -164,7 +164,8 @@ struct SKSEMessagingInterface
 
 	typedef void (* EventCallback)(Message* msg);
 
-	enum {
+	enum InterfaceVersion
+	{
 		kInterfaceVersion = 1
 	};
 
@@ -267,3 +268,99 @@ typedef bool (* _SKSEPlugin_Load)(const SKSEInterface * skse);
  *	previous implementations.
  *	
  ******************************************************************************/
+enum SKSEVersion
+{
+	kSKSEVersion_1_3_0  = 0x01030000,
+	kSKSEVersion_1_4_0  = 0x01040000,
+	kSKSEVersion_1_4_1  = 0x01040010,
+	kSKSEVersion_1_4_2  = 0x01040020,
+	kSKSEVersion_1_4_3  = 0x01040030,
+	kSKSEVersion_1_4_4  = 0x01040040,
+	kSKSEVersion_1_4_5  = 0x01040050,
+	kSKSEVersion_1_4_6  = 0x01040060,
+	kSKSEVersion_1_4_7  = 0x01040070,
+	kSKSEVersion_1_4_8  = 0x01040080,
+	kSKSEVersion_1_4_9  = 0x01040090,
+	kSKSEVersion_1_4_10 = 0x010400A0,
+	kSKSEVersion_1_4_11 = 0x010400B0,
+	kSKSEVersion_1_4_12 = 0x010400C0,
+	kSKSEVersion_1_4_13 = 0x010400D0,
+	kSKSEVersion_1_4_14 = 0x010400E0,
+	kSKSEVersion_1_4_15 = 0x010400F0,
+	kSKSEVersion_1_5_1  = 0x01050010,
+	kSKSEVersion_1_5_2  = 0x01050020,
+	kSKSEVersion_1_5_3  = 0x01050030,
+	kSKSEVersion_1_5_4  = 0x01050040,
+	kSKSEVersion_1_5_5  = 0x01050050,
+	kSKSEVersion_1_5_6  = 0x01050060,
+	kSKSEVersion_1_5_7  = 0x01050070,
+	kSKSEVersion_1_5_8  = 0x01050080,
+	kSKSEVersion_1_5_9  = 0x01050090,
+	kSKSEVersion_1_5_10 = 0x010500A0,
+	kSKSEVersion_1_5_11 = 0x010500B0,
+	kSKSEVersion_1_6_0  = 0x01060000,
+	kSKSEVersion_1_6_1  = 0x01060010,
+	kSKSEVersion_1_6_2  = 0x01060020,
+	kSKSEVersion_1_6_3  = 0x01060030,
+	kSKSEVersion_1_6_4  = 0x01060040,
+	kSKSEVersion_1_6_5  = 0x01060050,
+	kSKSEVersion_1_6_6  = 0x01060060,
+	kSKSEVersion_1_6_7  = 0x01060070,
+	kSKSEVersion_1_6_8  = 0x01060080,
+	kSKSEVersion_1_6_9  = 0x01060090,
+	kSKSEVersion_1_6_10 = 0x010600A0,
+	kSKSEVersion_1_6_11 = 0x010600B0,
+	kSKSEVersion_1_6_12 = 0x010600C0,
+	kSKSEVersion_1_6_13 = 0x010600D0,
+	kSKSEVersion_1_6_14 = 0x010600E0,
+	kSKSEVersion_1_6_15 = 0x010600F0,
+	kSKSEVersion_1_6_16 = 0x01060100,
+	kSKSEVersion_1_7_0  = 0x01070000,
+	kSKSEVersion_1_7_1  = 0x01070010
+};
+
+
+class SKSEPlugin
+{
+public:
+	SKSEPlugin();
+	
+	virtual bool InitInstance();
+	virtual bool OnLoad();
+	virtual void OnModLoaded();
+
+	void SetName(const char* name);
+	void SetVersion(UInt32 version);
+	
+	PluginHandle GetPluginHandle() const;
+	UInt32 GetRuntimeVersion() const;
+	UInt32 GetSKSEVersion() const;
+	UInt32 GetSKSEReleaseIndex() const;
+
+	template <typename Version>
+	bool Requires(Version version) const;
+	bool Requires(SKSEVersion version) const;
+	bool Requires(SKSEScaleformInterface::InterfaceVersion version) const;
+	bool Requires(SKSEPapyrusInterface::InterfaceVersion version) const;
+	bool Requires(SKSESerializationInterface::InterfaceVersion version) const;
+	bool Requires(SKSETaskInterface::InterfaceVersion version) const;
+	bool Requires(SKSEMessagingInterface::InterfaceVersion version) const;
+	bool Requires(const char* modName) const;
+
+	template <typename IV1, typename IV2>
+	bool Requires(IV1 iv1, IV2 iv2) {return Requires(iv1) && Requires(iv2);}
+	template <typename IV1, typename IV2, typename IV3>
+	bool Requires(IV1 iv1, IV2 iv2, IV3 iv3) {return Requires(iv1) && Requires(iv2) && Requires(iv3);}
+	template <typename IV1, typename IV2, typename IV3, typename IV4>
+	bool Requires(IV1 iv1, IV2 iv2, IV3 iv3, IV4 iv4) {return Requires(iv1) && Requires(iv2) && Requires(iv3) && Requires(iv4);}
+	template <typename IV1, typename IV2, typename IV3, typename IV4, typename IV5>
+	bool Requires(IV1 iv1, IV2 iv2, IV3 iv3, IV4 iv4, IV5 iv5) {return Requires(iv1) && Requires(iv2) && Requires(iv3) && Requires(iv4) && Requires(iv5);}
+	template <typename IV1, typename IV2, typename IV3, typename IV4, typename IV5, typename IV6>
+	bool Requires(IV1 iv1, IV2 iv2, IV3 iv3, IV4 iv4, IV5 iv5, IV6 iv6) {return Requires(iv1) && Requires(iv2) && Requires(iv3) && Requires(iv4) && Requires(iv5) && Requires(iv6);}
+
+	template <typename Interface>
+	Interface* GetInterface() const;
+
+	template <typename Interface>
+	UInt32 GetInterfaceVersion() const;
+};

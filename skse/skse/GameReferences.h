@@ -11,6 +11,8 @@ class NiNode;
 class TESObjectREFR;
 class BSFaceGenNiNode;
 class BSFaceGenAnimationData;
+class ActorMagicCaster;				// himika
+class MagicItem;					//
 
 // TESObjectREFR and child classes
 
@@ -105,7 +107,7 @@ public:
 	virtual void	Unk_39(void);
 	virtual void	Unk_3A(void);
 	virtual void	Unk_3B(void);
-	virtual void	Unk_3C(void);
+	virtual void	GetEditorLocation(void);							// (himika)
 	virtual void	Unk_3D(void);
 	virtual void	Unk_3E(void);
 	virtual void	Unk_3F(void);
@@ -126,20 +128,21 @@ public:
 	virtual void	Unk_4E(void);
 	virtual void	Unk_4F(void);
 	virtual void	Unk_50(void);
-	virtual void	GetStartingPos(NiPoint3 * pos);
+//	virtual void	GetStartingPos(float * pos);
+	virtual UInt32	* GetActorCause(void);								// (himika)
 	virtual void	Unk_52(void);
 	virtual void	Unk_53(void);
 	virtual void	Unk_54(void);
 	virtual void	Unk_55(void);
-	virtual void	Unk_56(void);
+	virtual void	RemoveItem(UInt32* handle, TESForm* akItem, UInt32 aiCount, UInt32 mode, BaseExtraList* extraList, TESObjectREFR* moveToRef, UInt32 unk7, UInt32 unk8);	// (himika) mode 0:remove 1:idk 2:trade(item ownership changes) 3:drop 4:move 5:idk
 	virtual void	Unk_57(void);
 	virtual void	Unk_58(void);
 	virtual void	Unk_59(void);
 	virtual void	Unk_5A(void);
 	virtual void	GetMarkerPosition(NiPoint3 * pos);
-	virtual void	Unk_5C(void);
+	virtual ActorMagicCaster	* GetActorMagicCaster(UInt32 slot);		// (himika)
 	virtual void	Unk_5D(void);
-	virtual void	Unk_5E(void);
+	virtual bool	IsChild(void);										// (himika)
 	virtual void	Unk_5F(void);
 	virtual void	Unk_60(void);
 	virtual BSFaceGenNiNode *	GetFaceGenNiNode(void);
@@ -202,6 +205,13 @@ public:
 	virtual void	Unk_9A(void);
 	virtual void	Unk_9B(void);
 
+	virtual void	Unk_9C(void);		// | (himika)
+	virtual void	Unk_9D(void);		// |
+	virtual void	Unk_9E(void);		// |
+	virtual void	Unk_9F(void);		// |
+	virtual void	Unk_A0(void);		// |
+	virtual void	Unk_A1(void);		// |
+	
 	struct LoadedState
 	{
 		UInt32	unk00;	// 00
@@ -238,6 +248,7 @@ public:
 	DEFINE_MEMBER_FN(IsOffLimits, bool, 0x004DA760);
 	DEFINE_MEMBER_FN(GetWeight, float, 0x004EA180);
 	DEFINE_MEMBER_FN(GetReferenceName, const char *, 0x004DE820);
+	DEFINE_MEMBER_FN(SetDestroyed, void, 0x00450E30, bool);	// himika
 };
 
 STATIC_ASSERT(sizeof(TESObjectREFR) == 0x54);
@@ -296,14 +307,15 @@ public:
 	enum { kTypeID = kFormType_Character };
 
 	virtual ~Actor();
-	virtual void Unk_9C(void);
-	virtual void Unk_9D(void);
-	virtual void Unk_9E(void);
-	virtual void Unk_9F(void);
-	virtual void Unk_A0(void);
-	virtual void Unk_A1(void);
+
+	// virtual void Unk_9C(void);
+	// virtual void Unk_9D(void);
+	// virtual void Unk_9E(void);
+	// virtual void Unk_9F(void);
+	// virtual void Unk_A0(void);
+	// virtual void Unk_A1(void);
 	virtual void Unk_A2(void);
-	virtual void Unk_A3(void);
+	virtual float	Unk_A3(UInt32 arg1);	// (himika)
 	virtual void Unk_A4(void);
 	virtual void DrawSheatheWeapon(bool draw);
 	virtual void Unk_A6(void);
@@ -351,7 +363,7 @@ public:
 	virtual void Unk_D0(void);
 	virtual void Unk_D1(void);
 	virtual void Unk_D2(void);
-	virtual void Unk_D3(void);
+	virtual void	* Unk_D3(void);			// (himika)
 	virtual void Unk_D4(void);
 	virtual void Unk_D5(void);
 	virtual void Unk_D6(void);
@@ -388,7 +400,7 @@ public:
 	virtual void Unk_F5(void);
 	virtual void AdvanceSkill(UInt32 skillId, float points, UInt32 unk1, UInt32 unk2);
 	virtual void Unk_F7(void);
-	virtual void Unk_F8(void);
+	virtual bool IsInFaction(TESFaction* faction);	// himika
 	virtual void VisitPerks(void); // BGSPerk::FindPerkInRanksVisitor
 	virtual void AddPerk(BGSPerk * perk, UInt32 unk1);
 	virtual void RemovePerk(BGSPerk * perk);
@@ -428,22 +440,30 @@ public:
 		kFlags_IsPlayerTeammate = 0x4000000
 	};
 	enum Flags2 {
+		kFlags_Essential  = 0x40000,				// (himika)
 		kFlags_CanDoFavor = 0x80
 	};
 
 	MagicTarget		magicTarget;					// 054
 	ActorValueOwner	actorValueOwner;				// 060
 	ActorState		actorState;						// 064
-	BSTEventSink<void*>	transformDeltaEvent;		// 070 .?AV?$BSTEventSink@VBSTransformDeltaEvent@@@@
-	BSTEventSink<void*>	characterMoveFinishEvent;	// 074 .?AV?$BSTEventSink@VbhkCharacterMoveFinishEvent@@@@
+	BSTEventSink<BSTransformDeltaEvent>			transformDeltaEvent;		// 070 .?AV?$BSTEventSink@VBSTransformDeltaEvent@@@@
+	BSTEventSink<bhkCharacterMoveFinishEvent>	characterMoveFinishEvent;	// 074 .?AV?$BSTEventSink@VbhkCharacterMoveFinishEvent@@@@
 	IPostAnimationChannelUpdateFunctor	unk078;		// 078 IPostAnimationChannelUpdateFunctor
 	UInt32	flags1;									// 07C
 	UInt32	unk080;									// 080
 	UInt32	unk084;									// 084
 	ActorProcessManager	* processManager;			// 088
-	UInt32	unk08C[(0x0FC - 0x08C) >> 2];			// 08C
+	// UInt32	unk08C[(0x0FC - 0x08C) >> 2];		// 08C *
+	UInt32	unk08C;									// 08C | 
+	UInt32  combatTargetRefHandle;					// 090 | (himika)
+	UInt32	unk094[(0x0C8 - 0x094) >> 2];			// 094 | 
+	BGSLocation* editorLocation;					// 0C8 |
+	UInt32	unk0CC[(0x0FC - 0x0CC) >> 2];			// 0CC |
 	SpellArray	addedSpells;						// 0FC
-	UInt32	unk108[(0x128 - 0x108) >> 2];			// 108
+	// UInt32	unk108[(0x128 - 0x108) >> 2];		// 108 *
+	UInt32	unk108[(0x118 - 0x108) >> 2];			// 108 |
+	MagicItem*		equippingMagicItems[4];			// 118 | (himika) equipped MagicItem - 0:left hand 1:right hand 4:power/shout
 	TESForm	* equippedShout;						// 128
 	UInt32	unk12C;									// 12C
 	TESRace			* race;							// 130
@@ -490,12 +510,12 @@ public:
 	virtual ~PlayerCharacter();
 
 	// parents
-	BSTEventSink <void *>	menuOpenCloseEvent;			// 19C .?AV?$BSTEventSink@VMenuOpenCloseEvent@@@@
-	BSTEventSink <void *>	menuModeChangeEvent;		// 1A0 .?AV?$BSTEventSink@VMenuModeChangeEvent@@@@
-	BSTEventSink <void *>	userEventEnabledEvent;		// 1A4 .?AV?$BSTEventSink@VUserEventEnabledEvent@@@@
-	BSTEventSource <void *>	actorCellEventSource;		// 1A8 .?AV?$BSTEventSource@UBGSActorCellEvent@@@@
-	BSTEventSource <void *>	actorDeathEventSource;		// 1D8 .?AV?$BSTEventSource@UBGSActorDeathEvent@@@@
-	BSTEventSource <void *>	positionPlayerEventSource;	// 208 .?AV?$BSTEventSource@UPositionPlayerEvent@@@@
+	BSTEventSink <void *>					menuOpenCloseEvent;			// 19C .?AV?$BSTEventSink@VMenuOpenCloseEvent@@@@
+	BSTEventSink <void *>					menuModeChangeEvent;		// 1A0 .?AV?$BSTEventSink@VMenuModeChangeEvent@@@@
+	BSTEventSink <void *>					userEventEnabledEvent;		// 1A4 .?AV?$BSTEventSink@VUserEventEnabledEvent@@@@
+	BSTEventSource <BGSActorCellEvent>		actorCellEventSource;		// 1A8 .?AV?$BSTEventSource@UBGSActorCellEvent@@@@
+	BSTEventSource <BGSActorDeathEvent>		actorDeathEventSource;		// 1D8 .?AV?$BSTEventSource@UBGSActorDeathEvent@@@@
+	BSTEventSource <PositionPlayerEvent>	positionPlayerEventSource;	// 208 .?AV?$BSTEventSource@UPositionPlayerEvent@@@@
 
 	UInt32	pad238[(0x490 - 0x238) >> 2];	// 238
 	UInt32	unk490;							// 490 - Handle
@@ -518,7 +538,10 @@ public:
 	UInt32	unk640;							// 640
 	TESForm	* tempPoison;					// 644
 	UInt32	numTeammates;					// 648
-	UInt32	pad64C[(0x6E0 - 0x64C) >> 2];
+//	UInt32	pad64C[(0x6E0 - 0x64C) >> 2];	// 64C *
+	UInt32	pad64C[(0x6B0 - 0x64C) >> 2];	// 64C | (himika)
+	BGSLocation * currentLocation;			// 6B0 |
+	UInt32	pad6B4[(0x6E0 - 0x6B4) >> 2];	// 6B4 |
 	UInt8	unk6E0;							// 6E0
 	UInt8	numPerkPoints;					// 6E1
 	UInt16  unk6E2;							// 6E2

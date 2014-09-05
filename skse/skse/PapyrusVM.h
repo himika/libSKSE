@@ -41,6 +41,7 @@ public:
 	UInt64	Create_Hook(UInt32 typeID, void * srcData);
 #endif
 
+	template <typename T> T* Resolve(UInt64 handle) {return (T*)Resolve(T::kTypeID, handle);}	// (himika)
 //	void	** _vtbl;	// 00
 };
 
@@ -217,6 +218,16 @@ public:
 		//		VMValue			data[0];	// 14
 
 		VMValue	*	GetData(void)	{ return (VMValue *)(this + 1); }
+		// ==== (himika) ====
+		void		AddRef(void)	{ InterlockedIncrement(&refCount); }
+		void		DecRef(void)
+		{
+			if (InterlockedDecrement(&refCount) == 0) {
+				for (int i = 0; i < len; i++)
+					CALL_MEMBER_FN(GetData()+i, Destroy)();
+				FormHeap_Free(this);
+			}
+		}
 
 		MEMBER_FN_PREFIX(ArrayData);
 		DEFINE_MEMBER_FN(Destroy, void, 0x00C3A0A0);
@@ -344,7 +355,7 @@ public:
 	// ### indices are from 1.5.26
 
 	virtual void	Unk_01(void);
-	virtual void	Unk_02(void);
+	virtual void	TraceStack(const char* str, UInt32 stackPointer, UInt32 aiSeverity=0);	// (himika)
 	virtual void	Unk_03(void);
 	virtual void	Unk_04(void);
 	virtual void	Unk_05(void);
@@ -404,6 +415,10 @@ public:
 	UInt32		unk0014[(0x006C - 0x0014) >> 2];	// 0014
 	VMUnlinkedClassList	unlinkedClassList;			// 006C
 	UInt32		unk00B4[(0x4B04 - 0x00B4) >> 2];	// 00B4
+
+	// (himika)
+	MEMBER_FN_PREFIX(VMClassRegistry);
+	DEFINE_MEMBER_FN(AllocateArray, bool, 0x00C49670, UInt32* typeID, UInt32 size, VMValue::ArrayData** arr);
 };
 
 STATIC_ASSERT(offsetof(VMClassRegistry, unlinkedClassList) == 0x006C);
@@ -437,6 +452,7 @@ public:
 	DEFINE_MEMBER_FN(RevertGlobalData_Internal, bool, 0x008D5DF0);
 	DEFINE_MEMBER_FN(SaveRegSleepEventHandles_Internal, bool, 0x008CD8F0, void * handleReaderWriter, void * saveStorageWrapper);
 	DEFINE_MEMBER_FN(LoadRegSleepEventHandles_Internal, bool, 0x008D3DB0, void * handleReaderWriter, void * loadStorageWrapper);
+	DEFINE_MEMBER_FN(QueueAliasEvent, void, 0x008C6B30, UInt64 handle, const StringCache::Ref* eventName, IFunctionArguments* args, UInt32 arg4);	// (himika)
 
 	void OnFormDelete_Hook(UInt64 handle);
 	void RevertGlobalData_Hook(void);

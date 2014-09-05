@@ -18,14 +18,31 @@
 class ExtraPersistentCell : public BSExtraData
 {
 public:
+	enum { kExtraTypeID = kExtraData_PersistentCell };
+
 	ExtraPersistentCell();
 	virtual ~ExtraPersistentCell();
 
 	TESObjectCELL* cell;
 };
  //	ExtraAction
- //	ExtraStartingPosition
- //	ExtraAnimGraphManager
+class ExtraStartingPosition : public BSExtraData
+{
+public:
+	enum { kExtraTypeID = kExtraData_StartingPosition };
+	UInt32		unk08;
+	UInt32		unk0C;
+	UInt32		unk10;
+	UInt32		unk14;
+	UInt32		unk18;
+	UInt32		unk1C;
+	UInt32		unk20;
+
+	MEMBER_FN_PREFIX(ExtraStartingPosition);
+	DEFINE_MEMBER_FN(ctor, void, 0x0040DC50, UInt32 unk);
+};
+STATIC_ASSERT(sizeof(ExtraStartingPosition) == 0x24);
+//	ExtraAnimGraphManager
  //	ExtraUsedMarkers
  //	ExtraDistantData
  //	ExtraRagDollData
@@ -34,6 +51,8 @@ class ExtraHotkey;
 class ExtraContainerChanges : public BSExtraData
 {
 public:
+	enum { kExtraTypeID = kExtraData_ContainerChanges };
+
 	ExtraContainerChanges();
 	virtual ~ExtraContainerChanges();
 
@@ -69,6 +88,43 @@ public:
 		void GetExtraWornBaseLists(BaseExtraList ** pWornBaseListOut, BaseExtraList ** pWornLeftBaseListOut) const;
 
 		void GetEquipItemData(EquipItemData& stateOut, SInt32 itemId, SInt32 baseCount) const;
+
+		// himika
+		bool IsQuestItem() {
+			return CALL_MEMBER_FN(this, IsQuestItem)();
+		}
+
+		template <class Op>
+		void ForEach(Op op) {
+			if (!extendDataList) {
+				return;
+			}
+			ExtendDataList::Iterator it = extendDataList->Begin();
+			while (!it.End()) {
+				op(it.Get());
+				++it;
+			}
+			return;
+		}
+
+		template <class Op>
+		BaseExtraList* Find(Op op) {
+			if (!extendDataList) {
+				return NULL;
+			}
+			ExtendDataList::Iterator it = extendDataList->Begin();
+			while (!it.End()) {
+				BaseExtraList* ex = it.Get();
+				if (op(ex)) {
+					return ex;
+				}
+				++it;
+			}
+			return NULL;
+		}
+
+		MEMBER_FN_PREFIX(EntryData);
+		DEFINE_MEMBER_FN(IsQuestItem, bool, 0x004759B0);
 	};
 
 	typedef tList<EntryData> EntryDataList;
@@ -112,6 +168,8 @@ typedef ExtraContainerChanges::FoundHotkeyData HotkeyData;
  class ExtraWorn : public BSExtraData
 {
 public:
+	enum { kExtraTypeID = kExtraData_Worn };
+
 	ExtraWorn();
 	virtual ~ExtraWorn();
 };
@@ -119,6 +177,8 @@ public:
 class ExtraWornLeft : public BSExtraData
 {
 public:
+	enum { kExtraTypeID = kExtraData_WornLeft };
+
 	ExtraWornLeft();
 	virtual ~ExtraWornLeft();
 };
@@ -129,6 +189,8 @@ public:
 class ExtraReferenceHandle : public BSExtraData
 {
 public:
+	enum { kExtraTypeID = kExtraData_ReferenceHandle };
+
 	ExtraReferenceHandle();
 	virtual ~ExtraReferenceHandle();
 
@@ -141,6 +203,8 @@ public:
 class ExtraFollower : public BSExtraData
 {
 public:
+	enum { kExtraTypeID = kExtraData_Follower };
+
 	ExtraFollower();
 	virtual ~ExtraFollower();
 
@@ -154,6 +218,8 @@ public:
 class ExtraOwnership : public BSExtraData
 {
 public:
+	enum { kExtraTypeID = kExtraData_Ownership };
+
 	ExtraOwnership();
 	virtual ~ExtraOwnership();
 
@@ -164,6 +230,8 @@ public:
 class ExtraCount : public BSExtraData
 {
 public:
+	enum { kExtraTypeID = kExtraData_Count };
+
 	ExtraCount();
 	virtual ~ExtraCount();
 
@@ -174,6 +242,8 @@ public:
 class ExtraHealth : public BSExtraData // Tempered
 {
 public:
+	enum { kExtraTypeID = kExtraData_Health };
+
 	ExtraHealth();
 	virtual ~ExtraHealth();
 
@@ -189,15 +259,21 @@ public:
 class ExtraTimeLeft : public BSExtraData
 {
 public:
+	enum { kExtraTypeID = kExtraData_TimeLeft };
+
 	ExtraTimeLeft();
 	virtual ~ExtraTimeLeft();
 
 	float time;
+
+	static ExtraTimeLeft* Create();
 };
 
 class ExtraCharge : public BSExtraData
 {
 public:
+	enum { kExtraTypeID = kExtraData_Charge };
+
 	ExtraCharge();
 	virtual ~ExtraCharge();
 
@@ -214,6 +290,8 @@ public:
 class ExtraScale : public BSExtraData
 {
 public:
+	enum { kExtraTypeID = kExtraData_Scale };
+
 	ExtraScale();
 	virtual ~ExtraScale();
 
@@ -225,6 +303,8 @@ public:
 class ExtraEnableStateParent : public BSExtraData
 {
 public:
+	enum { kExtraTypeID = kExtraData_EnableStateParent };
+
 	ExtraEnableStateParent();
 	virtual ~ExtraEnableStateParent();
 
@@ -241,6 +321,8 @@ public:
 class ExtraCannotWear : public BSExtraData
 {
 public:
+	enum { kExtraTypeID = kExtraData_CannotWear };
+
 	ExtraCannotWear();
 	virtual ~ExtraCannotWear();
 
@@ -252,6 +334,8 @@ public:
 class ExtraPoison : public BSExtraData
 {
 public:
+	enum { kExtraTypeID = kExtraData_Poison };
+
 	ExtraPoison();
 	virtual ~ExtraPoison();
 
@@ -270,6 +354,8 @@ public:
 class ExtraHotkey : public BSExtraData
 {
 public:
+	enum { kExtraTypeID = kExtraData_Hotkey };
+
 	ExtraHotkey();
 	virtual ~ExtraHotkey();
 
@@ -282,8 +368,51 @@ public:
  //	ExtraHasNoRumors
  //	ExtraSound
  //	ExtraTerminalState
- //	ExtraLinkedRef
- //	ExtraLinkedRefChildren
+class ExtraLinkedRef : public BSExtraData
+{
+public:
+	enum { kExtraTypeID = kExtraData_LinkedRef };
+
+	ExtraLinkedRef();
+	virtual ~ExtraLinkedRef();
+
+	static ExtraLinkedRef* Create();
+
+	enum
+	{
+		kLocalAlloc = 0x80000000,
+	};
+	struct Pair
+	{
+		BGSKeyword	* keyword;
+		UInt32		  unk04;
+	};
+
+	UInt32		allocatedCount;	// 08
+	union {
+		Pair	* pairs;		// 0C
+		Pair	singlePair;		// 0C - used when kLocalAlloc is set
+	};
+	UInt32		pairCount;		// 14
+};
+STATIC_ASSERT(sizeof(ExtraLinkedRef) == 0x18);
+
+class ExtraLinkedRefChildren : public BSExtraData
+{
+public:
+	enum { kExtraTypeID = kExtraData_LinkedRefChildren };
+
+	ExtraLinkedRefChildren();
+	virtual ~ExtraLinkedRefChildren();
+
+	static ExtraLinkedRefChildren* Create();
+
+	UInt32 unk08;
+	UInt32 unk0C;
+	UInt32 unk10;
+	UInt32 unk14;
+};
+STATIC_ASSERT(sizeof(ExtraLinkedRefChildren) == 0x18);
  //	ExtraActivateRef
  //	ExtraActivateRefChildren
  //	ExtraCanTalkToPlayer
@@ -295,6 +424,8 @@ public:
 struct ExtraFactionChanges : public BSExtraData
 {
 public:
+	enum { kExtraTypeID = kExtraData_FactionChanges };
+
 	ExtraFactionChanges();
 	virtual ~ExtraFactionChanges();
 
@@ -320,6 +451,8 @@ public:
 struct ExtraPrimitive : public BSExtraData
 {
 public:
+	enum { kExtraTypeID = kExtraData_Primitive };
+
 	ExtraPrimitive();
 	virtual ~ExtraPrimitive();
 
@@ -334,6 +467,8 @@ public:
 struct ExtraCollisionData : public BSExtraData
 {
 public:
+	enum { kExtraTypeID = kExtraData_CollisionData };
+
 	ExtraCollisionData();
 	virtual ~ExtraCollisionData();
 
@@ -348,6 +483,8 @@ public:
 struct ExtraEncounterZone : public BSExtraData
 {
 public:
+	enum { kExtraTypeID = kExtraData_EncounterZone };
+
 	ExtraEncounterZone();
 	virtual ~ExtraEncounterZone();
 
@@ -375,6 +512,8 @@ public:
 class ExtraFollowerSwimBreadcrumbs : public BSExtraData
 {
 public:
+	enum { kExtraTypeID = kExtraData_FollowerSwimBreadcrumbs };
+
 	ExtraFollowerSwimBreadcrumbs();
 	virtual ~ExtraFollowerSwimBreadcrumbs();
 
@@ -387,6 +526,8 @@ public:
 class ExtraAliasInstanceArray : public BSExtraData
 {
 public:
+	enum { kExtraTypeID = kExtraData_AliasInstanceArray };
+
 	ExtraAliasInstanceArray();
 	virtual ~ExtraAliasInstanceArray();
 
@@ -403,6 +544,8 @@ public:
 class ExtraLocation : public BSExtraData
 {
 public:
+	enum { kExtraTypeID = kExtraData_Location };
+
 	ExtraLocation(); // Related to protected/essential
 	~ExtraLocation();
 
@@ -413,6 +556,8 @@ public:
 class ExtraPromotedRef : public BSExtraData
 {
 public:
+	enum { kExtraTypeID = kExtraData_PromotedRef };
+
 	ExtraPromotedRef();
 	virtual ~ExtraPromotedRef();
 
@@ -423,6 +568,8 @@ public:
 class ExtraLightData : public BSExtraData
 {
 public:
+	enum { kExtraTypeID = kExtraData_LightData };
+
 	ExtraLightData();
 	virtual ~ExtraLightData();
 
@@ -443,6 +590,8 @@ public:
 class ExtraTextDisplayData : public BSExtraData
 {
 public:
+	enum { kExtraTypeID = kExtraData_TextDisplayData };
+
 	ExtraTextDisplayData();
 	virtual ~ExtraTextDisplayData();
 
@@ -466,6 +615,8 @@ public:
 class ExtraEnchantment : public BSExtraData
 {
 public:
+	enum { kExtraTypeID = kExtraData_Enchantment };
+
 	ExtraEnchantment();
 	virtual ~ExtraEnchantment();
 
@@ -480,6 +631,8 @@ public:
 class ExtraSoul : public BSExtraData
 {
 public:
+	enum { kExtraTypeID = kExtraData_Soul };
+
 	ExtraSoul();
 	virtual ~ExtraSoul();
 
@@ -491,6 +644,8 @@ public:
 class ExtraForcedTarget : public BSExtraData
 {
 public:
+	enum { kExtraTypeID = kExtraData_ForcedTarget };
+
 	UInt32	handle;	// 08
 
 	static ExtraForcedTarget* Create();
@@ -501,6 +656,8 @@ STATIC_ASSERT(sizeof(ExtraForcedTarget) == 0x0C);
  //	ExtraFlags
 class ExtraFlags : public BSExtraData
 {
+	enum { kExtraTypeID = kExtraData_Flags };
+
 	ExtraFlags();
 	virtual ~ExtraFlags();
 

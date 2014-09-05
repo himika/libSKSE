@@ -9,13 +9,19 @@
 #include "skse/ScaleformMovie.h"
 
 #include "skse/Utilities.h"
-#include "skse/Hooks_UI.h"
 #include "skse/NiNodes.h"
 
 class TESObjectREFR;
 class TESFullName;
 
 //// menu implementations
+
+class UIDelegate
+{
+public:
+	virtual void	Run(void)		= 0;
+	virtual void	Dispose(void)	= 0;
+};
 
 // 1C+
 class IMenu : public FxDelegateHandler

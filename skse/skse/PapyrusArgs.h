@@ -33,6 +33,21 @@ public:
 		VMClassRegistry * registry = (*g_skyrimVM)->GetClassRegistry();
 		PackValue(arr->GetData()+idx, src, registry);
 	}
+	// ==== (himika) ====
+	VMArray()						{ arr = NULL; }
+	VMArray(const VMArray& a_array)	{ if (arr=a_array.arr) arr->AddRef(); }
+	~VMArray()						{ if (arr) arr->DecRef(); }
+	bool Allocate(UInt32 size)
+	{
+		VMClassRegistry * registry = (*g_skyrimVM)->GetClassRegistry();
+		UInt32 typeID = GetTypeID<T>(registry);
+		if (arr)
+		{
+			arr->DecRef();
+			arr = NULL;
+		}
+		return CALL_MEMBER_FN(registry, AllocateArray)(&typeID, size, &arr);
+	}
 };
 
 template <typename T>
@@ -92,6 +107,7 @@ void UnpackArray(VMArray<T> * dst, VMValue * src, const UInt32 type)
 	}
 
 	dst->arr = arrData;
+	arrData->AddRef();			// (himika)
 }
 
 UInt32 GetTypeIDFromFormTypeID(UInt32 formTypeID, VMClassRegistry * registry);
@@ -181,3 +197,37 @@ const char * GetArgumentTypeName <T *>(VMClassRegistry * registry)
 	return GetTypeNameFromFormTypeID(BaseType::kTypeID, registry);
 }
 #endif
+
+// =========== (himika) ============
+template <> void PackValue <VMArray<UInt32>>(VMValue * dst, VMArray<UInt32> * src, VMClassRegistry * registry);
+template <> void PackValue <VMArray<SInt32>>(VMValue * dst, VMArray<SInt32> * src, VMClassRegistry * registry);
+template <> void PackValue <VMArray<float>>(VMValue * dst, VMArray<float> * src, VMClassRegistry * registry);
+template <> void PackValue <VMArray<bool>>(VMValue * dst, VMArray<bool> * src, VMClassRegistry * registry);
+template <> void PackValue <VMArray<BSFixedString>>(VMValue * dst, VMArray<BSFixedString> * src, VMClassRegistry * registry);
+
+template <typename T>
+void PackValue(VMValue * dst, VMArray<T*> * src, VMClassRegistry * registry)
+{
+	UInt32 type = GetTypeID<T*>(registry) | 0x00000001;
+	PackArray(dst, src, type);
+}
+
+template <typename T>
+void PackArray(VMValue * dst, VMArray<T> * src, const UInt32 type)
+{
+	dst->SetNone();
+	if (src->arr && src->Length() > 0)
+	{
+		dst->type = type;
+		dst->data.arr = src->arr;
+		dst->data.arr->AddRef();
+	}
+}
+
+template <typename T>
+void UnpackValue(VMArray<T*> * dst, VMValue * src)
+{
+	VMClassRegistry * registry = (*g_skyrimVM)->GetClassRegistry();
+	UInt32 type = GetTypeID<T*>(registry) | 0x00000001;
+	UnpackArray(dst, src, type);
+}

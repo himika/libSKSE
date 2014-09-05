@@ -66,8 +66,15 @@ public:
 	float			timer;		// 1C (hold duration)
 };
 
+// 20
 class MouseMoveEvent : public IDEvent, public InputEvent
 {
+public:
+	enum { kInputType_Mouse = 0x0A };
+
+	UInt32 source;
+	SInt32 moveX;
+	SInt32 moveY;
 };
 
 // 14
@@ -84,6 +91,11 @@ public:
 	virtual bool			IsIDEvent();
 	virtual BSFixedString *	GetControlID();
 
+	enum {									// (himika)
+		kInputType_LeftThumbstick = 0x0B,	//
+		kInputType_RightThumbstick = 0x0C	//
+	};										//
+
 	UInt32	keyMask;	// 14 - b for left stick, c for right stick
 	float	x;			// 18
 	float	y;			// 1C
@@ -97,7 +109,7 @@ class KinectEvent : public IDEvent, public InputEvent
 {
 };
 
-class InputEventDispatcher : public EventDispatcher<InputEvent,InputEvent*>
+class InputEventSource : public BSTEventSource<InputEvent,InputEvent*>
 {
 public:
 	UInt32			unk030;		// 030
@@ -107,16 +119,18 @@ public:
 	
 	bool	IsGamepadEnabled(void);
 };
-STATIC_ASSERT(offsetof(InputEventDispatcher, gamepad) == 0x03C);
+STATIC_ASSERT(offsetof(InputEventSource, gamepad) == 0x03C);
 
-extern InputEventDispatcher ** g_inputEventDispatcher;
+extern InputEventSource ** g_inputEventDispatcher;
+
+extern InputEventSource& g_inputEventSource;
 
 template <>
 class BSTEventSink <InputEvent>
 {
 public:
 	virtual ~BSTEventSink() {}; // todo?
-	virtual	EventResult ReceiveEvent(InputEvent ** evn, InputEventDispatcher * dispatcher) = 0;
+	virtual	EventResult ReceiveEvent(InputEvent ** evn, InputEventSource * source) = 0;
 };
 
 // 9C
@@ -174,6 +188,11 @@ public:
 	UInt32			GetMappedKey(BSFixedString name, UInt32 deviceType, UInt32 contextIdx);
 
 	BSFixedString	GetMappedControl(UInt32 buttonID, UInt32 deviceType, UInt32 contextIdx);
+
+	// (himika)
+	MEMBER_FN_PREFIX(InputManager);
+	DEFINE_MEMBER_FN(EnableControls, void, 0x00A674D0, UInt32);
+	DEFINE_MEMBER_FN(DisableControls, void, 0x00A67260, UInt32);
 };
 STATIC_ASSERT(sizeof(InputManager) == 0x9C);
 
@@ -355,3 +374,4 @@ public:
 	}
 };
 STATIC_ASSERT(sizeof(InputStringHolder) == 0x1A0);
+

@@ -99,3 +99,21 @@ bool BGSListForm::Visit(BGSListForm::Visitor & visitor)
 
 	return false;
 }
+
+
+// ==== (himika) ====
+bool  TESQuest::IsRunning() const
+{
+	return ((unk07C.flags & 1) != 0 && ((unk07C.flags >> 7) & 1) == 0 && unk148 == 0);
+}
+
+BGSBaseAlias* TESQuest::GetAlias(UInt32 iAliasID)
+{
+	UInt32 i;
+	BGSBaseAlias* alias = NULL;
+	while (aliases.GetNthItem(i++, alias)) {
+		if (alias->aliasId == iAliasID)
+			return alias;
+	}
+	return NULL;
+}

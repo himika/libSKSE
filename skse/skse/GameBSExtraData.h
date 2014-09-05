@@ -3,6 +3,8 @@
 #include "Utilities.h"
 
 class ExtraTextDisplayData;
+class TESObjectREFR;
+class BGSKeyword;
 
 enum ExtraDataType
 {
@@ -244,6 +246,32 @@ public:
 	const char * GetDisplayName(TESForm * type);
 
 	BSExtraData* GetByType(UInt32 type) const;
+
+	// himika
+	template<typename T>
+	bool HasType() const {
+		return (m_presence) ? m_presence->HasType(T::kExtraTypeID) : false;
+	}
+
+	template<typename T>
+	T* GetByType() const {
+		return (T*)this->GetByType(T::kExtraTypeID);
+	}
+
+	template<typename T>
+	bool Remove(T* toRemove) {
+		return Remove(T::kExtraTypeID, toRemove);
+	}
+
+	template<typename T>
+	bool Add(T* toRemove) {
+		return Add(T::kExtraTypeID, toRemove);
+	}
+
+	void BlockActivation(bool bBlocked) {
+		CALL_MEMBER_FN(this, BlockActivation_Internal)(true, bBlocked);
+	}
+
 	BSExtraData			* m_data;		// 00
 	PresenceBitfield	* m_presence;	// 04
 
@@ -252,6 +280,10 @@ private:
 	DEFINE_MEMBER_FN(CheckContainerExtraData_Internal, bool, 0x0040ABF0, bool isEquipped);	
 	// This also does some internal ReferenceHandle lookup
 	DEFINE_MEMBER_FN(GetExtraTextDisplayData_Internal, ExtraTextDisplayData*, 0x00418590);	
+	
+	// himika
+	DEFINE_MEMBER_FN(BlockActivation_Internal, void, 0x00416C50, bool unk2, bool bBlocked);
+	DEFINE_MEMBER_FN(GetLinkedRef_Internal, TESObjectREFR*, 0x00415700, BGSKeyword* keyword);
 };
 
 STATIC_ASSERT(sizeof(BaseExtraList) == 0x08);

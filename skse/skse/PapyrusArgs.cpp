@@ -35,6 +35,31 @@ template <> void PackValue <BSFixedString>(VMValue * dst, BSFixedString * src, V
 	dst->SetString(src->data);
 }
 
+template <> void PackValue <VMArray<UInt32>>(VMValue * dst, VMArray<UInt32> * src, VMClassRegistry * registry)
+{
+	PackArray(dst, src, VMValue::kType_IntArray);
+}
+
+template <> void PackValue <VMArray<SInt32>>(VMValue * dst, VMArray<SInt32> * src, VMClassRegistry * registry)
+{
+	PackArray(dst, src, VMValue::kType_IntArray);
+}
+
+template <> void PackValue <VMArray<float>>(VMValue * dst, VMArray<float> * src, VMClassRegistry * registry)
+{
+	PackArray(dst, src, VMValue::kType_FloatArray);
+}
+
+template <> void PackValue <VMArray<bool>>(VMValue * dst, VMArray<bool> * src, VMClassRegistry * registry)
+{
+	PackArray(dst, src, VMValue::kType_BoolArray);
+}
+
+template <> void PackValue <VMArray<BSFixedString>>(VMValue * dst, VMArray<BSFixedString> * src, VMClassRegistry * registry)
+{
+	PackArray(dst, src, VMValue::kType_StringArray);
+}
+
 void BindID(VMIdentifier ** identifier, void * srcData, VMClassRegistry * registry, IObjectHandlePolicy * handlePolicy, UInt32 typeID)
 {
 	UInt32	unk = 0;
