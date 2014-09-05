@@ -5,6 +5,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "common", "skse\common\commo
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "skse", "skse\skse\skse.vcxproj", "{AA0365EC-47EA-45AA-BB1F-EBBCCCC466F2}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "plugin_example", "plugin_example\plugin_example.vcxproj", "{BA675C3A-6F0E-47D5-88CA-6ACDF59FD693}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -19,6 +21,10 @@ Global
 		{AA0365EC-47EA-45AA-BB1F-EBBCCCC466F2}.Debug|Win32.Build.0 = Debug|Win32
 		{AA0365EC-47EA-45AA-BB1F-EBBCCCC466F2}.Release|Win32.ActiveCfg = Release|Win32
 		{AA0365EC-47EA-45AA-BB1F-EBBCCCC466F2}.Release|Win32.Build.0 = Release|Win32
+		{BA675C3A-6F0E-47D5-88CA-6ACDF59FD693}.Debug|Win32.ActiveCfg = Debug|Win32
+		{BA675C3A-6F0E-47D5-88CA-6ACDF59FD693}.Debug|Win32.Build.0 = Debug|Win32
+		{BA675C3A-6F0E-47D5-88CA-6ACDF59FD693}.Release|Win32.ActiveCfg = Release|Win32
+		{BA675C3A-6F0E-47D5-88CA-6ACDF59FD693}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
