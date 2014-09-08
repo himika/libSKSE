@@ -382,7 +382,7 @@ public:
 	virtual UInt32			Unk_29(void);
 	virtual UInt32			Unk_2A(void);
 	virtual UInt32			Unk_2B(void);
-	virtual const char *	GetFullName(void);
+	virtual TESObjectREFR *	GetObjectREFR(void);
 	virtual void			CopyFrom(TESForm * srcForm);
 	virtual bool			Compare(TESForm * rhs);
 	virtual void			Unk_2F(void * dst, UInt32 unk);
@@ -409,6 +409,9 @@ public:
 	UInt16	unk10;		// 10
 	UInt8	formType;	// 12
 	UInt8	pad13;		// 13
+
+	// (himika)
+	UInt32	GetGoldValue();
 };
 
 // C8
@@ -1478,6 +1481,21 @@ public:
 	virtual const char	* Unk03(void);
 
 	enum { kTypeID = kFormType_Alias };
+
+	enum {
+		kFlag_ReservesRefernce	= 1,
+		kFlag_Optional			= 1 << 1,	// 0x0002
+		kFlag_QuestObject		= 1 << 2,	// 0x0004
+		kFlag_AllowReuseInQuest	= 1 << 3,	// 0x0008
+		kFlag_AllowDead			= 1 << 4,	// 0x0010
+		kFlag_0x0020			= 1 << 5,
+		kFlag_Essential			= 1 << 6,	// 0x0040
+		kFlag_AllowDisabled		= 1 << 7,	// 0x0080
+		kFlag_StoresText		= 1 << 8,	// 0x0100
+		kFlag_AllowDestroyed	= 1 << 12,	// 0x1000
+		kFlag_UseStoredText		= 1 << 14,	// 0x4000
+		kFlag_ClearsNameWhenRemoved	= 1 << 18	// 0x20000
+	};
 
 	StringCache::Ref name;	// 04
 	TESQuest * owner;		// 08

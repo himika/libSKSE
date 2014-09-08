@@ -102,7 +102,20 @@ bool BGSListForm::Visit(BGSListForm::Visitor & visitor)
 
 
 // ==== (himika) ====
-bool  TESQuest::IsRunning() const
+
+#include "GameReferences.h"
+
+UInt32 TESForm::GetGoldValue()
+{
+	typedef UInt32 (*_GetGoldValue)(TESForm* akForm);
+	const static _GetGoldValue fnGetGoldValue = (_GetGoldValue)0x00457DA0;
+
+	TESObjectREFR* ref = this->GetObjectREFR();
+	return fnGetGoldValue(ref ? ref->baseForm : this);
+}
+
+
+bool TESQuest::IsRunning() const
 {
 	return ((unk07C.flags & 1) != 0 && ((unk07C.flags >> 7) & 1) == 0 && unk148 == 0);
 }

@@ -272,6 +272,10 @@ public:
 		CALL_MEMBER_FN(this, BlockActivation_Internal)(true, bBlocked);
 	}
 
+	bool IsQuestItem() {
+		return CALL_MEMBER_FN(this, IsQuestItem_Internal)();
+	}
+
 	BSExtraData			* m_data;		// 00
 	PresenceBitfield	* m_presence;	// 04
 
@@ -284,6 +288,7 @@ private:
 	// himika
 	DEFINE_MEMBER_FN(BlockActivation_Internal, void, 0x00416C50, bool unk2, bool bBlocked);
 	DEFINE_MEMBER_FN(GetLinkedRef_Internal, TESObjectREFR*, 0x00415700, BGSKeyword* keyword);
+	DEFINE_MEMBER_FN(IsQuestItem_Internal, bool, 0x00418FE0);
 };
 
 STATIC_ASSERT(sizeof(BaseExtraList) == 0x08);

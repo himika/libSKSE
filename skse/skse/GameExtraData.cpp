@@ -821,10 +821,12 @@ ExtraTimeLeft* ExtraTimeLeft::Create()
 ExtraLinkedRef* ExtraLinkedRef::Create()
 {
 	ExtraLinkedRef* xLinkedRef = (ExtraLinkedRef*)BSExtraData::Create(sizeof(ExtraLinkedRef), s_ExtraLinkedRefVtbl);
+	return xLinkedRef;
 }
 
 ExtraLinkedRefChildren* ExtraLinkedRefChildren::Create()
 {
 	ExtraLinkedRefChildren* xLinkedRefChildren = (ExtraLinkedRefChildren*)BSExtraData::Create(sizeof(ExtraLinkedRefChildren), s_ExtraLinkedRefChildrenVtbl);
+	return xLinkedRefChildren;
 }
 

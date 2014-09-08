@@ -89,11 +89,6 @@ public:
 
 		void GetEquipItemData(EquipItemData& stateOut, SInt32 itemId, SInt32 baseCount) const;
 
-		// himika
-		bool IsQuestItem() {
-			return CALL_MEMBER_FN(this, IsQuestItem)();
-		}
-
 		template <class Op>
 		void ForEach(Op op) {
 			if (!extendDataList) {
@@ -122,9 +117,6 @@ public:
 			}
 			return NULL;
 		}
-
-		MEMBER_FN_PREFIX(EntryData);
-		DEFINE_MEMBER_FN(IsQuestItem, bool, 0x004759B0);
 	};
 
 	typedef tList<EntryData> EntryDataList;
