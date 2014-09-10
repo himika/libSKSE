@@ -67,7 +67,6 @@ bool RegisterPapyrus(VMClassRegistry* registry)
 {
 	REGISTER_PAPYRUS_FUNCTION(PluginExampleQuestScript, Add, registry);
 	REGISTER_PAPYRUS_FUNCTION(PluginExampleQuestScript, GetAliasByName, registry);
-	REGISTER_PAPYRUS_FUNCTION(PluginExampleQuestScript, GetAliasByName, registry);
 
 	return true;
 }

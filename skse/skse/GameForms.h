@@ -412,6 +412,7 @@ public:
 
 	// (himika)
 	UInt32	GetGoldValue();
+	bool	HasKeyword(BGSKeyword* keyword);
 };
 
 // C8

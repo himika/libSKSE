@@ -104,6 +104,57 @@ void Actor::UpdateSkinColor()
 }
 
 // ==== (himika) ====
+void TESObjectREFR::BlockActivation(bool bBlocked)
+{
+	extraData.BlockActivation(bBlocked);
+}
+
+void TESObjectREFR::ClearDestruction(void)
+{
+	typedef void (*_ClearDestruction)(TESObjectREFR* ref);
+	const static _ClearDestruction fnClearDestruction = (_ClearDestruction)0x00449630;
+
+	fnClearDestruction(this);
+}
+
+void TESObjectREFR::CreateDetectionEvent(Actor* owner, UInt32 soundLevel)
+{
+	if (owner && owner->processManager)
+	{
+		CALL_MEMBER_FN(owner->processManager, CreateDetectionEvent)(owner, &this->pos, soundLevel, this);
+	}
+}
+
+TESNPC* TESObjectREFR::GetActorOwner(void)
+{
+	ExtraOwnership* exOwnership = extraData.GetByType<ExtraOwnership>();
+	if (exOwnership && exOwnership->owner)
+	{
+		TESNPC* owner = static_cast<TESNPC*>(exOwnership->owner);
+		if (owner->formType == kFormType_NPC)
+			return owner;
+	}
+	return NULL;
+}
+
+bool TESObjectREFR::GetAnimationVariableFloat(const char* variableName, float* out)
+{
+	BSFixedString name = variableName;
+	return this->animGraphHolder.GetVariableFloat(&name, out);
+}
+
+bool TESObjectREFR::GetAnimationVariableInt(const char* variableName, SInt32* out)
+{
+	BSFixedString name = variableName;
+	return this->animGraphHolder.GetVariableInt(&name, out);
+}
+
+bool TESObjectREFR::GetAnimationVariableBool(const char* variableName, bool* out)
+{
+	BSFixedString name = variableName;
+	return this->animGraphHolder.GetVariableBool(&name, out);
+}
+
 TESObjectREFR* BGSRefAlias::GetReference(void)
 {
 	UInt32 handle = 0;

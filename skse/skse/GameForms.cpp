@@ -104,6 +104,7 @@ bool BGSListForm::Visit(BGSListForm::Visitor & visitor)
 // ==== (himika) ====
 
 #include "GameReferences.h"
+#include "GameRTTI.h"
 
 UInt32 TESForm::GetGoldValue()
 {
@@ -112,6 +113,74 @@ UInt32 TESForm::GetGoldValue()
 
 	TESObjectREFR* ref = this->GetObjectREFR();
 	return fnGetGoldValue(ref ? ref->baseForm : this);
+}
+
+
+bool TESForm::HasKeyword(BGSKeyword* keyword)	// 008FCCA0
+{
+	BGSKeywordForm* keywordForm = NULL;
+
+	switch (this->formType)
+	{
+	case kFormType_EffectSetting:
+		keywordForm = &((EffectSetting*)this)->keywordForm;
+		break;
+	case kFormType_NPC:
+		keywordForm = &((TESActorBase*)this)->keyword;
+		break;
+	case kFormType_Race:
+		keywordForm = &((TESRace*)this)->keyword;
+		break;
+	case kFormType_Armor:
+		keywordForm = &((TESObjectARMO*)this)->keyword;
+		break;
+	case kFormType_Weapon:
+		keywordForm = &((TESObjectWEAP*)this)->keyword;
+		break;
+	case kFormType_Location:
+		keywordForm = &((BGSLocation*)this)->keyword;
+		break;
+	case kFormType_Activator:
+	case kFormType_TalkingActivator:
+	case kFormType_Flora:
+	case kFormType_Furniture:
+		keywordForm = &((TESObjectACTI*)this)->keyword;
+		break;
+	case kFormType_Enchantment:
+	case kFormType_Spell:
+	case kFormType_ScrollItem:
+	case kFormType_Ingredient:
+	case kFormType_Potion:
+		keywordForm = &((MagicItem*)this)->keyword;
+		break;
+	case kFormType_Misc:
+	case kFormType_Apparatus:
+	case kFormType_Key:
+	case kFormType_SoulGem:
+		keywordForm = &((TESObjectMISC*)this)->keyword;
+		break;
+	case kFormType_Ammo:
+		keywordForm = &((TESAmmo*)this)->keyword;
+		break;
+	case kFormType_Book:
+		keywordForm = &((TESObjectBOOK*)this)->keyword;
+		break;
+	default:
+		// keywordForm = (BGSKeywordForm*)DYNAMIC_CAST(this, TESForm, BGSKeywordForm);
+		break;
+	}
+	if (keywordForm)
+	{
+		return keywordForm->HasKeyword(keyword);
+	}
+
+	TESObjectREFR* ref = this->GetObjectREFR();
+	if (ref)
+	{
+		return ref->HasKeyword(keyword);
+	}
+
+	return false;
 }
 
 

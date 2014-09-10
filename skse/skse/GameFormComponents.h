@@ -30,6 +30,8 @@ class BGSMusicType;
 class TESWeather;
 class MagicItem;
 class NiNode;
+class TESObjectREFR;
+class NiPoint3;
 
 //// root
 
@@ -196,7 +198,7 @@ public:
 class BGSKeywordForm : public BaseFormComponent
 {
 public:
-	virtual bool	HasKeyword(UInt32 keyword);
+	virtual bool	HasKeyword(BGSKeyword* keyword);
 	virtual UInt32	GetDefaultKeyword(void);
 
 	BGSKeyword	** keywords;	// 04
@@ -1208,6 +1210,7 @@ public:
 	DEFINE_MEMBER_FN(SetEquipFlag, void, 0x0071F520, UInt8 flags);
 	DEFINE_MEMBER_FN(UpdateEquipment, void, 0x007031A0, Actor * actor);
 	DEFINE_MEMBER_FN(SetDataFlag, void, 0x006FD1A0, UInt32 flag); // Sets a number on the 0x08 object
+	DEFINE_MEMBER_FN(CreateDetectionEvent, void, 0x00702070, Actor* owner, NiPoint3* point, UInt32 soundLevel, TESObjectREFR* object); // (himika)
 };
 
 STATIC_ASSERT(offsetof(ActorProcessManager, equippedObject) == 0x68);

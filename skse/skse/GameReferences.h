@@ -77,9 +77,9 @@ public:
 	virtual UInt32			Unk_0D(void);
 	virtual UInt32			Unk_0E(void);
 	virtual UInt32			Unk_0F(void);
-	virtual UInt32			Unk_10(void);
-	virtual UInt32			Unk_11(void);
-	virtual UInt32			Unk_12(void);
+	virtual bool			GetVariableFloat(BSFixedString* variableName, float* out);
+	virtual bool			GetVariableInt(BSFixedString* variableName, SInt32* out);
+	virtual bool			GetVariableBool(BSFixedString* variableName, bool* out);
 
 //	void	** _vtbl;
 };
@@ -119,9 +119,9 @@ public:
 	virtual void	Unk_45(void);
 	virtual void	Unk_46(void);
 	virtual void	Unk_47(void);
-	virtual void	Unk_48(void);
+	virtual bool	HasKeyword(BGSKeyword* keyword);					// (himika)
 	virtual void	Unk_49(void);
-	virtual void	Unk_4A(void);
+	virtual BGSScene	* GetCurrentScene(void);						// (himika)
 	virtual void	Unk_4B(void);
 	virtual void	Unk_4C(void);
 	virtual void	Unk_4D(void);
@@ -242,6 +242,15 @@ public:
 	UInt32			unk50;			// flags?
 
 	UInt32 CreateRefHandle(void);
+
+	// (himika)
+	void	BlockActivation(bool bBlocked);
+	void	ClearDestruction(void);
+	void	CreateDetectionEvent(Actor* owner, UInt32 soundLevel);
+	TESNPC	* GetActorOwner(void);
+	bool	GetAnimationVariableFloat(const char* variableName, float* out);
+	bool	GetAnimationVariableInt(const char* variableName, SInt32* out);
+	bool	GetAnimationVariableBool(const char* variableName, bool* out);
 
 	MEMBER_FN_PREFIX(TESObjectREFR);
 	DEFINE_MEMBER_FN(GetBaseScale, float, 0x004D5230);
