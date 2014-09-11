@@ -199,7 +199,7 @@ public:
 	virtual void	Unk_94(void);
 	virtual void	Unk_95(void);
 	virtual void	Unk_96(void);
-	virtual void	Unk_97(void);
+	virtual TESObjectCELL	* Unk_97(void);	// (himika)
 	virtual void	Unk_98(void);
 	virtual bool	IsDead(UInt8 unk1); // unk1 = 1 for Actors
 	virtual void	Unk_9A(void);
@@ -251,6 +251,12 @@ public:
 	bool	GetAnimationVariableFloat(const char* variableName, float* out);
 	bool	GetAnimationVariableInt(const char* variableName, SInt32* out);
 	bool	GetAnimationVariableBool(const char* variableName, bool* out);
+	BGSLocation		* GetCurrentLocation(void) {
+		return CALL_MEMBER_FN(this, GetCurrentLocation)();
+	}
+	TESObjectCELL	* GetParentCell(void) {
+		return parentCell;
+	}
 
 	MEMBER_FN_PREFIX(TESObjectREFR);
 	DEFINE_MEMBER_FN(GetBaseScale, float, 0x004D5230);
@@ -258,6 +264,7 @@ public:
 	DEFINE_MEMBER_FN(GetWeight, float, 0x004EA180);
 	DEFINE_MEMBER_FN(GetReferenceName, const char *, 0x004DE820);
 	DEFINE_MEMBER_FN(SetDestroyed, void, 0x00450E30, bool);	// himika
+	DEFINE_MEMBER_FN(GetCurrentLocation, BGSLocation*, 0x004D83C0);
 };
 
 STATIC_ASSERT(sizeof(TESObjectREFR) == 0x54);

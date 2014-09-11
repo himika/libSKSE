@@ -964,7 +964,8 @@ public:
 	BGSKeywordForm	keyword;	// 1C
 
 	// members
-	UInt32						unk28;		// 28 - init'd to 0
+	//UInt32					unk28;		// 28 - init'd to 0
+	BGSLocation					* child;	// (himika)
 	UInt32						unk2C;		// 2C - init'd to 0
 	UInt32						unk30;		// 30 - init'd to 0
 	UInt32						unk34;		// 34 - init'd to 0
@@ -975,13 +976,32 @@ public:
 	UInt32						unk58;		// 58 - init'd to 0
 	UInt32						unk5C;		// 5C - init'd to 0
 	UnkArray					unk60;		// 60
-	UInt32						unk6C;		// 6C - init'd to 0
+	UInt32						unk6C;		// 6C - init'd to 0	loaded cell array?
 	UInt32						unk70;		// 70 - init'd to 0
 	UnkArray					unk74;		// 74
 	UInt32						unk80;		// 80 - init'd to 0
-	UInt8						unk84;		// 84 - init'd to 0
+	//UInt8						unk84;		// 84 - init'd to 0
+	bool						isCleard;	// (himika)
 	UInt8						unk85;		// 85 - init'd to 0
 	UInt8						pad86[2];	// 86
+
+	// (himika)
+	bool IsLoaded(void) const {
+		return (unk6C) ? true : false;
+	}
+	bool IsCleard(void) const {
+		return isCleard;
+	}
+	bool IsChild(BGSLocation* akOther) const {
+		bool result = false;
+		for (const BGSLocation* loc = akOther; loc; loc = loc->child) {
+			if (loc->child == this) {
+				result = true;
+				break;
+			}
+		}
+		return result;
+	}
 };
 
 STATIC_ASSERT(sizeof(BGSLocation) == 0x88);
@@ -1323,10 +1343,12 @@ public:
 	UnkArray	unk2C;	// 2C
 	UnkArray	unk38;	// 38
 	UnkArray	unk44;	// 44
-	TESForm	* quest;	// 50
+	//TESForm	* quest;	// 50
+	TESQuest	* quest;	// 50
 	UInt32	unk54;		// 54
 	void	* unk58;	// 58 - linked list
-	UInt8	unk5C;		// 5C
+	//UInt8	unk5C;		// 5C
+	bool	isPlaying;	// 5C (himika)
 	UInt8	unk5D;		// 5D
 	UInt8	unk5E;		// 5E
 	UInt8	unk5F;		// 5F
@@ -1338,6 +1360,21 @@ public:
 	UInt8	pad65[3];	// 65
 	UInt32	unk68;		// 68
 	UInt32	unk6C;		// 6C
+
+	// (himika)
+	TESQuest* GetOwningQuest(void) {
+		return quest;
+	}
+	bool IsPlaying(void) const {
+		return isPlaying;
+	}
+	void ForceStart(void);
+	void Start(void);
+	void Stop(void);
+
+	MEMBER_FN_PREFIX(BGSScene);
+	DEFINE_MEMBER_FN(Start, void, 0x008ED1F0, UInt32 bStart);
+	DEFINE_MEMBER_FN(ForceStart, void, 0x00558100);
 };
 
 // 28
@@ -2359,6 +2396,9 @@ public:
 		// ...
 	};
 
+	enum {
+		kFlag_Interior = 1
+	};
 
 	Data						unk1C;		// 1C
 	Data						unk24;		// 24
@@ -2383,8 +2423,17 @@ public:
 	UInt32						unk84;		// 84
 	UInt32						unk88;		// 88
 
+	// (himika)
+	TESNPC* GetActorOwner(void) {
+		return CALL_MEMBER_FN(this, GetActorOwner)();
+	}
+	bool IsInterior() const {
+		return unk2C & kFlag_Interior;
+	}
+
 	MEMBER_FN_PREFIX(TESObjectCELL);
 	DEFINE_MEMBER_FN(GetNorthRotation, double, 0x004C0FC0);
+	DEFINE_MEMBER_FN(GetActorOwner, TESNPC*, 0x004C4DC0);
 };
 STATIC_ASSERT(offsetof(TESObjectCELL, objectList) == 0x4C);
 

@@ -199,3 +199,20 @@ BGSBaseAlias* TESQuest::GetAlias(UInt32 iAliasID)
 	}
 	return NULL;
 }
+
+void BGSScene::ForceStart(void)
+{
+	if (GetOwningQuest()->IsRunning())
+		CALL_MEMBER_FN(this, ForceStart)();
+}
+
+void BGSScene::Start(void)
+{
+	if (GetOwningQuest()->IsRunning())
+		CALL_MEMBER_FN(this, Start)(1);
+}
+
+void BGSScene::Stop(void)
+{
+	CALL_MEMBER_FN(this, Start)(0);
+}
