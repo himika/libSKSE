@@ -104,8 +104,8 @@ public:
 	};
 
 	// currently none of these have been analyzed
-	virtual void	Unk_39(void);
-	virtual void	Unk_3A(void);
+	//virtual void	Unk_39(void);
+	//virtual void	Unk_3A(void);
 	virtual void	Unk_3B(void);
 	virtual void	GetEditorLocation(void);							// (himika)
 	virtual void	Unk_3D(void);

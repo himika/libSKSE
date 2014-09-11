@@ -10,20 +10,20 @@
 class TESObject : public TESForm
 {
 public:
-	virtual UInt32	Unk_39(void);
-	virtual bool	Unk_3A(void);
 	virtual UInt32	Unk_3B(void);
 	virtual bool	Unk_3C(void);
-	virtual void	Unk_3D(UInt32 arg);
-	virtual UInt32	Unk_3E(UInt32 arg0, UInt32 arg1);
-	virtual void	Unk_3F(void * arg);
-	virtual bool	Unk_40(void);
-	virtual bool	Unk_41(void);
-	virtual void	Unk_42(void);
-	virtual void	Unk_43(UInt32 arg0, UInt32 arg1);
-	virtual UInt32	Unk_44(void);
-	virtual UInt32	Unk_45(void);
-	virtual void *	Unk_46(void);
+	virtual UInt32	Unk_3D(void);
+	virtual bool	Unk_3E(void);
+	virtual void	Unk_3F(UInt32 arg);
+	virtual UInt32	Unk_40(UInt32 arg0, UInt32 arg1);
+	virtual void	Unk_41(void * arg);
+	virtual bool	Unk_42(void);
+	virtual bool	Unk_43(void);
+	virtual void	Unk_44(void);
+	virtual void	Unk_45(UInt32 arg0, UInt32 arg1);
+	virtual UInt32	Unk_46(void);
+	virtual UInt32	Unk_47(void);
+	virtual void *	Unk_48(void);
 };
 
 // 20
@@ -37,18 +37,18 @@ public:
 		UInt16	z;
 	};
 
-	virtual void	Unk_47(UInt32 arg);
-	virtual UInt32	Unk_48(void);
-	virtual UInt32	Unk_49(UInt32 arg);	// return Unk_3E(arg, 0);
+	virtual void	Unk_49(UInt32 arg);
+	virtual UInt32	Unk_4A(void);
+	virtual UInt32	Unk_4B(UInt32 arg);	// return Unk_3E(arg, 0);
 										// model-related?
-	virtual bool	Unk_4A(void);
-	virtual bool	Unk_4B(void * arg0, BSString * dst);	// steal/take string
-	virtual bool	Unk_4C(void * arg0, UInt8 arg1, UInt32 arg2, float arg3);
-	virtual void	Unk_4D(UInt32 arg);
-	virtual void	Unk_4E(UInt32 arg);
-	virtual void	Unk_4F(void);
-	virtual void	Unk_50(void);
+	virtual bool	Unk_4C(void);
+	virtual bool	Unk_4D(void * arg0, BSString * dst);	// steal/take string
+	virtual bool	Unk_4E(void * arg0, UInt8 arg1, UInt32 arg2, float arg3);
+	virtual void	Unk_4F(UInt32 arg);
+	virtual void	Unk_50(UInt32 arg);
 	virtual void	Unk_51(void);
+	virtual void	Unk_52(void);
+	virtual void	Unk_53(void);
 
 	Bound	bounds;		// 14
 	Bound	bounds2;	// 1A
@@ -383,35 +383,35 @@ STATIC_ASSERT(sizeof(BGSTextureSet) == 0xD0);
 class MagicItem : public TESBoundObject
 {
 public:
-	virtual UInt32	Unk_52(void);	// pure
-	virtual void	Unk_53(UInt32 arg);
 	virtual UInt32	Unk_54(void);	// pure
 	virtual void	Unk_55(UInt32 arg);
 	virtual UInt32	Unk_56(void);	// pure
-	virtual bool	Unk_57(UInt32 arg);
-	virtual UInt32	Unk_58(void);	// (himika)  SpellItem::Unk_58(void) { return this->data.unk14; }
-	virtual float	Unk_59(void);
-	virtual bool	Unk_5A(void);
-	virtual bool	Unk_5B(void);
+	virtual void	Unk_57(UInt32 arg);
+	virtual UInt32	Unk_58(void);	// pure
+	virtual bool	Unk_59(UInt32 arg);
+	virtual float	Unk_5A(void);
+	virtual float	Unk_5B(void);
 	virtual bool	Unk_5C(void);
 	virtual bool	Unk_5D(void);
 	virtual bool	Unk_5E(void);
-	virtual bool	Unk_5F(UInt32 arg);
+	virtual bool	Unk_5F(void);
 	virtual bool	Unk_60(void);
-	virtual bool	Unk_61(void);
-	virtual void	Unk_62(UInt32 arg0, UInt32 arg1);
-	virtual float	Unk_63(void);
-	virtual UInt32	Unk_64(void);
-	virtual UInt32	Unk_65(void);
-	virtual bool	Unk_66(void);
-	virtual UInt32	Unk_67(void);	// pure, returns char code
-	virtual void	Unk_68(MagicItem * src);	// pure, copy data if possible?
-	virtual void	Unk_69(UInt32 arg0, UInt32 arg1);	// loading-related
-	virtual void	Unk_6A(UInt32 arg);
-	virtual void *	Unk_6B(void);	// pure, returns data
-	virtual void *	Unk_6C(void);	// pure, returns data
-	virtual UInt32	Unk_6D(void);	// pure, return size of data
-	virtual void	Unk_6E(void);	// pure, byteswap?
+	virtual bool	Unk_61(UInt32 arg);
+	virtual bool	Unk_62(void);
+	virtual bool	Unk_63(void);
+	virtual void	Unk_64(UInt32 arg0, UInt32 arg1);
+	virtual float	Unk_65(void);
+	virtual UInt32	Unk_66(void);
+	virtual UInt32	Unk_67(void);
+	virtual bool	Unk_68(void);
+	virtual UInt32	Unk_69(void);	// pure, returns char code
+	virtual void	Unk_6A(MagicItem * src);	// pure, copy data if possible?
+	virtual void	Unk_6B(UInt32 arg0, UInt32 arg1);	// loading-related
+	virtual void	Unk_6C(UInt32 arg);
+	virtual void *	Unk_6D(void);	// pure, returns data
+	virtual void *	Unk_6E(void);	// pure, returns data
+	virtual UInt32	Unk_6F(void);	// pure, return size of data
+	virtual void	Unk_70(void);	// pure, byteswap?
 
 	// parents
 	TESFullName		fullName;	// 20
@@ -697,10 +697,10 @@ public:
 	BGSAttackDataForm	attackData;	// AC
 	BGSPerkRankArray	perkRanks;	// B4
 
-	virtual bool			Unk_52(void);
-	virtual UInt32			Unk_53(void);
-	virtual void			Unk_54(UInt32 arg);
-	virtual TESActorBase *	Unk_55(void);
+	virtual bool			Unk_54(void);
+	virtual UInt32			Unk_55(void);
+	virtual void			Unk_56(UInt32 arg);
+	virtual TESActorBase *	Unk_57(void);
 };
 STATIC_ASSERT(offsetof(TESActorBase, keyword) == 0xA0);
 STATIC_ASSERT(sizeof(TESActorBase) == 0xC0);
@@ -1163,9 +1163,9 @@ public:
 	BGSPickupPutdownSounds		pickupSounds;	// 70
 	BGSKeywordForm				keyword;		// 7C
 
-	virtual void	Unk_52(void);
-	virtual void	Unk_53(UInt32 arg0, UInt32 arg1);
 	virtual void	Unk_54(void);
+	virtual void	Unk_55(UInt32 arg0, UInt32 arg1);
+	virtual void	Unk_56(void);
 };
 
 // 9C

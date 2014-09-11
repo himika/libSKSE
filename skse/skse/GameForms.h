@@ -364,37 +364,39 @@ public:
 	virtual bool			PlayerKnows(void);			// himika   GetFlag00000040(void);
 	virtual bool			GetFlag00010000(void);
 	virtual bool			IsPlayable(void);
+	virtual bool			Unk_1A(void);				// new
+	virtual bool			GetFlag00020000(void);		// new
 	virtual bool			GetFlag00080000(void);
 	virtual bool			GetFlag02000000(void);
-	virtual bool			Unk_1B(void);
+	virtual bool			Unk_1E(void);
 	virtual bool			GetFlag00000200(void);
 	virtual bool			GetFlag00000100(void);
 	virtual void			SetFlag00000200(bool set);
-	virtual bool			Unk_20(void);
+	virtual bool			Unk_22(void);
 	virtual void			SetFlag00000020(bool set);
 	virtual void			SetFlag00000002(bool set);
-	virtual void			Unk_23(void);
-	virtual void			Unk_24(UInt32 arg);
-	virtual bool			Unk_25(void);
-	virtual bool			Unk_26(void);
+	virtual void			Unk_25(void);
+	virtual void			Unk_26(UInt32 arg);
 	virtual bool			Has3D(void);
 	virtual bool			Unk_28(void);
-	virtual UInt32			Unk_29(void);
-	virtual UInt32			Unk_2A(void);
-	virtual UInt32			Unk_2B(void);
+	virtual bool			Unk_29(void);
+	virtual bool			Unk_2A(void);
+	virtual void *			Unk_2B(void);
 	virtual TESObjectREFR *	GetObjectREFR(void);
+	virtual void *			Unk_2D(UInt32 arg);
+	virtual const char *	GetFullName(UInt32 unk);
 	virtual void			CopyFrom(TESForm * srcForm);
-	virtual bool			Compare(TESForm * rhs);
-	virtual void			Unk_2F(void * dst, UInt32 unk);
+	virtual bool			Unk_30(UInt32 arg0, UInt32 arg1, UInt32 arg2);
+	virtual bool			Unk_31(void * dst, UInt32 unk);
 	virtual const char *	GetName(void);
 	virtual bool			SetName(const char * str);
-	virtual bool			Unk_32(void);
-	virtual bool			Unk_33(void);
-	virtual bool			Unk_34(UInt32 arg);
-	virtual bool			Unk_35(UInt32 arg0, UInt32 arg1, UInt32 arg2, UInt32 arg3, UInt32 arg4);
+	virtual bool			Unk_34(void);
+	virtual bool			Unk_35(void);
+	virtual bool			Unk_36(UInt32 arg);
+	virtual bool			Unk_37(UInt32 arg0, UInt32 arg1, UInt32 arg2, UInt32 arg3, UInt32 arg4);
 	virtual void			SetFormID(UInt32 id, UInt32 generateID);
-	virtual const char *	Unk_37(void);
-	virtual bool			Unk_38(void);
+	virtual const char *	Unk_39(void);
+	virtual bool			Unk_3A(void);
 
 	bool IsWeapon() { return formType == kFormType_Weapon; }
 	bool IsAmmo() { return formType == kFormType_Ammo; }
@@ -1414,7 +1416,7 @@ class BGSSoundDescriptorForm : public TESForm
 public:
 	enum { kTypeID = kFormType_SoundDescriptor };
 
-	virtual void	Unk_39(void);	// calls something on unk18
+	virtual void	Unk_3B(void);	// calls something on unk18
 
 	// parents
 	BGSSoundDescriptor	soundDescriptor;	// 14
@@ -1444,10 +1446,10 @@ public:
 class BGSStoryManagerTreeForm : public TESForm
 {
 public:
-	virtual UInt32	Unk_39(void);
-	virtual UInt32	Unk_3A(UInt32 arg);
-	virtual void *	Unk_3B(void);	// pure
-	virtual void	Unk_3C(void);	// pure
+	virtual UInt32	Unk_3B(void);
+	virtual UInt32	Unk_3C(UInt32 arg);
+	virtual void *	Unk_3D(void);	// pure
+	virtual void	Unk_3E(void);	// pure
 
 	UInt32	unk14;	// 14
 };
@@ -2459,11 +2461,11 @@ class TESPackage : public TESForm
 public:
 	enum { kTypeID = kFormType_Package };
 
-	virtual bool	Unk_39(UInt32 arg0, UInt32 arg1, UInt32 arg2, UInt32 arg3);
-	virtual bool	Unk_3A(UInt32 arg0, UInt32 arg1, UInt32 arg2, UInt32 arg3, UInt32 arg4);
-	virtual bool	Unk_3B(UInt32 arg0, UInt32 arg1);
-	virtual bool	Unk_3C(UInt32 arg0, UInt32 arg1);
-	virtual bool	Unk_3D(UInt32 arg0);
+	virtual bool	Unk_3B(UInt32 arg0, UInt32 arg1, UInt32 arg2, UInt32 arg3);
+	virtual bool	Unk_3C(UInt32 arg0, UInt32 arg1, UInt32 arg2, UInt32 arg3, UInt32 arg4);
+	virtual bool	Unk_3D(UInt32 arg0, UInt32 arg1);
+	virtual bool	Unk_3E(UInt32 arg0, UInt32 arg1);
+	virtual bool	Unk_3F(UInt32 arg0);
 
 	enum
 	{
@@ -2796,7 +2798,7 @@ class TESRegion : public TESForm
 public:
 	enum { kTypeID = kFormType_Region };
 
-	virtual bool	Unk_39(void);
+	virtual bool	Unk_3B(void);
 
 	// C
 	struct Data14
