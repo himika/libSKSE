@@ -33,9 +33,16 @@ StringCache::Lock * StringCache::GetLock(UInt32 crc16)
 	return &locks[crc16 & 0x1F];
 }
 
-StringCache::Ref::Ref(const char * buf)
+StringCache::Ref::Ref(const char * rhs)
 {
-	CALL_MEMBER_FN(this, ctor)(buf);
+	CALL_MEMBER_FN(this, ctor)(rhs);
+}
+
+StringCache::Ref::Ref(const Ref &rhs)
+{
+	Entry* entry = (Entry*)((UInt32)rhs.data - sizeof(StringCache::Entry));
+	entry->state.refCount += 1;
+	data = rhs.data;
 }
 
 StringCache::Ref::~Ref()
@@ -60,7 +67,7 @@ StringCache::Ref& StringCache::Ref::operator=(StringCache::Ref& ref)
 	if (ref.data && ref.data[0])
 	{
 		data = ref.data;
-		Entry* entry = (Entry*)((UInt32)data - 0x0C);
+		Entry* entry = (Entry*)((UInt32)data - sizeof(StringCache::Entry));
 		entry->state.refCount++;
 	}
 

@@ -55,12 +55,13 @@ public:
 		DEFINE_MEMBER_FN(Release, void, 0x00A511B0);
 
 		Ref() :data(NULL) { }
+		Ref(const Ref &ref);
 		Ref(const char * buf);
 		~Ref();						// (himika) fixed memory leak bug.
 
 		operator const char*() const { return data; }
-		Ref& operator=(const char* buf);
-		Ref& operator=(Ref& ref);
+		Ref& operator=(const char* rhs);
+		Ref& operator=(Ref& rhf);
 
 		bool operator==(const Ref& lhs) const { return data == lhs.data; }
 		bool operator!=(const Ref& lhs) const { return data != lhs.data; }

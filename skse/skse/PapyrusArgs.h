@@ -80,6 +80,7 @@ template <> void UnpackValue <UInt32>(UInt32 * dst, VMValue * src);
 template <> void UnpackValue <SInt32>(SInt32 * dst, VMValue * src);
 template <> void UnpackValue <bool>(bool * dst, VMValue * src);
 template <> void UnpackValue <BSFixedString>(BSFixedString * dst, VMValue * src);
+template <> void UnpackValue <const char*>(const char ** dst, VMValue * src);
 
 template <> void UnpackValue <VMArray<float>>(VMArray<float> * dst, VMValue * src);
 template <> void UnpackValue <VMArray<UInt32>>(VMArray<UInt32> * dst, VMValue * src);
@@ -90,9 +91,10 @@ template <> void UnpackValue <VMArray<BSFixedString>>(VMArray<BSFixedString> * d
 void * UnpackHandle(VMValue * src, UInt32 typeID);
 
 template <typename T>
-void UnpackValue(T ** dst, VMValue * src)
+void UnpackValue(T * dst, VMValue * src)
 {
-	*dst = (T *)UnpackHandle(src, T::kTypeID);
+	typedef remove_pointer <T>::type	BaseType;
+	*dst = (T)UnpackHandle(src, BaseType::kTypeID);
 }
 
 template <typename T>
@@ -119,6 +121,7 @@ template <> UInt32 GetTypeID <int>(VMClassRegistry * registry);
 template <> UInt32 GetTypeID <float>(VMClassRegistry * registry);
 template <> UInt32 GetTypeID <bool>(VMClassRegistry * registry);
 template <> UInt32 GetTypeID <BSFixedString>(VMClassRegistry * registry);
+template <> UInt32 GetTypeID <const char*>(VMClassRegistry * registry);
 
 template <> UInt32 GetTypeID <VMArray<UInt32>>(VMClassRegistry * registry);
 template <> UInt32 GetTypeID <VMArray<SInt32>>(VMClassRegistry * registry);

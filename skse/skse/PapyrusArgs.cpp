@@ -236,6 +236,11 @@ template <> void UnpackValue <BSFixedString>(BSFixedString * dst, VMValue * src)
 	CALL_MEMBER_FN(dst, Set)(data);
 }
 
+template <> void UnpackValue <const char*>(const char ** dst, VMValue * src)
+{
+	*dst = (src->type == VMValue::kType_String) ? src->data.str : NULL;
+}
+
 template <> void UnpackValue <VMArray<UInt32>>(VMArray<UInt32> * dst, VMValue * src)
 {
 	UnpackArray(dst, src, VMValue::kType_IntArray);
@@ -289,6 +294,7 @@ template <> UInt32 GetTypeID <int>(VMClassRegistry * registry)						{ return VMV
 template <> UInt32 GetTypeID <float>(VMClassRegistry * registry)					{ return VMValue::kType_Float; }
 template <> UInt32 GetTypeID <bool>(VMClassRegistry * registry)						{ return VMValue::kType_Bool; }
 template <> UInt32 GetTypeID <BSFixedString>(VMClassRegistry * registry)			{ return VMValue::kType_String; }
+template <> UInt32 GetTypeID <const char*>(VMClassRegistry * registry)				{ return VMValue::kType_String; }
 
 template <> UInt32 GetTypeID <VMArray<UInt32>>(VMClassRegistry * registry)			{ return VMValue::kType_IntArray; }
 template <> UInt32 GetTypeID <VMArray<SInt32>>(VMClassRegistry * registry)			{ return VMValue::kType_IntArray; }
