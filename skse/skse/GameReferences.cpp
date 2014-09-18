@@ -155,6 +155,20 @@ bool TESObjectREFR::GetAnimationVariableBool(const char* variableName, bool* out
 	return this->animGraphHolder.GetVariableBool(&name, out);
 }
 
+bool Actor::HasLOS(TESObjectREFR* target)
+{
+	typedef bool (*_HasLOS)(Actor* viewer, TESObjectREFR* target, bool& result);
+	const _HasLOS fnHasLos = (_HasLOS)0x008C0FA0;
+
+	bool result = false;
+	if (fnHasLos(this, target, result))
+	{
+		return result;
+	}
+
+	return false;
+}
+
 TESObjectREFR* BGSRefAlias::GetReference(void)
 {
 	UInt32 handle = 0;

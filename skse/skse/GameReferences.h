@@ -457,6 +457,7 @@ public:
 	};
 	enum Flags2 {
 		kFlags_Essential  = 0x40000,				// (himika)
+		kFlags_AttackedByAllActors = 0x8000,		// SetAttackActorOnSight
 		kFlags_CanDoFavor = 0x80
 	};
 
@@ -501,6 +502,9 @@ public:
 
 	void UpdateSkinColor();
 	void UpdateHairColor();
+
+	// (himika)
+	bool HasLOS(TESObjectREFR* target);
 };
 
 STATIC_ASSERT(offsetof(Actor, magicTarget) == 0x54);

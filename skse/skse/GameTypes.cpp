@@ -59,7 +59,7 @@ StringCache::Ref& StringCache::Ref::operator=(const char* buf)
 	return *CALL_MEMBER_FN(this, Set)(buf);
 }
 
-StringCache::Ref& StringCache::Ref::operator=(StringCache::Ref& ref)
+StringCache::Ref& StringCache::Ref::operator=(const StringCache::Ref& ref)
 {
 	if (data && data[0])
 		CALL_MEMBER_FN(this, Release)();

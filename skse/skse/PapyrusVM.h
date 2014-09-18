@@ -327,7 +327,15 @@ public:
 		CALL_MEMBER_FN(this, Destroy)();
 
 		type = kType_String;
-		CALL_MEMBER_FN(data.GetStr(), Set)(str);
+		*data.GetStr() = str;
+	}
+
+	void	SetString(const BSFixedString & str)
+	{
+		CALL_MEMBER_FN(this, Destroy)();
+
+		type = kType_String;
+		*data.GetStr() = str;
 	}
 
 	// 00-0F are untouched
@@ -436,7 +444,10 @@ public:
 //	void						** _vtbl;				// 0000
 	UInt32						eventSinks[63];		// 0004
 	VMClassRegistry				* m_classRegistry;		// 0100
-	UInt8						pad104[0x46C - 0x104];	// 0104
+	UInt8						pad104[0x454 - 0x104];	// 0104
+	SimpleLock					m_losLock;				// 0454
+	LOSRegistrationHolder		m_losRegHolder;			// 045C
+	UInt32						pad468;					// 0468
 	SimpleLock					m_updateLock;			// 046C
 	UpdateRegistrationHolder	m_updateRegHolder;		// 0474
 	UpdateRegistrationHolder	m_updateGameTimeRegHolder;	// 0480

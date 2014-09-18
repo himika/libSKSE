@@ -61,7 +61,7 @@ public:
 
 		operator const char*() const { return data; }
 		Ref& operator=(const char* rhs);
-		Ref& operator=(Ref& rhf);
+		Ref& operator=(const Ref& rhf);
 
 		bool operator==(const Ref& lhs) const { return data == lhs.data; }
 		bool operator!=(const Ref& lhs) const { return data != lhs.data; }
@@ -1088,4 +1088,28 @@ class UpdateRegistrationHolder
 
 public:
 	bool	Remove(UInt64 & handle);
+};
+
+// 0C
+class LOSRegistrationHolder
+{
+	// 020
+	class Registration
+	{
+	public:
+		volatile SInt32	refCount;		// 00
+		UInt32			pad04;			// 04
+		UInt64			handle;			// 08
+		UInt32			viewerFormID;	// 10
+		UInt32			targetFormID;	// 14
+		UInt32			unk4;			// 18
+		UInt32			hasLOS;			// 1C
+
+		void Release(void)
+		{
+			if (InterlockedDecrement(&refCount) == 0) FormHeap_Free(this);
+		}
+	};
+
+	tArray<Registration*>	m_regs;	// 00
 };

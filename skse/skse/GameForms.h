@@ -2136,16 +2136,64 @@ public:
 
 	// members
 
+	enum {
+		kFlag_HiddenFromPC						= 1 << 0,
+		kFlag_SpecialCombat						= 1 << 1,
+		kFlag_CanBeOwner						= 1 << 15,
+		kFlag_TrackCrime						= 1 << 6,
+		kFlag_Ignore_Murder						= 1 << 7,
+		kFlag_Ignore_Assault					= 1 << 8,
+		kFlag_Ignore_Pickpocket					= 1 << 9,
+		kFlag_Ignore_Stealing					= 1 << 10,
+		kFlag_Ignore_Trespass					= 1 << 13,
+		kFlag_Ignore_Werewolf					= 1 << 16,
+		kFlag_DoNotReportCrimesAgainstMembers	= 1 << 11,
+		kFlag_CrimeGoldUseDefaults				= 1 << 12,
+		kFlag_Vender							= 1 << 14
+	};
+
 	// 2C
-	struct Data34
+	struct TrackCrimeData
 	{
-		UInt32	pad[0x2C / 4];
+		enum {
+			kFlag_Arrest		= 1,
+			kFlag_AttackOnSight = 0x100
+		};
+
+		TESObjectREFR	* exteriorJailMarker;		// 00
+		TESObjectREFR	* followerWaitMarker;		// 04
+		TESObjectREFR	* stolenGoodsContainer;		// 08
+		TESObjectREFR	* playerInventoryContainer;	// 0C
+		BGSListForm		* sharedCrimeFactionList;	// 10
+		BGSOutfit		* jailOutfit;				// 14
+		UInt16			flags;						// 18
+		UInt16			crimeGoldMurder;			// 1A
+		UInt16			crimeGoldAssault;			// 1C
+		UInt16			crimeGoldTrespass;			// 1E
+		UInt16			crimeGoldPickpocket;		// 20
+		UInt16			pad22;
+		float			crimeGoldStealMult;			// 24
+		UInt16			crimeGoldEscape;			// 28
+		UInt16			crimeGoldWerewolf;			// 2A
 	};
 
 	// 20
-	struct Data60
+	struct VenderData
 	{
-		UInt32	pad[0x20 / 4];
+		enum {
+			kFlag_OnlyBuysStolenItems	= 1,
+			kFlag_NotSellBuy			= 0x100
+		};
+		
+		UInt16			startHour;			// 00
+		UInt16			endHour;			// 02
+		UInt32			radius;				// 04
+		UInt32			flags;				// 08
+		void			* packageLocation;	// 0C pointer to PackageLocation object
+		Condition		* condition;		// 10
+		BGSListForm		* listBuySell;		// 14
+		TESObjectREFR	* container;		// 18
+		UInt32			pad1C;				// 1C FFFFFFFF
 	};
 
 	// 8
@@ -2156,13 +2204,13 @@ public:
 	};
 
 	UInt32	unk2C;	// 2C
-	UInt32	unk30;	// 30
-	Data34	unk34;	// 34
-	Data60	unk60;	// 60
+	UInt32	factionFlags;	// 30
+	TrackCrimeData	trackCrime;	// 34
+	VenderData	vender;	// 60
 	Data80	unk80;	// 80
 	UInt32	unk88;	// 88
 	UInt32	unk8C;	// 8C
-	float	unk90;	// 90
+	UInt32	unk90;	// 90
 	UInt32	unk94;	// 94
 };
 
