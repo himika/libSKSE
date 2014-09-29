@@ -250,9 +250,9 @@ class ModLoadedEventSink : public BSTEventSink<TESMagicEffectApplyEvent>
 {
 public:
 	ModLoadedEventSink() {}
-	virtual EventResult ReceiveEvent(TESMagicEffectApplyEvent* evn, BSTEventSource<TESMagicEffectApplyEvent>* dispatcher)
+	virtual EventResult ReceiveEvent(TESMagicEffectApplyEvent* evn, BSTEventSource<TESMagicEffectApplyEvent>* source)
 	{
-		Unregister();
+		source->RemoveEventSink(this);
 
 		thePlugin->OnModLoaded();
 		return kEvent_Continue;
@@ -328,8 +328,6 @@ bool __declspec(dllexport) SKSEPlugin_Load(const SKSEInterface * skse)
 	if (!thePlugin->OnLoad())
 		return false;
 
-	static BSTEventSink<TESMagicEffectApplyEvent>* sink;
-	
 	static ModLoadedEventSink modLoadedSink;
 	g_magicEffectApplyEventSource.AddEventSink(&modLoadedSink);
 

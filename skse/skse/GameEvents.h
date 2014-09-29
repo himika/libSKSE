@@ -194,6 +194,10 @@ class BSTransformDeltaEvent
 {
 };
 
+class BSAnimationGraphEvent
+{
+};
+
 class bhkCharacterMoveFinishEvent
 {
 };

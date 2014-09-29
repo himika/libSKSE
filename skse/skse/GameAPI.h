@@ -20,6 +20,11 @@ extern Heap * g_formHeap;
 void * FormHeap_Allocate(UInt32 size);
 void FormHeap_Free(void * ptr);
 
+template<typename T>
+T* FormHeap_Allocate(void) {
+	return reinterpret_cast<T*>(FormHeap_Allocate(sizeof(T)));
+}
+
 extern PlayerCharacter ** g_thePlayer;
 
 void Console_Print(const char * fmt, ...);

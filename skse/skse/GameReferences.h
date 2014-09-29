@@ -56,34 +56,6 @@ extern const _LookupREFRObjectByHandle LookupREFRObjectByHandle;
 
 extern const UInt32 * g_invalidRefHandle;
 
-// 4
-class IAnimationGraphManagerHolder
-{
-public:
-	virtual ~IAnimationGraphManagerHolder();
-
-	virtual UInt32			Unk_01(void);
-	virtual UInt32			Unk_02(void);
-	virtual UInt32			Unk_03(void);
-	virtual UInt32			Unk_04(void);
-	virtual UInt32			Unk_05(void);
-	virtual UInt32			Unk_06(void);
-	virtual UInt32			Unk_07(void);
-	virtual UInt32			Unk_08(void);
-	virtual UInt32			Unk_09(void);
-	virtual UInt32			Unk_0A(void);
-	virtual UInt32			Unk_0B(void);
-	virtual UInt32			Unk_0C(void);
-	virtual UInt32			Unk_0D(void);
-	virtual UInt32			Unk_0E(void);
-	virtual UInt32			Unk_0F(void);
-	virtual bool			GetVariableFloat(BSFixedString* variableName, float* out);
-	virtual bool			GetVariableInt(BSFixedString* variableName, SInt32* out);
-	virtual bool			GetVariableBool(BSFixedString* variableName, bool* out);
-
-//	void	** _vtbl;
-};
-
 // 128
 class IPostAnimationChannelUpdateFunctor
 {
@@ -248,9 +220,6 @@ public:
 	void	ClearDestruction(void);
 	void	CreateDetectionEvent(Actor* owner, UInt32 soundLevel);
 	TESNPC	* GetActorOwner(void);
-	bool	GetAnimationVariableFloat(const char* variableName, float* out);
-	bool	GetAnimationVariableInt(const char* variableName, SInt32* out);
-	bool	GetAnimationVariableBool(const char* variableName, bool* out);
 	BGSLocation		* GetCurrentLocation(void) {
 		return CALL_MEMBER_FN(this, GetCurrentLocation)();
 	}

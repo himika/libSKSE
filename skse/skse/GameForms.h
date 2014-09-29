@@ -393,7 +393,7 @@ public:
 	virtual bool			Unk_34(void);
 	virtual bool			Unk_35(void);
 	virtual bool			Unk_36(UInt32 arg);
-	virtual bool			Unk_37(UInt32 arg0, UInt32 arg1, UInt32 arg2, UInt32 arg3, UInt32 arg4);
+	virtual bool			ActivateObjectREFR(TESObjectREFR* targetRef, TESObjectREFR* activatorRef, UInt32 arg2, UInt32 arg3, UInt32 arg4);
 	virtual void			SetFormID(UInt32 id, UInt32 generateID);
 	virtual const char *	Unk_39(void);
 	virtual bool			Unk_3A(void);

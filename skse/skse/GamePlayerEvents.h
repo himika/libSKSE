@@ -2,6 +2,8 @@
 
 #include "GameEvents.h"
 
+class Actor;
+
 struct Inventory
 {
 	struct Event
@@ -124,8 +126,11 @@ struct LocationCleared
 
 struct SoulsTrapped
 {
+	// 08
 	struct Event
 	{
+		Actor* trapper;
+		Actor* target;
 	};
 	static BSTEventSource<Event>& eventSource;
 };

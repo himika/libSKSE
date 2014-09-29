@@ -137,24 +137,6 @@ TESNPC* TESObjectREFR::GetActorOwner(void)
 	return NULL;
 }
 
-bool TESObjectREFR::GetAnimationVariableFloat(const char* variableName, float* out)
-{
-	BSFixedString name = variableName;
-	return this->animGraphHolder.GetVariableFloat(&name, out);
-}
-
-bool TESObjectREFR::GetAnimationVariableInt(const char* variableName, SInt32* out)
-{
-	BSFixedString name = variableName;
-	return this->animGraphHolder.GetVariableInt(&name, out);
-}
-
-bool TESObjectREFR::GetAnimationVariableBool(const char* variableName, bool* out)
-{
-	BSFixedString name = variableName;
-	return this->animGraphHolder.GetVariableBool(&name, out);
-}
-
 bool Actor::HasLOS(TESObjectREFR* target)
 {
 	typedef bool (*_HasLOS)(Actor* viewer, TESObjectREFR* target, bool& result);

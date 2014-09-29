@@ -1418,58 +1418,172 @@ public:
 	tList<WeatherData*> weatherData;	// 08
 };
 
-class ActorMagicCaster
+class MagicCaster
 {
 public:
-	virtual ~ActorMagicCaster();
+	virtual ~MagicCaster();								// 00660D60
 
-	virtual void	Unk_01(void);
-	virtual void	Unk_02(void);
-	virtual void	Unk_03(void);
-	virtual void	Unk_04(void);
-	virtual void	Unk_05(void);
-	virtual void	Unk_06(void);
-	virtual void	Unk_07(void);
-	virtual void	Unk_08(void);
-	virtual void	Unk_09(void);
-	virtual void	Unk_0A(void);
-	virtual void	Unk_0B(void);
-	virtual Actor	* GetCaster();	// { return caster; }
-	virtual void	Unk_0D(void);
-	virtual void	Unk_0E(void);
-	virtual void	Unk_0F(void);	// { unk6C = NULL; }
-	virtual void	Unk_10(void);
-	virtual void	Unk_11(void);
-	virtual void	Unk_12(void);
-	virtual void	Unk_13(void);	// { unk8C |= 2; }
-	virtual void	Unk_14(void);
-	virtual UInt32	GetSlot(void);	// SpellItem* spell = player->equippingMagicItems[this->GetSlot()]
-	virtual bool	Unk_16(void);	// { return unk8C & 1; }
-	virtual void	Unk_17(bool b);	// { if (b){ unk8C |= 0x00000001; } else { unk8C &= 0xFFFFFFFE; } }
-	virtual void	Unk_18(void);
-	virtual void	Unk_19(void);
-	virtual void	Unk_1A(void);
-	virtual void	Unk_1B(void);
-	virtual void	Unk_1C(void);
-	virtual void	Unk_1D(void);
+	virtual void	Unk_01(UInt32 arg1, UInt32 arg2, UInt32 arg3, UInt32 arg4, UInt32 arg5, UInt32 arg6, UInt32 arg7);	// 00662040
+	virtual UInt32	Unk_02(void);						// 0065F4E0
+	virtual void	Unk_03(void);						// 0065EEE0
+	virtual bool	Unk_04(void);						// 0065FDF0
+	virtual void	Unk_05(void);						// 0065E2E0
+	virtual void	Unk_06(void);						// 00662420
+	virtual void	Unk_07(void);						// 006C50E0 { return; }
+	virtual void	Unk_08(UInt32 arg1);				// 00588F30 { return; }
+	virtual void	Unk_09(UInt32 arg1, UInt32 arg2, UInt32 arg3);		// 00D62BE0 { return; }
+	virtual bool	Unk_0A(UInt32 arg1, UInt32 arg2, float* arg3, UInt32* arg4, UInt32 arg5, UInt32 arg6, UInt32 arg7);	// 0065E0F0
+	//				{ if (arg3) { *arg3 = 1.0; } if (arg4) { *arg4 = 0; } }
+	virtual Actor	* Unk_0B(void);						// 005EADD0 { return NULL; }
+	virtual Actor	* GetCaster();						// 005EADD0 { return NULL; }
+	virtual Actor	* Unk_0D(Actor** arg1);				// 0065E120
+	virtual UInt32	Unk_0E(void);						// 005EADD0 { return NULL; }
+	virtual void	Unk_0F(void);						// 006C50E0 { return; }
+	virtual void	Unk_10(UInt32 arg1);				// 00588F30 { return; }
+	virtual void	Unk_11(void);						// 006C50E0 { return; }
+	virtual void	Unk_12(void);						// 006C50E0 { return; }
+	virtual void	Unk_13(void);						// 006C50E0 { return; }
+	virtual void	CalculateMagickaCost(void);			// 0065E7A0
+	virtual UInt32	GetSlot(void);						// 005EADD0 { return 0; }
+	virtual bool	Unk_16(void);						// 0092D110 { return false; }
+	virtual void	Unk_17(bool b);						// 00588F30 { return; }
+	virtual void	Unk_18(UInt32 arg1);				// 0065FBB0
+	virtual void	Unk_19(UInt32 arg1);				// 0065FB20
+	virtual void	Unk_1A(UInt32 arg1);				// 0065F290
+	virtual void	Unk_1B(UInt32 arg1, UInt32 arg2);	// 0065EC70
+	virtual void	Unk_1C(UInt32 arg1, UInt32 arg2, UInt32 arg3);		// 0065E0D0
 
-//	void		** _vtbl;
-	void		* unk04;		// ?
-	UInt32		unk08;			// 08 (always 5?)
-	UInt32		unk0C;			// 0C (always 5?)
-	UInt32		unk10;			// 10 Reference Handle
-	MagicItem	* magicItem;	// 14 SpellItem@@ / ScrollItem@@ / EnchantmentItem@@
-	UInt32		unk18;			// 18 current state? 1=cast start 7=???
-	float		unk1C;			// 1C 0
-	float		cost;			// 20 
-	UInt32		unk24;			// 24 (always 0?)
-	float		unk28;			// 28 3E800000 = 0.25
+	// member
+
+	struct Data04
+	{
+		struct Data
+		{
+			UInt32		unk00;
+		};
+
+		void	* unk00;		// 00 - init'd to 0
+		UInt32	unk04;			// 04 - init'd to 0
+		Data	unk08;			// 08 - init'd to 0
+	};
+
+	//	void	** _vtbl;		// 00   0x010C95B4
+	Data04		unk04;
+	UInt32		unk10;			// 10 - init'd to 0 | maybe RefHandle
+	MagicItem	* magicItem;	// 14 - init'd to 0 | SpellItem@@ / ScrollItem@@ / EnchantmentItem@@
+	UInt32		unk18;			// 18 - init'd to 0 | current state? 1=cast start 7=???
+	float		unk1C;			// 1C - init'd to 0
+	float		cost;			// 20 - init'd to 1.0f
+	UInt32		unk24;			// 24 - init'd to 0 | always 0?
+	float		unk28;			// 28 - init'd to 0 | 3E800000 = 0.25f
 	UInt32		unk2C;			// 2C 0
-	UInt32		unk30;			// 30 (vtbl 010C8C5C)
-	void		* unk34;		// 34
-	UInt32		unk38;			// 38 0
-	BSTEventSink<void*>	unk3C;	// 3C (vtbl 010C8C4C)
-	UInt32		unk40;			// 40 (vtbl 010C8C40)
+
+	// ctor		0065FD90
+};
+STATIC_ASSERT(sizeof(MagicCaster) == 0x30);
+
+// 4
+class IAnimationGraphManagerHolder
+{
+public:
+	virtual ~IAnimationGraphManagerHolder();			// 0064F4D0
+
+	virtual bool	Unk_01(UInt32 arg1);				// 0064F7D0
+	virtual bool	Unk_02(UInt32 arg1);				// 00F51EE8 // pure?
+	virtual bool	Unk_03(UInt32 arg1);				// 00F51EE8 // pure?
+	virtual bool	Unk_04(UInt32 arg1);				// 004091A0 { return false; }
+	virtual bool	Unk_05(UInt32 arg1);				// 00F51EE8 // pure?
+	virtual bool	Unk_06(void);						// 009B86F0 { return true; }
+	virtual bool	Unk_07(UInt32 arg1);				// 00C8CCA0 { return true; }
+	virtual bool	Unk_08(UInt32 arg1);				// 00C8CCA0 { return true; }
+	virtual void	Unk_09(void);						// 006C50E0 { return; }
+	virtual bool	Unk_0A(UInt32 arg1);				// 004091A0 { return false; }
+	virtual void	Unk_0B(UInt32 arg1);				// 00588F30 { return; }
+	virtual void	Unk_0C(void);						// 006C50E0 { return; }
+	virtual void	Unk_0D(UInt32 arg1, UInt32 arg2);	// 004D43E0 { return; }
+	virtual bool	Unk_0E(void);						// 009B86F0 { return true; }
+	virtual UInt32	Unk_0F(void);						// 005EADD0 { return NULL; }
+	virtual bool	GetAnimationVariableFloat(const BSFixedString* variableName, float& out);	// 00650C40
+	virtual bool	GetAnimationVariableInt(const BSFixedString* variableName, SInt32& out);	// 00650C30
+	virtual bool	GetAnimationVariableBool(const BSFixedString* variableName, bool& out);		// 00650C20
+
+	// member
+	//	void	** _vtbl;		// 00   0x010C8544
+
+private:
+	MEMBER_FN_PREFIX(IAnimationGraphManagerHolder);
+	DEFINE_MEMBER_FN(ctor, IAnimationGraphManagerHolder*, 0x0064F460);
+};
+
+class SimpleAnimationGraphManagerHolder : public IAnimationGraphManagerHolder
+{
+public:
+	virtual ~SimpleAnimationGraphManagerHolder();		// 00651A90
+
+	// @override
+//	virtual bool	Unk_02(UInt32 arg1) override;		// 00651980
+//	virtual bool	Unk_03(UInt32 arg1) override;		// 006519D0
+//	virtual bool	Unk_05(UInt32 arg1) override;		// 00651A20
+
+	virtual void	Unk_13(void);						// 006C50E0 { return; }
+
+	// member
+	//	void	** _vtbl;		// 00   0x010C8664
+	void		* unk04;		// 04
+	UInt32		unk08;			// 08
+
+private:
+	MEMBER_FN_PREFIX(SimpleAnimationGraphManagerHolder);
+	DEFINE_MEMBER_FN(ctor, SimpleAnimationGraphManagerHolder*, 0x00651870);
+};
+
+class ActorMagicCaster : public MagicCaster,
+	public SimpleAnimationGraphManagerHolder, public BSTEventSink<BSAnimationGraphEvent>
+{
+public:
+	ActorMagicCaster(Actor* actor, UInt32 slot) {
+		CALL_MEMBER_FN(this, ctor)(actor, slot);
+	}
+
+	virtual ~ActorMagicCaster();						// 00659AD0
+
+	// @override
+//	virtual void	Unk_03(void);						// 00658D10
+//	virtual bool	Unk_04(void);						// 006588D0
+//	virtual void	Unk_05(void);						// 00658610
+//	virtual void	Unk_06(void);						// 00659360
+//	virtual void	Unk_07(void);						// 006571C0 { if (caster) { caster->Unk_006AB9E0(slot, 0); caster->Unk_006E9840(0); } flags &= 0xFFFFFFFC; unk84 = 0; }
+//	virtual void	Unk_08(UInt32 arg1);				// 00658940
+//	virtual void	Unk_09(UInt32 arg1, UInt32 arg2, UInt32 arg3);		// 00659B00
+//	virtual bool	Unk_0A(UInt32 arg1, UInt32 arg2, float* arg3, UInt32* arg4, UInt32 arg5, UInt32 arg6, UInt32 arg7);	// 00657DC0
+//	virtual Actor	* Unk_0B(void);						// 006572F0 { return caster; }
+//	virtual Actor	* GetCaster();						// 006572F0 { return caster; }
+//	virtual UInt32	Unk_0E(void);						// 00657510 .... if (eax) unk6C = eax->Unk02; return unk6C;
+//	virtual void	Unk_0F(void);						// 006574B0 { unk6C = 0; }
+//	virtual void	Unk_10(UInt32 arg1);				// 00658C40
+//	virtual void	Unk_11(void);						// 006586F0
+//	virtual void	Unk_12(void);						// 00657200
+//	virtual void	Unk_13(void);						// 006571B0 { flags |= 2; }
+//	virtual void	CalculateMagickaCost(void);			// 00657750
+//	virtual UInt32	GetSlot(void);						// 00657300 { return slot; }
+//	virtual bool	Unk_16(void);						// 006574E0 { return flag & 1; }
+//	virtual void	Unk_17(bool b);						// 006574F0 { if (b) { flags |= 1; } else { flags &= 0xFFFFFFFE; } }
+//	virtual void	Unk_18(UInt32 arg1);				// 00657240
+//	virtual void	Unk_19(UInt32 arg1);				// 00657990
+//	virtual void	Unk_1A(UInt32 arg1);				// 00657A80
+//	virtual void	Unk_1B(UInt32 arg1, UInt32 arg2);	// 00657AE0
+//	virtual void	Unk_1C(UInt32 arg1, UInt32 arg2, UInt32 arg3);		// 00657900
+	virtual void	Unk_1D(void);						// 00659680
+
+	/*
+	// parent
+	SimpleAnimationGraphManagerHolder	unk30;	// 30 (vtbl 010C8C5C)
+	BSTEventSink<BSAnimationGraphEvent>	unk3C;	// 3C (vtbl 010C8C4C)
+	*/
+
+	// member
+	//	void	** _vtbl;		// 00   0x010C8CB4
+	UInt32		unk40;			// 40 (vtbl 010C8C40) RefAttachTechniqueImput@@
 	NiNode		* unk44;		// 44
 	void		* unk48;		// 48
 	UInt32		unk4C;			// 4C (0 or 1)
@@ -1485,7 +1599,9 @@ public:
 	UInt32		flags;			// 8C
 
 	MEMBER_FN_PREFIX(ActorMagicCaster);
-	DEFINE_MEMBER_FN(CastStart,   bool, 0x00662430, MagicItem*, UInt32, UInt32); 
+	DEFINE_MEMBER_FN(ctor, ActorMagicCaster*, 0x00657420, Actor* caster, UInt32 slot);
+	DEFINE_MEMBER_FN(CastStart, bool, 0x00662430, MagicItem*, UInt32, UInt32);
 	DEFINE_MEMBER_FN(CastRelease, bool, 0x00662120, UInt32, UInt32)
-	DEFINE_MEMBER_FN(UsePower,    bool, 0x006622D0, MagicItem*, UInt32, UInt32, UInt32);
+	DEFINE_MEMBER_FN(UsePower, bool, 0x006622D0, MagicItem*, UInt32, UInt32, UInt32);
 };
+STATIC_ASSERT(sizeof(ActorMagicCaster) == 0x90);

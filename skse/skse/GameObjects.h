@@ -11,7 +11,7 @@ class TESObject : public TESForm
 {
 public:
 	virtual UInt32	Unk_3B(void);
-	virtual bool	Unk_3C(void);
+	virtual bool	CanAnimate(void);
 	virtual UInt32	Unk_3D(void);
 	virtual bool	Unk_3E(void);
 	virtual void	Unk_3F(UInt32 arg);
