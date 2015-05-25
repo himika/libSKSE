@@ -143,6 +143,7 @@ struct TESContainerChangedEvent
 
 struct TESDeathEvent
 {
+	TESObjectREFR	* source;	// 00
 };
 
 
@@ -177,19 +178,21 @@ struct TESGrabReleaseEvent
 
 struct TESHitEvent
 {
-	enum {
-		kType_PowerAttack = 0x01,
-		kType_SneakAttack = 0x02,
-		kType_BashAttack  = 0x04,
-		kType_HitBlocked  = 0x08
+	TESObjectREFR	* target;			// 00
+	TESObjectREFR	* caster;			// 04
+	UInt32			sourceFormID;		// 08
+	UInt32			projectileFormID;	// 0C
+
+	enum
+	{
+		kFlag_PowerAttack = (1 << 0),
+		kFlag_SneakAttack = (1 << 1),
+		kFlag_Bash		  = (1 << 2),
+		kFlag_Blocked	  = (1 << 3)
 	};
 
-	TESObjectREFR*    target;       // 00
-	TESObjectREFR*    caster;       // 04
-	UInt32            sourceID;     // 08
-	UInt32            projectileID; // 0C
-	UInt32            flags;        // 10
-	void            * unk14[7];     // 14
+	UInt32			flags;				// 10
+	void			* unk14[7];			// 14
 };
 
 struct TESInitScriptEvent

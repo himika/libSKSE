@@ -160,6 +160,8 @@
     <ClCompile Include="Utilities.cpp">
       <Filter>internal</Filter>
     </ClCompile>
+    <ClCompile Include="GameResources.cpp" />
+    <ClCompile Include="PapyrusClass.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\skse.h" />
@@ -338,6 +340,7 @@
     <ClInclude Include="GameSKSEEvents.h">
       <Filter>api</Filter>
     </ClInclude>
+    <ClInclude Include="PapyrusClass.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="GamePapyrusEventsDef.inl">

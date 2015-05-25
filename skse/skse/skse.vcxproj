@@ -91,6 +91,7 @@
     <ClCompile Include="GameHandlers.cpp" />
     <ClCompile Include="GamePapyrusEvents.cpp" />
     <ClCompile Include="GamePlayerEvents.cpp" />
+    <ClCompile Include="GameResources.cpp" />
     <ClCompile Include="GameTESEvents.cpp" />
     <ClCompile Include="GameThreads.cpp" />
     <ClCompile Include="GlobalLocks.cpp" />
@@ -107,6 +108,7 @@
     <ClCompile Include="NiSerialization.cpp" />
     <ClCompile Include="NiTextures.cpp" />
     <ClCompile Include="PapyrusArgs.cpp" />
+    <ClCompile Include="PapyrusClass.cpp" />
     <ClCompile Include="PapyrusNativeFunctions.cpp" />
     <ClCompile Include="PapyrusVM.cpp" />
     <ClCompile Include="GameAPI.cpp" />
@@ -163,6 +165,7 @@
     <ClInclude Include="NiRenderer.h" />
     <ClInclude Include="NiSerialization.h" />
     <ClInclude Include="PapyrusArgs.h" />
+    <ClInclude Include="PapyrusClass.h" />
     <ClInclude Include="PapyrusNativeFunctions.h" />
     <ClInclude Include="PapyrusVM.h" />
     <ClInclude Include="GameAPI.h" />
