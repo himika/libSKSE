@@ -931,7 +931,7 @@ public:
 
 	// (himika)
 	template<typename Fn>
-	TESForm* Find(Fn f) {
+	TESForm* Find(Fn& f) {
 		// Base Added Forms
 		TESForm* childForm = NULL;
 		int i = 0;

@@ -1031,8 +1031,8 @@ public:
 };
 
 // 2C
-template<class A, class B, class C, class D>
-class BSResponse : public BSIntrusiveRefCounted, public DoNothingUnhandledPolicy<C>
+template<class A, class B, class C=A, template <class> class _Policy=DoNothingUnhandledPolicy>
+class BSResponse : public _Policy<C>, public BSIntrusiveRefCounted
 {
 public:
 	UInt32	unk08;	// 08
@@ -1045,7 +1045,7 @@ public:
 	UInt32	unk24;	// 24
 	UInt32	unk28;	// 28
 };
-STATIC_ASSERT(sizeof(BSResponse<BSFixedStringCI, Actor, BSFixedStringCI, DoNothingUnhandledPolicy<BSFixedStringCI>>) == 0x2C);
+STATIC_ASSERT(sizeof(BSResponse<BSFixedStringCI, Actor, BSFixedStringCI, DoNothingUnhandledPolicy>) == 0x2C);
 
 class MiddleProcess
 {
@@ -1110,7 +1110,7 @@ public:
 	float	unk98;	// 98
 	UInt32	unk9C;	// 9C
 	UInt32	unkA0;	// A0
-	BSResponse<BSFixedStringCI, Actor, BSFixedStringCI, DoNothingUnhandledPolicy<BSFixedStringCI>>	unkA4;	// A4
+	BSResponse<BSFixedStringCI, Actor>	unkA4;	// A4
 	UInt32	unkD0;	// D0
 	void *	unkD4;	// D4 - NiNode?
 	void *	unkD8;	// D8 - NiNode?
@@ -1538,7 +1538,8 @@ private:
 };
 
 class ActorMagicCaster : public MagicCaster,
-	public SimpleAnimationGraphManagerHolder, public BSTEventSink<BSAnimationGraphEvent>
+	public SimpleAnimationGraphManagerHolder,	// 30 (vtbl 010C8C5C)
+	public BSTEventSink<BSAnimationGraphEvent>	// 3C (vtbl 010C8C4C)
 {
 public:
 	ActorMagicCaster(Actor* actor, UInt32 slot) {
@@ -1574,12 +1575,6 @@ public:
 //	virtual void	Unk_1B(UInt32 arg1, UInt32 arg2);	// 00657AE0
 //	virtual void	Unk_1C(UInt32 arg1, UInt32 arg2, UInt32 arg3);		// 00657900
 	virtual void	Unk_1D(void);						// 00659680
-
-	/*
-	// parent
-	SimpleAnimationGraphManagerHolder	unk30;	// 30 (vtbl 010C8C5C)
-	BSTEventSink<BSAnimationGraphEvent>	unk3C;	// 3C (vtbl 010C8C4C)
-	*/
 
 	// member
 	//	void	** _vtbl;		// 00   0x010C8CB4

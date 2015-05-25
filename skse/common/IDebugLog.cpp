@@ -65,6 +65,11 @@ void IDebugLog::OpenRelative(int folderID, const char * relPath)
 	Open(path);
 }
 
+bool IDebugLog::IsOpen()
+{
+	return logFile != NULL;
+}
+
 /**
  *	Output a non-formatted message to the log file
  *	

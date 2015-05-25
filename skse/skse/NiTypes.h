@@ -284,8 +284,13 @@ class NiTPointerMap : NiTMap <T_key, T_data>
 public:
 };
 
+template <class T>
+class NiTMallocInterface
+{
+};
+
 // 10
-template <typename T>
+template <class T, class TAlloc=NiTMallocInterface<T>>
 class NiTArray
 {
 public:
@@ -303,7 +308,13 @@ public:
 	UInt16	m_growSize;			// 0E - number of slots to grow m_data by
 };
 
-STATIC_ASSERT(sizeof(NiTArray <void *>) == 0x10);
+template <class T>
+class NiTPrimitiveArray : public NiTArray<T, NiTMallocInterface<T>>
+{
+public:
+    NiTPrimitiveArray(unsigned int uiMaxSize = 0, unsigned int uiGrowBy = 1);
+};
+
 
 // 18
 template <typename T>

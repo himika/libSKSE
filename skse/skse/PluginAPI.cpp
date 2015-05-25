@@ -7,6 +7,8 @@
 #include <string>
 #include <shlobj.h>
 
+static HINSTANCE                    hInstance;
+
 static SKSEPlugin*	thePlugin = NULL;
 
 static PluginInfo*	thePluginInfo = NULL;
@@ -262,6 +264,24 @@ public:
 
 //=======================================================================================================
 
+BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
+{
+	switch (fdwReason)
+	{
+	case DLL_PROCESS_ATTACH:
+		hInstance = hinstDLL;
+		break;
+	case DLL_PROCESS_DETACH:
+		break;
+	case DLL_THREAD_ATTACH:
+		break;
+	case DLL_THREAD_DETACH:
+		break;
+	}
+
+	return TRUE;
+}
+
 extern "C"
 {
 
@@ -274,6 +294,20 @@ bool __declspec(dllexport) SKSEPlugin_Query(const SKSEInterface * skse, PluginIn
 	pluginHandle   = skse->GetPluginHandle();
 	runtimeVersion = skse->runtimeVersion;
 	skseVersion    = skse->skseVersion;
+
+	if (!gLog.IsOpen())
+	{
+		char path[MAX_PATH];
+		char fname[MAX_PATH];
+		GetModuleFileName(hInstance, path, MAX_PATH);
+		_splitpath_s(path, NULL, 0, NULL, 0, fname, MAX_PATH, NULL, 0);
+
+		SHGetFolderPath(NULL, CSIDL_MYDOCUMENTS, NULL, SHGFP_TYPE_CURRENT, path);
+		strcat_s(path, sizeof(path), "\\My Games\\Skyrim\\SKSE\\");
+		strcat_s(path, sizeof(path), fname);
+		strcat_s(path, sizeof(path), ".log");
+		gLog.Open(path);
+	}
 
 	if (skseVersion >= MAKE_SKYRIM_VERSION(1, 7, 0))
 	{

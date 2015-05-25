@@ -17,6 +17,7 @@ class IDebugLog
 
 		static void			Open(const char * path);
 		static void			OpenRelative(int folderID, const char * relPath);
+		static bool			IsOpen();
 
 		static void			Message(const char * message, const char * source = NULL);
 		static void			FormattedMessage(const char * fmt, ...);

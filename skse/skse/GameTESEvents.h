@@ -7,7 +7,6 @@
 //===========================================================================
 
 class Actor;
-class MagicTarget;
 class TESObjectREFR;
 class TESForm;
 class ActiveEffect;
