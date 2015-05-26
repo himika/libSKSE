@@ -1,0 +1,76 @@
+﻿
+[[ オリジナルとの変更点 ]]
+
+GameBSExtraData.h
+  ・BaseExtraListに関数をいろいろ追加
+
+GameCamera.h
+GameCamera.cpp
+  ・TESCameraControllerクラスを追加。
+  ・FirstPersonStateクラスに加筆。
+  ・ThirdPersonStateクラスに加筆。
+  ・TESCameraクラスのメンバ変数のアドレスが間違っているのを修正。
+  ・TESPlayerCameraクラスに加筆。
+
+GameEvents.h
+  ・大幅に加筆・修正
+  ・EventDispatcherHolderクラスを追加。
+
+GameForms.h
+  ・BGSRefAliasクラスにGetReference関数とGetActorReference関数を追加。
+  ・TESQuestクラスにIsRunningとCreateRefHandleByAliasID関数を追加。
+
+GameInput.h
+  ・MouseMoveEventに加筆
+  ・ThumbstickEventに加筆
+  ・InputManagerクラスにEnableControls関数とDisableControls関数を追加
+
+GameObjects.h
+  ・MagicItemクラスの仮想関数 Unk_58 の戻り値の型を修正
+  ・MagicItemクラスの仮想関数Unk_58の戻り値をUInt32に修正
+
+GameReferences.h
+GameReferences.cpp
+  ✕BSHandleRefObjectクラスにAddRef関数とRelease関数を追加 → DecRefHandle()が追加されたので削除
+  ・TESObjectREFRクラスの仮想関数を追加
+      Unk_4A → GetCurrentScene
+      Unk_5B → GetHeadPos
+      Unk_5C → GetMagicCaster
+      Unk_5E → IsChild
+      Unk_63 → GetFaceGenAnimationData
+      Unk_71 → IsThridPerson
+      Unk_99 → IsDead
+      Unk_9C～A1 → 新規追加
+  ・TESObjectREFRクラスの仮想関数GetStartingPosは、たぶん間違い。
+    おそらくGetOwnerRefHandleが正しいです。
+  ・// TESObjectREFRクラスにIsOffLimits関数を追加 → 1.6.14から公式に追加されました
+  ・TESObjectREFRクラスにIsPlayable関数を追加
+  ・Actorクラスのメンバ変数を追加
+      unk090 → combatTargetRefHandle
+      unk118 → equippingMagicItems[4]
+  ・Actor::Flags2にkFlags_Essential追加
+  ・390行目以降のクラス宣言にpublicが抜けていたので補完。
+
+
+PapyrusVM.h
+  ・VMClassRegistryクラスにFindFunction関数を追加。
+  ・VMClassRegistryクラスにAllocateArray関数を追加。
+  ・SkyrimVMクラスにQueueAliasEvent関数を追加。
+
+GamePapyrus.h
+GamePapyrus.cpp
+GamePapyrusEvents.h
+GamePapyrusEventsDef.h
+GamePapyrusFunctions.h
+GamePapyrusFunctionsDef.h
+GamePapyrusFunctionsDef.h
+GamePapyrusFunctionsDef_Base.h
+  ・新しく追加したファイル。
+  ・PapyrusUtil::SendEvent関数を実装。
+  ・PapyrusUtil::BroadcastEvent関数を実装。
+  ・PapyrusUtil::RegisterPapyrusFunction関数を実装。簡単に呼び出すためのREGISTER_PAPYRUS_FUNCTIONマクロを追加。
+
+
+NiExtraData.h
+  仮想関数 Unk_21 Unk_22を 追加
+

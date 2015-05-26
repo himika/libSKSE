@@ -84,11 +84,10 @@ public:
 
 		static EntryData * Create(TESForm * item, UInt32 count);
 		void Delete(void);
-
 		void GetExtraWornBaseLists(BaseExtraList ** pWornBaseListOut, BaseExtraList ** pWornLeftBaseListOut) const;
-
 		void GetEquipItemData(EquipItemData& stateOut, SInt32 itemId, SInt32 baseCount) const;
 
+		// himika -->
 		template <class Op>
 		void ForEach(Op op) {
 			if (!extendDataList) {
@@ -117,6 +116,7 @@ public:
 			}
 			return NULL;
 		}
+		// <-- himika
 	};
 
 	typedef tList<EntryData> EntryDataList;
@@ -136,6 +136,9 @@ public:
 		EntryData * CreateEquipEntryData(TESForm * item);
 
 		void GetEquipItemData(EquipItemData& stateOut, TESForm * item, SInt32 itemId) const;
+
+		MEMBER_FN_PREFIX(Data);
+		DEFINE_MEMBER_FN(SetUniqueID, void, 0x00482050, BaseExtraList* itemList, TESForm * oldForm, TESForm * newForm);
 	};
 
 	Data * data;
@@ -218,7 +221,18 @@ public:
 	TESForm* owner;
 };
  //	ExtraGlobal
- //	ExtraRank
+class ExtraRank : public BSExtraData
+{
+public:
+	ExtraRank();
+	virtual ~ExtraRank();
+
+	SInt32	rank;	// 08
+
+	static ExtraRank* Create();
+};
+
+
 class ExtraCount : public BSExtraData
 {
 public:
@@ -423,8 +437,9 @@ public:
 
 	struct FactionInfo
 	{
-		TESFaction* faction;
-		UInt32 rank;
+		TESFaction	* faction;	// 00
+		SInt8		rank;		// 04
+		UInt8		pad[3];		// 05
 	};
 
 	UInt32	unk08;
@@ -644,6 +659,16 @@ public:
 	TESObjectREFR * GetReference();
 };
 STATIC_ASSERT(sizeof(ExtraForcedTarget) == 0x0C);
+
+class ExtraUniqueID : public BSExtraData
+{
+public:
+	UInt32	ownerFormId;
+	UInt16	uniqueId;
+	UInt16	pad;
+
+	static ExtraUniqueID* Create();
+};
  //	ExtraUniqueID
  //	ExtraFlags
 class ExtraFlags : public BSExtraData

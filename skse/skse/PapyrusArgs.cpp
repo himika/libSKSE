@@ -92,7 +92,7 @@ void PackHandle(VMValue * dst, void * src, UInt32 typeID, VMClassRegistry * regi
 	VMClassInfo	* classInfo = NULL;
 
 	// get class info
-	if(registry->GetFormClass(typeID, &classInfo))
+	if(registry->GetFormTypeClass(typeID, &classInfo))
 		if(classInfo)
 			classInfo->Release();
 
@@ -308,7 +308,7 @@ UInt32 GetTypeIDFromFormTypeID(UInt32 formTypeID, VMClassRegistry * registry)
 	UInt32		result = 0;
 	VMClassInfo	* info = NULL;
 
-	if(registry->GetFormClass(formTypeID, &info))
+	if(registry->GetFormTypeClass(formTypeID, &info))
 	{
 		if(info)
 		{

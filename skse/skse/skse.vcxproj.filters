@@ -162,6 +162,7 @@
     </ClCompile>
     <ClCompile Include="GameResources.cpp" />
     <ClCompile Include="PapyrusClass.cpp" />
+    <ClCompile Include="GameBSExtraData.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\skse.h" />

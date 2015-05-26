@@ -9,7 +9,8 @@ skse/common/[Dd]ebug/
 skse/common/[Rr]elease/
 skse/skse/[Dd]ebug/
 skse/skse/[Rr]elease/
-skse/skse_1_07_01/
+skse/skse_*/
+skse/diff_*/
 skse/diff.sh
 
 *_i.c

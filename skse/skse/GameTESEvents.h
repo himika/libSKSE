@@ -133,12 +133,12 @@ struct TESCombatEvent
 // 18
 struct TESContainerChangedEvent
 {
-	void * unk_00;
-	void * unk_01;
-	void * unk_02;
-	void * unk_03;
-	void * unk_04;
-	void * unk_05;
+	UInt32	fromFormId;
+	UInt32	toFormId;
+	UInt32	itemFormId;
+	UInt32	count;
+	UInt32	toReference;
+	UInt32	unk14;
 };
 
 struct TESDeathEvent
@@ -228,6 +228,7 @@ struct TESMoveAttachDetachEvent
 
 struct TESObjectLoadedEvent
 {
+	UInt32 formId;
 };
 
 struct TESObjectREFRTranslationEvent
@@ -337,13 +338,13 @@ struct TESTriggerEnterEvent
 {
 };
 
-struct TESUniqueIDChangeEvent	// see: TESV.00482050
+struct TESUniqueIDChangeEvent
 {
-	UInt32	unk00;		// always 0?
-	UInt32	formID1;
-	UInt32	formID2;
-	UInt16	unk0C;
-	UInt16	unk0E;
+	UInt32	oldOwnerFormId;
+	UInt32	newOwnerFormId;
+	UInt32	formId;
+	UInt16	oldUniqueId;
+	UInt16	newUniqueId;
 };
 
 struct TESWaitStartEvent
