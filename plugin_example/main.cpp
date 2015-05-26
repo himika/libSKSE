@@ -8,10 +8,6 @@
 #include <skse/ScaleformCallbacks.h>
 #include <skse/ScaleformMovie.h>
 
-#include <shlobj.h>
-
-IDebugLog gLog;
-
 /*=================================
 / scaleform functions
 /==================================*/
@@ -105,7 +101,6 @@ class ExamplePlugin : public SKSEPlugin
 public:
 	ExamplePlugin()
 	{
-		gLog.OpenRelative(CSIDL_MYDOCUMENTS, "\\My Games\\Skyrim\\SKSE\\skse_plugin_example.log");
 	}
 
 	//====================================================
@@ -126,7 +121,7 @@ public:
 		}
 		
 		// 各々のインタフェースが古い場合は、プラグインをロードしない
-		if (!Requires(SKSEScaleformInterface::kInterfaceVersion, SKSEPapyrusInterface::kInterfaceVersion))
+		if (!Requires(SKSEScaleformInterface::CurrentVersion, SKSEPapyrusInterface::CurrentVersion))
 		{
 			_MESSAGE("ERROR: interfaces are too old");
 			return false;
