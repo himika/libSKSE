@@ -394,6 +394,64 @@ public:
 
 STATIC_ASSERT(sizeof(VMValue) == 0x08);
 
+// 044
+class VMStackInfo
+{
+public:
+	virtual ~VMStackInfo();
+	
+	// more virtual functions ...
+
+	//void**	_vtbl;			// 000
+	SInt32		refCount;		// 004
+	const char*	rootCallName;	// 008 - not sure if BSFixedString
+	const char*	scriptName;		// 00C - not sure if BSFixedString
+	// ...
+
+};
+
+// ??
+class UnkVMStackData1
+{
+public:
+	UInt32			unk000;		// 000
+	void*			unk004;		// 004
+	UInt32			unk008;		// 008
+
+	VMStackInfo*	stackInfo;	// 00C
+	// ...
+};
+
+// ??
+class UnkVMStackData2
+{
+public:
+	UInt32		unk000;		// 000 - refCount?
+	void*		unk004;		// 004
+	UInt32		unk008;		// 008
+	UInt32		unk00C;		// 00C
+
+	UnkVMStackData1*	unkData;		// 010
+	// ...
+};
+
+// 00C
+class VMStackTableItem
+{
+public:
+	UInt32				stackId;
+	UnkVMStackData2*	data;
+
+	operator UInt32() const	{ return stackId; }
+
+	static inline UInt32 GetHash(UInt32* pStackId)
+	{
+		UInt32 hash;
+		CRC32_Calc4(&hash, *pStackId);
+		return hash;
+	}
+};
+
 // 4B04
 // this does more than hold on to class registrations, but for now that's all we care about
 class VMClassRegistry
@@ -542,3 +600,99 @@ public:
 
 	virtual bool	Copy(Output * dst) = 0;
 };
+
+#if 0
+
+// 008
+class BSStorage
+{
+public:
+	virtual	~BSStorage();
+
+	virtual UInt32	Unk_01(void)						= 0;
+	virtual UInt32	Unk_02(void)						= 0;
+	virtual UInt32	Unk_03(UInt32 unk0, UInt32 unk1)	= 0;
+	virtual UInt32	Read(UInt32 len, void* out)			= 0;
+	virtual UInt32	Write(UInt32 len, void* in)			= 0;
+
+//	void					** _vtbl;		// 000
+	BSIntrusiveRefCounted	refCountBase;	// 004
+	UInt8					bByteSwap;		// 008
+	UInt8					pad009;			// 009
+	UInt16					pad00A;			// 00A
+	void*					unk00C;			// 00C
+	void*					unk010;			// 010
+};
+
+// ???
+class SaveStorageWrapper : public BSStorage
+{
+public:
+	virtual UInt32	Unk_01(void);
+	virtual UInt32	Unk_02(void);
+	virtual UInt32	Unk_03(UInt32 unk0, UInt32 unk1);
+	virtual UInt32	Read(UInt32 len, void* out);
+	virtual UInt32	Write(UInt32 len, void* in);
+};
+
+// ???
+class LoadStorageWrapper : public BSStorage
+{
+public:
+	virtual UInt32	Unk_01(void);
+	virtual UInt32	Unk_02(void);
+	virtual UInt32	Unk_03(UInt32 unk0, UInt32 unk1);
+	virtual UInt32	Read(UInt32 len, void* out);
+	virtual UInt32	Write(UInt32 len, void* in);
+};
+
+class DelayFunctor
+{
+public:
+	virtual ~DelayFunctor() {}
+
+	virtual VMValue*	Run(VMValue* resultOut)	= 0;
+	virtual bool		ShouldResumeStack(void)	= 0;
+	virtual bool		Unk_03(void)			{ return false; }	// If this returns true, the functor is pushed to another queue
+	virtual bool		Save(SaveStorageWrapper* stor);
+	virtual UInt32		GetTypeId(void)			= 0;
+	virtual bool		Load(LoadStorageWrapper* stor, void* unk2);
+
+//	void**					_vtbl;			// 00
+	BSIntrusiveRefCounted	refCountBase;	// 04
+	UInt32					stackId;		// 08
+
+	// redirect to formheap
+	static void * operator new(std::size_t size)
+	{
+		return FormHeap_Allocate(size);
+	}
+
+	static void * operator new(std::size_t size, const std::nothrow_t &)
+	{
+		return FormHeap_Allocate(size);
+	}
+
+	// placement new
+	static void * operator new(std::size_t size, void * ptr)
+	{
+		return ptr;
+	}
+
+	static void operator delete(void * ptr)
+	{
+		FormHeap_Free(ptr);
+	}
+
+	static void operator delete(void * ptr, const std::nothrow_t &)
+	{
+		FormHeap_Free(ptr);
+	}
+
+	static void operator delete(void *, void *)
+	{
+		// placement delete
+	}
+};
+
+#endif

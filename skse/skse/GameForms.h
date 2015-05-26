@@ -341,7 +341,8 @@ public:
 
 	enum {
 		kFlagIsDeleted = 0x20,
-		kFlagPlayerKnows = 0x40
+		kFlagPlayerKnows = 0x40,
+		kFlagUnk_0x800 = 0x800
 	};
 
 	virtual void			Unk_04(void);		// reset/init? would leak pointers if called on a live object
@@ -418,6 +419,9 @@ public:
 	UInt32	GetGoldValue();
 	bool	HasKeyword(BGSKeyword* keyword);
 };
+
+typedef double (* _GetFormWeight)(TESForm* form);
+extern const _GetFormWeight GetFormWeight;
 
 // C8
 class ActorValueInfo : public TESForm
@@ -1167,7 +1171,7 @@ public:
 	BSIMusicType		type;	// 14
 
 	// members
-	StringCache::Ref	unk48;	// 48
+	StringCache::Ref	editorId;	// 48
 };
 
 // 20
@@ -2608,7 +2612,9 @@ public:
 		kPackageType_ReactToGrenadeOrMine,
 		kPackageType_StealWarning,
 		kPackageType_PickPocketWarning,
-		kPackageType_MovementBlocked
+		kPackageType_MovementBlocked,
+		kPackageType_Unk37,
+		kPackageType_Unk38
 	};
 
 	// C
@@ -2652,6 +2658,8 @@ public:
 	Data	unk68;			// 68
 	UInt32	unk78;			// 78
 	UInt32	unk7C;			// 7C - incremented in dtor
+
+	bool IsExtraType();
 };
 
 // 8C
@@ -2878,7 +2886,8 @@ public:
 			tArray<float>			alpha;			// 14
 			tArray<UInt32>			unk18;			// 18
 		};
-		UInt32	unk00[0x90 >> 2];					// 00 - Don't know what this is yet, mostly FFFFFFFF
+		UInt32	presetFlags[4][8];					// 00
+		UInt32	totalPresets[4];					// 80
 		tArray<TintOption*>		* tintData;			// 90
 		tArray<BGSTextureSet*>	* textureSet;		// 94
 		BGSTextureSet			* defaultTexture;	// 98

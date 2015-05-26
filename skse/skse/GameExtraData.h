@@ -48,17 +48,10 @@ STATIC_ASSERT(sizeof(ExtraStartingPosition) == 0x24);
  //	ExtraRagDollData
 class ExtraHotkey;
 
-class ExtraContainerChanges : public BSExtraData
+class InventoryEntryData
 {
 public:
-	enum { kExtraTypeID = kExtraData_ContainerChanges };
-
-	ExtraContainerChanges();
-	virtual ~ExtraContainerChanges();
-
-	typedef tList<BaseExtraList> ExtendDataList;
-
-	struct EquipItemData
+	struct EquipData
 	{
 		SInt32			itemCount;
 
@@ -72,54 +65,68 @@ public:
 		bool			isTypeWorn;
 		bool			isTypeWornLeft;
 
-		EquipItemData();
+		EquipData();
 	};
 
-	class EntryData
-	{
-	public:
-		TESForm* type;
-		ExtendDataList* extendDataList;
-		SInt32 countDelta;
+	InventoryEntryData(TESForm * item, UInt32 count);
 
-		static EntryData * Create(TESForm * item, UInt32 count);
-		void Delete(void);
-		void GetExtraWornBaseLists(BaseExtraList ** pWornBaseListOut, BaseExtraList ** pWornLeftBaseListOut) const;
-		void GetEquipItemData(EquipItemData& stateOut, SInt32 itemId, SInt32 baseCount) const;
+	TESForm* type;
+	ExtendDataList* extendDataList;
+	SInt32 countDelta;
 
-		// himika -->
-		template <class Op>
-		void ForEach(Op op) {
-			if (!extendDataList) {
-				return;
-			}
-			ExtendDataList::Iterator it = extendDataList->Begin();
-			while (!it.End()) {
-				op(it.Get());
-				++it;
-			}
+	// Heap allocated
+	static InventoryEntryData * Create(TESForm * item, UInt32 count);
+	void Delete(void);
+
+	void GetExtraWornBaseLists(BaseExtraList ** pWornBaseListOut, BaseExtraList ** pWornLeftBaseListOut) const;
+	void GetEquipItemData(EquipData& stateOut, SInt32 itemId, SInt32 baseCount) const;
+
+	// himika -->
+	template <class Op>
+	void ForEach(Op op) {
+		if (!extendDataList) {
 			return;
 		}
+		ExtendDataList::Iterator it = extendDataList->Begin();
+		while (!it.End()) {
+			op(it.Get());
+			++it;
+		}
+		return;
+	}
 
-		template <class Op>
-		BaseExtraList* Find(Op op) {
-			if (!extendDataList) {
-				return NULL;
-			}
-			ExtendDataList::Iterator it = extendDataList->Begin();
-			while (!it.End()) {
-				BaseExtraList* ex = it.Get();
-				if (op(ex)) {
-					return ex;
-				}
-				++it;
-			}
+	template <class Op>
+	BaseExtraList* Find(Op op) {
+		if (!extendDataList) {
 			return NULL;
 		}
-		// <-- himika
-	};
+		ExtendDataList::Iterator it = extendDataList->Begin();
+		while (!it.End()) {
+			BaseExtraList* ex = it.Get();
+			if (op(ex)) {
+				return ex;
+			}
+			++it;
+		}
+		return NULL;
+	}
+	// <-- himika
 
-	typedef tList<EntryData> EntryDataList;
+	MEMBER_FN_PREFIX(InventoryEntryData);
+	DEFINE_MEMBER_FN(GenerateName, const char *, 0x00475AA0);
+	DEFINE_MEMBER_FN(GetValue, SInt32, 0x00475450);
+	DEFINE_MEMBER_FN(IsOwnedBy, bool, 0x00477010, TESForm * actor, bool unk1);	
+};
+
+typedef tList<InventoryEntryData> EntryDataList;
+
+class ExtraContainerChanges : public BSExtraData
+{
+public:
+	enum { kExtraTypeID = kExtraData_ContainerChanges };
+
+	ExtraContainerChanges();
+	virtual ~ExtraContainerChanges();	
 
 	class Data
 	{
@@ -129,13 +136,13 @@ public:
 		float			totalWeight;
 		float			armorWeight;
 
-		EntryData * FindItemEntry(TESForm * item) const;
+		InventoryEntryData * FindItemEntry(TESForm * item) const;
 
 		// Allocate new entry data as a merge between base container data and extra data
 		// Uses BaseExtraList*'s from original extra data and combined count
-		EntryData * CreateEquipEntryData(TESForm * item);
+		InventoryEntryData * CreateEquipEntryData(TESForm * item);
 
-		void GetEquipItemData(EquipItemData& stateOut, TESForm * item, SInt32 itemId) const;
+		void GetEquipItemData(InventoryEntryData::EquipData& stateOut, TESForm * item, SInt32 itemId) const;
 
 		MEMBER_FN_PREFIX(Data);
 		DEFINE_MEMBER_FN(SetUniqueID, void, 0x00482050, BaseExtraList* itemList, TESForm * oldForm, TESForm * newForm);

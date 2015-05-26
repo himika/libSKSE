@@ -197,7 +197,7 @@ struct TESHitEvent
 
 struct TESInitScriptEvent
 {
-	TESObjectREFR*	unk00;
+	TESObjectREFR * reference;
 	UInt32			unk04;
 };
 

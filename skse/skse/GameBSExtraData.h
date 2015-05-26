@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Utilities.h"
+#include "GameTypes.h"
 
 class ExtraTextDisplayData;
 class TESObjectREFR;
@@ -290,5 +291,7 @@ private:
 	DEFINE_MEMBER_FN(GetLinkedRef_Internal, TESObjectREFR*, 0x00415700, BGSKeyword* keyword);
 	DEFINE_MEMBER_FN(IsQuestItem_Internal, bool, 0x00418FE0);
 };
+
+typedef tList<BaseExtraList> ExtendDataList;
 
 STATIC_ASSERT(sizeof(BaseExtraList) == 0x08);

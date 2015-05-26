@@ -5,7 +5,8 @@ class GFxMovieView;
 class GFxValue;
 class TaskDelegate;
 class UIDelegate;
-
+class UIDelegate_v1;
+class InventoryEntryData;
 enum
 {
 	kPluginHandle_Invalid = 0xFFFFFFFF
@@ -42,7 +43,10 @@ struct SKSEScaleformInterface
 {
 	enum InterfaceVersion
 	{
-		kInterfaceVersion = 1
+		Version_1 = 1,
+		Version_2 = 2,
+		CurrentVersion = 1,
+		kInterfaceVersion = 2
 	};
 
 	UInt32	interfaceVersion;
@@ -50,6 +54,7 @@ struct SKSEScaleformInterface
 	// This callback will be called once for every new menu that is created.
 	// Create your objects relative to the 'root' GFxValue parameter.
 	typedef bool (* RegisterCallback)(GFxMovieView * view, GFxValue * root);
+	typedef void (* RegisterInventoryCallback)(GFxMovieView * view, GFxValue * object, InventoryEntryData * item);
 
 	// Register your plugin's scaleform API creation callback here.
 	// The "name" parameter will be used to create an object with the path:
@@ -57,13 +62,22 @@ struct SKSEScaleformInterface
 	// Make sure that the memory it points to is valid from the point the callback
 	// is registered until the game exits.
 	bool	(* Register)(const char * name, RegisterCallback callback);
+
+	// Registers your plugin for when item data is extended to the UI
+	// either favorites menu, or inventory menu
+	void    (* RegisterForInventory)(RegisterInventoryCallback callback);
 };
 
 struct SKSESerializationInterface
 {
 	enum InterfaceVersion
 	{
-		kVersion = 3,
+		Version_1 = 1,
+		Version_2 = 2,
+		Version_3 = 3,
+		Version_4 = 4,
+		CurrentVersion = 4,
+		kVersion = 4
 	};
 	
 	typedef void (* EventCallback)(SKSESerializationInterface * intfc);
@@ -86,12 +100,16 @@ struct SKSESerializationInterface
 	bool	(* GetNextRecordInfo)(UInt32 * type, UInt32 * version, UInt32 * length);
 	UInt32	(* ReadRecordData)(void * buf, UInt32 length);
 	bool	(* ResolveHandle)(UInt64 handle, UInt64 * handleOut);
+	bool	(* ResolveFormId)(UInt32 formId, UInt32 * formIdOut);
 };
 
 struct SKSETaskInterface
 {
 	enum InterfaceVersion
 	{
+		Version_1 = 1,
+		Version_2 = 2,
+		CurrentVersion = 2,
 		kInterfaceVersion = 2
 	};
 
@@ -102,7 +120,7 @@ struct SKSETaskInterface
 	// Define your Run function
 	// Delete your object in the Dispose call
 	void	(* AddTask)(TaskDelegate * task);
-	void	(* AddUITask)(UIDelegate * task);
+	void	(* AddUITask)(UIDelegate_v1 * task);
 };
 
 //#ifdef _PPAPI
@@ -115,6 +133,8 @@ struct SKSEPapyrusInterface
 {
 	enum InterfaceVersion
 	{
+		Version_1 = 1,
+		CurrentVersion = 1,
 		kInterfaceVersion = 1
 	};
 	UInt32	interfaceVersion;
@@ -166,6 +186,9 @@ struct SKSEMessagingInterface
 
 	enum InterfaceVersion
 	{
+		Version_1 = 1,
+		Version_2 = 2,
+		CurrentVersion = 2,
 		kInterfaceVersion = 2
 	};
 
@@ -186,7 +209,8 @@ struct SKSEMessagingInterface
 		kMessage_DeleteGame,	// sent right before deleting the .skse cosave and the .ess save.
 								// dataLen: length of file path, data: char* file path of .ess savegame file
 		kMessage_InputLoaded,	// sent right after game input is loaded, right before the main menu initializes
-		kMessage_NewGame		// sent after a new game is created, before the game has loaded (Sends CharGen TESQuest pointer)
+		kMessage_NewGame,		// sent after a new game is created, before the game has loaded (Sends CharGen TESQuest pointer)
+		kMessage_DataLoaded		// send after the data handler has loaded all its forms
 	};
 
 	UInt32	interfaceVersion;
@@ -206,10 +230,31 @@ struct SKSEMessagingInterface
 	void	* (* GetEventDispatcher)(UInt32 dispatcherId);
 };
 
+struct SKSEObjectInterface
+{
+	enum InterfaceVersion
+	{
+		Version_1 = 1,
+		CurrentVersion = 1,
+		kInterfaceVersion = 1
+	};
+
+	UInt32	interfaceVersion;
+
+	// Derive your type from TaskDelegate or UIDelegate
+	// Allocate before adding
+	// Define your Run function
+	// Delete your object in the Dispose call
+	void	(* AddTask)(TaskDelegate * task);
+	void	(* AddUITask)(UIDelegate_v1 * task);
+};
+
 struct PluginInfo
 {
 	enum
 	{
+		Version_1 = 1,
+		CurrentVersion = 1,
 		kInfoVersion = 1
 	};
 
@@ -318,7 +363,9 @@ enum SKSEVersion
 	kSKSEVersion_1_6_15 = 0x010600F0,
 	kSKSEVersion_1_6_16 = 0x01060100,
 	kSKSEVersion_1_7_0  = 0x01070000,
-	kSKSEVersion_1_7_1  = 0x01070010
+	kSKSEVersion_1_7_1  = 0x01070010,
+	kSKSEVersion_1_7_2  = 0x01070020,
+	kSKSEVersion_1_7_3  = 0x01070020
 };
 
 

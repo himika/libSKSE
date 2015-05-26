@@ -45,9 +45,6 @@ public:
 	NiExtraData();
 	~NiExtraData();
 
-	virtual bool Unk_21(void);							// (himika) always true
-	virtual bool Unk_22(void);							// (himika) always true
-
 	char *	m_pcName;	// 08
 
 	static NiExtraData* Create(UInt32 size, UInt32 vtbl);
@@ -80,6 +77,16 @@ public:
 	~NiIntegerExtraData();
 
 	SInt32 m_data;	// 0C
+};
+
+// 10
+class NiFloatExtraData : public NiExtraData
+{
+public:
+	NiFloatExtraData();
+	~NiFloatExtraData();
+
+	float m_data;	// 0C
 };
 
 // 14
@@ -227,5 +234,5 @@ public:
 	UInt32	modelVertexCount;	// 10 - Same as 14 if the tri model is correct
 	UInt32	vertexCount;		// 14
 
-	static BSFaceGenBaseMorphExtraData* Create(NiGeometryData * data);
+	static BSFaceGenBaseMorphExtraData* Create(NiGeometryData * data, bool copy = false);
 };

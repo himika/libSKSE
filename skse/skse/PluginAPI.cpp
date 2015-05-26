@@ -70,9 +70,7 @@ enum kReleaseIndex
 	kReleaseIndex_1_6_13 = 41,
 	kReleaseIndex_1_6_14 = 42,
 	kReleaseIndex_1_6_15 = 43,
-	kReleaseIndex_1_6_16 = 44,
-	kReleaseIndex_1_7_0  = 45,
-	kReleaseIndex_1_7_1  = 46
+	kReleaseIndex_1_6_16 = 44
 };
 
 UInt32 skses[] = {
@@ -121,8 +119,6 @@ UInt32 skses[] = {
 	MAKE_SKYRIM_VERSION(1,6,14),
 	MAKE_SKYRIM_VERSION(1,6,15),
 	MAKE_SKYRIM_VERSION(1,6,16),
-	MAKE_SKYRIM_VERSION(1,7,0),
-	MAKE_SKYRIM_VERSION(1,7,1),
 	0
 };
 

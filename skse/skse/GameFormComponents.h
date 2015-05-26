@@ -28,10 +28,14 @@ class TESGlobal;
 class TESRegion;
 class BGSMusicType;
 class TESWeather;
+class TESPackage;
+class BGSMusicTrackFormWrapper;
+// himika -->
 class MagicItem;
 class NiNode;
 class TESObjectREFR;
 class NiPoint3;
+// <-- himika
 
 //// root
 
@@ -551,7 +555,7 @@ class TESProduceForm : public BaseFormComponent
 {
 public:
 	BGSSoundDescriptorForm	* harvestSound;	// 04
-	IngredientItem			* produce;		// 08
+	TESForm					* produce;		// 08 - seen IngredientItem
 	UInt8					unk0C[4];		// 0C
 };
 
@@ -740,16 +744,24 @@ public:
 	virtual void	Unk_06(void);
 	virtual void	Unk_07(void);
 
-//	void		** _vtbl;	// 00
-	UInt32		unk04;		// 04
-	UInt8		unk08;		// 08
-	UInt8		unk09;		// 09
-	UInt16		unk0A;		// 0A
-	float		unk0C;		// 0C
-	UInt32		unk10;		// 10
-	UnkArray	unk14;		// 14
-	UnkArray	unk20;		// 20
-	UInt32		unk2C;		// 2C
+	enum
+	{
+		kFlagUnk1				= (1 << 0),
+		kFlagUnk2				= (1 << 1),
+		kFlagCycleTracks		= (1 << 2),
+		kFlagDuclsCurrentTrack	= (1 << 5)
+	};
+
+//	void		** _vtbl;			// 00
+	UInt32		flags;				// 04
+	UInt8		priority;			// 08
+	UInt8		unk09;				// 09
+	UInt16		ducking;			// 0A (db = ducking/100.0)
+	float		fadeDuration;		// 0C
+	UInt32		unk10;				// 10
+	UnkArray	unk14;				// 14
+	tArray<BGSMusicTrackFormWrapper*>	tracks;		// 20
+	UInt32		unk2C;				// 2C
 };
 
 // 04
@@ -1205,7 +1217,8 @@ public:
 	UInt32	unk00;						// 00
 	MiddleProcess	* middleProcess;	// 04
 	void	* unk08;					// 08
-	UInt32	unk0C[(0x54 - 0x0C) >> 2];	// 0C
+	TESPackage * package;				// 0C
+	UInt32	unk10[(0x54 - 0x10) >> 2];	// 10
 	float	timeOfDeath;				// 54 - GetTimeDead = (GameDaysPassed*24) - timeOfDeath
 	UInt32	unk58[(0x68 - 0x58) >> 2];	// 58
 	TESForm	* equippedObject[2];		// 68
@@ -1429,6 +1442,10 @@ public:
 
 	tList<WeatherData*> weatherData;	// 08
 };
+
+//===============================
+// himika -->
+//===============================
 
 class MagicCaster
 {

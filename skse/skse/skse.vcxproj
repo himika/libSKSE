@@ -97,6 +97,7 @@
     <ClCompile Include="GameThreads.cpp" />
     <ClCompile Include="GlobalLocks.cpp" />
     <ClCompile Include="HashUtil.cpp" />
+    <ClCompile Include="NiAdditionalGeometryData.cpp" />
     <ClCompile Include="NiControllers.cpp" />
     <ClCompile Include="NiExtraData.cpp" />
     <ClCompile Include="NiGeometry.cpp" />
@@ -157,6 +158,7 @@
     <ClInclude Include="GameThreads.h" />
     <ClInclude Include="GlobalLocks.h" />
     <ClInclude Include="HashUtil.h" />
+    <ClInclude Include="NiAdditionalGeometryData.h" />
     <ClInclude Include="NiControllers.h" />
     <ClInclude Include="NiExtraData.h" />
     <ClInclude Include="NiGeometry.h" />
