@@ -1517,7 +1517,8 @@ class IAnimationGraphManagerHolder
 public:
 	virtual ~IAnimationGraphManagerHolder();			// 0064F4D0
 
-	virtual bool	Unk_01(UInt32 arg1);				// 0064F7D0
+	virtual void	SendEvent(const BSFixedString* eventName);
+// 	virtual bool	Unk_01(UInt32 arg1);				// 0064F7D0
 	virtual bool	Unk_02(UInt32 arg1);				// 00F51EE8 // pure?
 	virtual bool	Unk_03(UInt32 arg1);				// 00F51EE8 // pure?
 	virtual bool	Unk_04(UInt32 arg1);				// 004091A0 { return false; }
