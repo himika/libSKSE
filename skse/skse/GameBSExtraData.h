@@ -273,6 +273,10 @@ public:
 		CALL_MEMBER_FN(this, BlockActivation_Internal)(true, bBlocked);
 	}
 
+	TESObjectREFR* GetLinkedRef(BGSKeyword* keyword) {
+		return CALL_MEMBER_FN(this, GetLinkedRef_Internal)(keyword);
+	}
+
 	bool IsQuestItem() {
 		return CALL_MEMBER_FN(this, IsQuestItem_Internal)();
 	}
