@@ -2539,10 +2539,15 @@ public:
 		return unk2C & kFlag_Interior;
 	}
 	// <-- himika
+	// twt
+	TESFaction* GetFactionOwner(void) {
+		return CALL_MEMBER_FN(this, GetFactionOwner)();
+	}
 
 	MEMBER_FN_PREFIX(TESObjectCELL);
 	DEFINE_MEMBER_FN(GetNorthRotation, double, 0x004C0FC0);
 	DEFINE_MEMBER_FN(GetActorOwner, TESNPC*, 0x004C4DC0);		// himika
+	DEFINE_MEMBER_FN(GetFactionOwner, TESFaction*, 0x004C4DC0);	//twt
 };
 STATIC_ASSERT(offsetof(TESObjectCELL, objectList) == 0x4C);
 
