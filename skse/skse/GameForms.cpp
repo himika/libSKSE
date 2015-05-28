@@ -218,7 +218,7 @@ bool TESQuest::IsRunning() const
 
 BGSBaseAlias* TESQuest::GetAlias(UInt32 iAliasID)
 {
-	UInt32 i;
+	UInt32 i=0;
 	BGSBaseAlias* alias = NULL;
 	while (aliases.GetNthItem(i++, alias)) {
 		if (alias->aliasId == iAliasID)
