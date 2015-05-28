@@ -231,6 +231,8 @@ public:
 class ExtraRank : public BSExtraData
 {
 public:
+	enum { kExtraTypeID = kExtraData_Rank };
+
 	ExtraRank();
 	virtual ~ExtraRank();
 
@@ -295,7 +297,17 @@ public:
 	static ExtraCharge* Create();
 };
  //	ExtraLight
- //	ExtraLock
+class ExtraLock : public BSExtraData
+{
+public:
+	enum { kExtraTypeID = kExtraData_Lock };
+
+	ExtraLock();
+	virtual ~ExtraLock();
+
+	TESKey* unk;
+};
+
  //	ExtraTeleport
  //	ExtraMapMarker
  //	ExtraLeveledCreature
@@ -522,7 +534,18 @@ public:
  //	ExtraWeaponAttackSound
  //	ExtraActivateLoopSound
  //	ExtraPatrolRefInUseData
- //	ExtraAshPileRef
+class ExtraAshPileRef : public BSExtraData
+{
+public:
+	enum { kExtraTypeID = kExtraData_AshPileRef };
+
+	ExtraAshPileRef();
+	virtual ~ExtraAshPileRef();
+
+	UInt32	handle;	// 08
+
+};
+
 class ExtraFollowerSwimBreadcrumbs : public BSExtraData
 {
 public:
@@ -566,7 +589,17 @@ public:
 	BGSLocation* location;
 };
  //	ExtraLitWaterRefs
- //	ExtraLocationRefType
+class ExtraLocationRefType : public BSExtraData
+{
+public:
+	enum { kExtraTypeID = kExtraData_LocationRefType };
+
+	ExtraLocationRefType();
+	virtual ~ExtraLocationRefType();
+
+	BGSLocationRefType* refType;
+};
+
 class ExtraPromotedRef : public BSExtraData
 {
 public:
@@ -660,6 +693,9 @@ class ExtraForcedTarget : public BSExtraData
 public:
 	enum { kExtraTypeID = kExtraData_ForcedTarget };
 
+	ExtraForcedTarget();
+	virtual ~ExtraForcedTarget();
+
 	UInt32	handle;	// 08
 
 	static ExtraForcedTarget* Create();
@@ -670,6 +706,11 @@ STATIC_ASSERT(sizeof(ExtraForcedTarget) == 0x0C);
 class ExtraUniqueID : public BSExtraData
 {
 public:
+	enum { kExtraTypeID = kExtraData_UniqueID };
+
+	ExtraUniqueID();
+	virtual ~ExtraUniqueID();
+
 	UInt32	ownerFormId;
 	UInt16	uniqueId;
 	UInt16	pad;
@@ -680,6 +721,7 @@ public:
  //	ExtraFlags
 class ExtraFlags : public BSExtraData
 {
+public:
 	enum { kExtraTypeID = kExtraData_Flags };
 
 	ExtraFlags();
