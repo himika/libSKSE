@@ -360,6 +360,8 @@ public:
 
 	void ForceFirstPersonSmooth(void);
 	void ForceThirdPersonSmooth(void);
+	void ForceThirdPersonInstant(void); // (towawot)
+
 };
 
 STATIC_ASSERT(offsetof(PlayerCamera, cameraStates) == 0x6C);

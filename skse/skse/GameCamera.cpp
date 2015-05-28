@@ -46,6 +46,21 @@ void PlayerCamera::ForceFirstPersonSmooth(void)
 	}
 }
 
+void PlayerCamera::ForceThirdPersonInstant(void)
+{
+	if (cameraState == NULL || cameraState->stateId < kCameraState_ThirdPerson2)
+	{
+		ThirdPersonState* tps = (ThirdPersonState*)cameraStates[kCameraState_ThirdPerson2];
+
+		tps->basePosX = tps->fOverShoulderPosX;
+		tps->basePosY = tps->fOverShoulderCombatAddY;
+		tps->basePosZ = tps->fOverShoulderPosZ;
+		tps->curPosY  = tps->dstPosY;
+
+		CALL_MEMBER_FN(this, SetCameraState)(tps);
+	}
+}
+	
 void PlayerCamera::ForceThirdPersonSmooth(void)
 {
 	if (cameraState == NULL || cameraState->stateId < kCameraState_ThirdPerson2)
