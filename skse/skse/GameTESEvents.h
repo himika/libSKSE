@@ -224,6 +224,8 @@ struct TESMagicWardHitEvent
 
 struct TESMoveAttachDetachEvent
 {
+	TESObjectREFR*	ref;
+	bool			bAttach;
 };
 
 struct TESObjectLoadedEvent
