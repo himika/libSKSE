@@ -4,6 +4,8 @@
 #include "skse/PapyrusVM.h"
 
 #include <vector>
+#include <list>
+#include <deque>
 
 class VMState;
 class VMValue;
@@ -45,35 +47,40 @@ public:
 		Allocate(size);
 	}
 
-	typedef std::vector<T> vector;
-
 	// vector --> VMArray
-	VMArray(const vector& vec) {
-		arr = NULL;
-		if (vec.size() > 0) {
-			Allocate(vec.size());
-			
-			for (std::size_t i = 0; i < vec.size(); i++) {
-				T tmp = vec[i];
-				Set(&tmp, i);
-			}
-		}
+	template <class Alloc>
+	VMArray(const std::vector<T, Alloc>& cont) : arr(NULL) {
+		copy_from(cont);
+	}
+
+	// list --> VMArray
+	template <class Alloc>
+	VMArray(const std::list<T, Alloc>& cont) : arr(NULL) {
+		copy_from(cont);
+	}
+
+	// deque --> VMArray
+	template <class Alloc>
+	VMArray(const std::deque<T, Alloc>& cont) : arr(NULL) {
+		copy_from(cont);
 	}
 
 	// VMArray --> vector
-	operator vector() {
-		std::size_t size = Length();
-		vector vec(size);
+	template <class Alloc>
+	operator std::vector<T, Alloc>() {
+		return convert<std::vector<T, Alloc>>();
+	}
 
-		if (size > 0) {
-			for (std::size_t i = 0; i < size; i++) {
-				T tmp;
-				Get(&tmp, i);
-				vec[i] = tmp;
-			}
-		}
+	// VMArray --> list
+	template <class Alloc>
+	operator std::list<T, Alloc>() {
+		return convert<std::list<T, Alloc>>();
+	}
 
-		return vec;
+	// VMArray --> deque
+	template <class Alloc>
+	operator std::deque<T, Alloc>() {
+		return convert<std::deque<T, Alloc>>();
 	}
 
 	class const_reference
@@ -132,6 +139,38 @@ public:
 			arr = NULL;
 		}
 		return CALL_MEMBER_FN(registry, AllocateArray)(&typeID, size, &arr);
+	}
+
+private:
+	template <class ContainerT>
+	void copy_from(const ContainerT& cont) {
+		if (arr) arr->DecRef();
+		arr = NULL;
+		
+		if (cont.size() == 0)
+			return;
+
+		if (Allocate(cont.size())) {
+			std::size_t idx = 0;
+			ContainerT::const_iterator it = cont.begin();
+			while (it != cont.end()) {
+				(*this)[idx++] = *it++;
+			}
+		}
+	}
+
+	template <class ContainerT>
+	ContainerT convert() const {
+		std::size_t size = GetSize();
+		ContainerT cont(size);
+
+		std::size_t idx = 0;
+		ContainerT::iterator it = cont.begin();
+		while (it != cont.end()) {
+			*it++ = (*this)[idx++];
+		}
+		
+		return cont;
 	}
 };
 
