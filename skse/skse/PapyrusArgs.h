@@ -3,6 +3,8 @@
 #include "skse/Utilities.h"
 #include "skse/PapyrusVM.h"
 
+#include <vector>
+
 class VMState;
 class VMValue;
 class VMClassRegistry;
@@ -37,6 +39,89 @@ public:
 	VMArray()						{ arr = NULL; }
 	VMArray(const VMArray& a_array)	{ if (arr=a_array.arr) arr->AddRef(); }
 	~VMArray()						{ if (arr) arr->DecRef(); }
+
+	explicit VMArray(std::size_t size) {
+		arr = NULL;
+		Allocate(size);
+	}
+
+	typedef std::vector<T> vector;
+
+	// vector --> VMArray
+	VMArray(const vector& vec) {
+		arr = NULL;
+		if (vec.size() > 0) {
+			Allocate(vec.size());
+			
+			for (std::size_t i = 0; i < vec.size(); i++) {
+				T tmp = vec[i];
+				Set(&tmp, i);
+			}
+		}
+	}
+
+	// VMArray --> vector
+	operator vector() {
+		std::size_t size = Length();
+		vector vec(size);
+
+		if (size > 0) {
+			for (std::size_t i = 0; i < size; i++) {
+				T tmp;
+				Get(&tmp, i);
+				vec[i] = tmp;
+			}
+		}
+
+		return vec;
+	}
+
+	class const_reference
+	{
+	public:
+		operator T() const {
+			T tmp;
+			VMValue* src = (VMValue*)this;
+			UnpackValue(&tmp, src);
+			return tmp;
+		}
+		bool operator==(T rhs) {
+			T lhs = *this;
+			return lhs == rhs;
+		}
+		bool operator!=(T rhs) {
+			return !(*this == rhs);
+		}
+	private:
+		const_reference() {}
+	};
+
+	class reference : public const_reference
+	{
+	public:
+		reference& operator=(T rhs) {
+			VMClassRegistry * registry = (*g_skyrimVM)->GetClassRegistry();
+			VMValue* dst = (VMValue*)this;
+			PackValue(dst, &rhs, registry);
+			return *this;
+		}
+	private:
+		reference() {}
+	};
+
+	std::size_t GetSize() const {
+		return arr ? arr->len : 0;
+	}
+
+	reference& operator[](std::size_t idx) {
+		VMValue* value = arr->GetData() + idx;
+		return *(reference*)value;
+	}
+	const_reference& operator[](std::size_t idx) const {
+		VMValue* value = arr->GetData() + idx;
+		return *(const_reference*)value;
+	}
+
 	bool Allocate(UInt32 size)
 	{
 		VMClassRegistry * registry = (*g_skyrimVM)->GetClassRegistry();

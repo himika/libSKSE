@@ -8,6 +8,9 @@
 #include <skse/ScaleformCallbacks.h>
 #include <skse/ScaleformMovie.h>
 
+#include <vector>
+#include <algorithm>
+
 /*=================================
 / scaleform functions
 /==================================*/
@@ -56,6 +59,44 @@ public:
 
 		return NULL;
 	}
+
+	// 要素a,b,cから成る、新しい配列を作成する
+	// （直接VMArrayを扱うサンプル）
+	static VMArray<SInt32> MakeArray(SInt32 a, SInt32 b, SInt32 c)
+	{
+		VMArray<SInt32> arr(3);
+		arr[0] = a;
+		arr[1] = b;
+		arr[2] = c;
+
+		return arr;
+	}
+
+	// 配列の要素をソートした新しい配列を返す
+	// （いちどvectorを経由してVMArrayを扱うサンプル）
+	static VMArray<SInt32> SortArray(VMArray<SInt32> arr)
+	{
+		std::vector<SInt32> vec = arr;
+
+		std::sort(vec.begin(), vec.end());
+
+		return vec;	// vector=>VMArrayの変換は勝手にやってくれる。そのまま返して良い。
+	}
+
+	// 配列の要素の順番を反転させる。引数の配列自体を変更する。
+	static void ReverseArray(VMArray<SInt32> arr)
+	{
+		std::size_t size = arr.GetSize();
+		std::size_t n = size / 2;
+
+		for (int i = 0; i < n; i++)
+		{
+			SInt32 tmp;
+			tmp = arr[i];
+			arr[i] = arr[size-i-1];
+			arr[size-i-1] = tmp;
+		}
+	}
 };
 
 
@@ -63,6 +104,9 @@ bool RegisterPapyrus(VMClassRegistry* registry)
 {
 	REGISTER_PAPYRUS_FUNCTION(PluginExampleQuestScript, Add, registry);
 	REGISTER_PAPYRUS_FUNCTION(PluginExampleQuestScript, GetAliasByName, registry);
+	REGISTER_PAPYRUS_FUNCTION(PluginExampleQuestScript, MakeArray, registry);
+	REGISTER_PAPYRUS_FUNCTION(PluginExampleQuestScript, SortArray, registry);
+	REGISTER_PAPYRUS_FUNCTION(PluginExampleQuestScript, ReverseArray, registry);
 
 	return true;
 }
