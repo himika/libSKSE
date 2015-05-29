@@ -22,57 +22,6 @@ static SKSESerializationInterface* serialization = NULL;
 static SKSETaskInterface* task = NULL;
 static SKSEMessagingInterface* messaging = NULL;
 
-
-
-enum kReleaseIndex
-{
-	kReleaseIndex_1_3_0  =  0,
-	kReleaseIndex_1_4_0  =  1,
-	kReleaseIndex_1_4_1  =  2,
-	kReleaseIndex_1_4_2  =  3,
-	kReleaseIndex_1_4_3  =  4,
-	kReleaseIndex_1_4_4  =  5,
-	kReleaseIndex_1_4_5  =  6,
-	kReleaseIndex_1_4_6  =  7,
-	kReleaseIndex_1_4_7  =  8,
-	kReleaseIndex_1_4_8  =  9,
-	kReleaseIndex_1_4_9  = 10,
-	kReleaseIndex_1_4_10 = 11,
-	kReleaseIndex_1_4_11 = 12,
-	kReleaseIndex_1_4_12 = 13,
-	kReleaseIndex_1_4_13 = 14,
-	kReleaseIndex_1_4_14 = 15,
-	kReleaseIndex_1_4_15 = 16,
-	kReleaseIndex_1_5_1  = 17,
-	kReleaseIndex_1_5_2  = 18,
-	kReleaseIndex_1_5_3  = 19,
-	kReleaseIndex_1_5_4  = 20,
-	kReleaseIndex_1_5_5  = 21,
-	kReleaseIndex_1_5_6  = 22,
-	kReleaseIndex_1_5_7  = 23,
-	kReleaseIndex_1_5_8  = 24,
-	kReleaseIndex_1_5_9  = 25,
-	kReleaseIndex_1_5_10 = 26,
-	kReleaseIndex_1_5_11 = 27,
-	kReleaseIndex_1_6_0  = 28,
-	kReleaseIndex_1_6_1  = 29,
-	kReleaseIndex_1_6_2  = 30,
-	kReleaseIndex_1_6_3  = 31,
-	kReleaseIndex_1_6_4  = 32,
-	kReleaseIndex_1_6_5  = 33,
-	kReleaseIndex_1_6_6  = 34,
-	kReleaseIndex_1_6_7  = 35,
-	kReleaseIndex_1_6_8  = 36,
-	kReleaseIndex_1_6_9  = 37,
-	kReleaseIndex_1_6_10 = 38,
-	kReleaseIndex_1_6_11 = 39,
-	kReleaseIndex_1_6_12 = 40,
-	kReleaseIndex_1_6_13 = 41,
-	kReleaseIndex_1_6_14 = 42,
-	kReleaseIndex_1_6_15 = 43,
-	kReleaseIndex_1_6_16 = 44
-};
-
 UInt32 skses[] = {
 	MAKE_SKYRIM_VERSION(1,3,0),
 	MAKE_SKYRIM_VERSION(1,4,0),
@@ -167,6 +116,11 @@ UInt32 SKSEPlugin::GetRuntimeVersion() const
 UInt32 SKSEPlugin::GetSKSEVersion() const
 {
 	return skseVersion;
+}
+
+UInt32 SKSEPlugin::GetSKSEReleaseIndex() const
+{
+	return skseReleaseIndex;
 }
 
 bool SKSEPlugin::Requires(SKSEVersion version) const
