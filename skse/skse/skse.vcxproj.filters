@@ -166,6 +166,9 @@
     <ClCompile Include="NiAdditionalGeometryData.cpp">
       <Filter>netimmerse</Filter>
     </ClCompile>
+    <ClCompile Include="BSTArray.cpp">
+      <Filter>internal</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\skse.h" />
@@ -347,6 +350,9 @@
     <ClInclude Include="PapyrusClass.h" />
     <ClInclude Include="NiAdditionalGeometryData.h">
       <Filter>netimmerse</Filter>
+    </ClInclude>
+    <ClInclude Include="BSTArray.h">
+      <Filter>internal</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
