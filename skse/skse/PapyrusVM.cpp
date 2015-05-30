@@ -165,6 +165,27 @@ UInt32 VMValue::GetUnmangledType(void)
 	return (type & 1) ? kType_Unk0B : kType_Identifier;
 }
 
+VMStackInfo* VMClassRegistry::GetStackInfo(UInt32 stackId)
+{
+	VMStackInfo* result = NULL;
+
+	stackLock.Lock();
+
+	VMStackTableItem* item = allStacks.Find(&stackId);
+
+	if (item != NULL && item->data != NULL)
+	{
+		if (item->data->stacks.GetSize() > 0) {
+			VMState* state = (VMState*)item->data->stacks[0].chunk->GetHead();
+			result = state->stackInfo;
+		}
+	}
+
+	stackLock.Release();
+
+	return result;
+}
+
 UInt32 SkyrimVM::ClearInvalidRegistrations(void)
 {
 	IObjectHandlePolicy * policy = m_classRegistry->GetHandlePolicy();

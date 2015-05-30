@@ -2,12 +2,14 @@
 
 #include "skse/Utilities.h"
 #include "skse/GameTypes.h"
+#include "BSTArray.h"
 
 class IFunction;
 class VMIdentifier;
 class VMValue;
 class VMClassRegistry;
 class IFunctionArguments;
+class VMArgList;
 
 class IObjectHandlePolicy
 {
@@ -204,7 +206,7 @@ public:
 
 	SInt32			m_refCount;	// 00
 	VMClassInfo		* m_type;	// 04
-	void			* unk08;	// 08
+	BSFixedString	state;		// 08 - papyrus state / GotoState("state name")
 	void			* unk0C;	// 0C
 	volatile UInt64	m_handle;	// 10
 	volatile SInt32	m_lock;		// 18
@@ -411,36 +413,68 @@ public:
 };
 
 // ??
-class UnkVMStackData1
+class VMState
 {
 public:
-	UInt32			unk000;		// 000
-	void*			unk004;		// 004
-	UInt32			unk008;		// 008
-
-	VMStackInfo*	stackInfo;	// 00C
+	VMArgList	* argList;		// 00
+	void		* returnAddr;	// 04
+	VMStackInfo	* stackInfo;	// 08
+	void		* unk0C;
+	void		* unk10;
+	VMValue		baseValue;		// 14
+	UInt32		numArgs;		// 1C
+	//VMValue	arg0;
+	//VMValue	arg1;
+	//VMValue	arg2;
 	// ...
 };
 
-// ??
-class UnkVMStackData2
+// 48
+class VMArgList : public BSIntrusiveRefCounted
 {
 public:
-	UInt32		unk000;		// 000 - refCount?
-	void*		unk004;		// 004
-	UInt32		unk008;		// 008
-	UInt32		unk00C;		// 00C
+	// 08 + sizeof(Data)
+	struct Chunk
+	{
+		void *	GetHead(void) const	{ return (void*)(this + 1); }
+		void *	GetTail(void) const	{ return (void*)((UInt32)GetHead() + size); }
 
-	UnkVMStackData1*	unkData;		// 010
-	// ...
+		UInt32			size;	// 00 - max 128byte?
+		//VMStackFrame	frame	// 04
+	};
+
+	// 08
+	struct Pair
+	{
+		Chunk *	chunk;		// 00
+		UInt32	unk04;		// 04
+	};
+
+	// member
+	void						* stackManager;		// 04
+	UInt32						unk08;
+	BSTSmallArray<Pair, 3>		stacks;				// 0C - stack data is splitted into 128-byte chunks
+	UInt32						unk2C;				// 2C
+	VMState						* current;			// 30
+	UInt32						unk34;
+	UInt32						unk38;
+	VMValue						resultValue;		// 3C
+	UInt32						stackID;			// 44
+
+	MEMBER_FN_PREFIX(VMArgList);
+	DEFINE_MEMBER_FN(GetOffset, UInt32, 0x00C3A620, VMState * state);
+	DEFINE_MEMBER_FN(Get, VMValue *, 0x00C3AC40, VMState * state, UInt32 idx, UInt32 offset);
 };
+STATIC_ASSERT(offsetof(VMArgList, unk2C) == 0x2C);
+STATIC_ASSERT(sizeof(VMArgList) == 0x48);
+
 
 // 00C
 class VMStackTableItem
 {
 public:
 	UInt32				stackId;
-	UnkVMStackData2*	data;
+	VMArgList*			data;
 
 	operator UInt32() const	{ return stackId; }
 
@@ -462,13 +496,23 @@ public:
 		kFunctionFlag_NoWait = 0x01	// set this only if your function is thread-safe
 	};
 
+	enum
+	{
+		kLogLevel_Info = 0,
+		kLogLevel_Warning,
+		kLogLevel_Error,
+		kLogLevel_Fatal
+	};
+
+	typedef tHashSet<VMStackTableItem,UInt32> StackTableT;
+
 	VMClassRegistry();
 	virtual ~VMClassRegistry();
 
 	// ### indices are from 1.5.26
 
 	virtual void	Unk_01(void);
-	virtual void	TraceStack(const char* str, UInt32 stackPointer, UInt32 aiSeverity=0);	// (himika)
+	virtual void	PrintToDebugLog(const char* text, UInt32 stackId, UInt32 logLevel);
 	virtual void	Unk_03(void);
 	virtual void	Unk_04(void);
 	virtual void	Unk_05(void);
@@ -527,7 +571,19 @@ public:
 	void		** vtbl0010;	// 0010
 	UInt32		unk0014[(0x006C - 0x0014) >> 2];	// 0014
 	VMUnlinkedClassList	unlinkedClassList;			// 006C
-	UInt32		unk00B4[(0x4B04 - 0x00B4) >> 2];	// 00B4
+	UInt32		unk00B4[(0x49B8 - 0x00B4) >> 2];	// 00B4
+
+	SimpleLock	stackLock;		// 49B8
+	UInt32		unk49C0;		// 49C0
+	StackTableT	allStacks;		// 49C4
+	UInt32		unk49E0;		// 49E0
+	StackTableT	waitingStacks;	// 49E4
+	UInt32		unk4A00[(0x4B04 - 0x4A00) >> 2];	// 4A00
+
+	VMStackInfo* GetStackInfo(UInt32 stackId);
+
+	void LogError(const char* message, UInt32 stackId)   { PrintToDebugLog(message, stackId, kLogLevel_Error); }
+	void LogWarning(const char* message, UInt32 stackId) { PrintToDebugLog(message, stackId, kLogLevel_Warning); }
 
 	// (himika)
 	MEMBER_FN_PREFIX(VMClassRegistry);

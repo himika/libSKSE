@@ -15,18 +15,6 @@ struct StaticFunctionTag
 	enum { kTypeID = 0 };
 };
 
-// stack frame?
-class VMState
-{
-public:
-	VMState();
-	~VMState();
-
-	VMArgList	* argList;	// 00
-	UInt32		pad04[(0x1C - 0x04) >> 2];	// 04
-	UInt32		numArgs;	// 1C
-};
-
 // 08
 class IFunction
 {

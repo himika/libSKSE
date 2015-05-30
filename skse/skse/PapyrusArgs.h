@@ -12,18 +12,6 @@ class VMValue;
 class VMClassRegistry;
 struct StaticFunctionTag;
 
-class VMArgList
-{
-public:
-	VMArgList();
-	~VMArgList();
-
-	MEMBER_FN_PREFIX(VMArgList);
-	DEFINE_MEMBER_FN(GetOffset, UInt32, 0x00C3A620, VMState * state);
-	DEFINE_MEMBER_FN(Get, VMValue *, 0x00C3AC40, VMState * state, UInt32 idx, UInt32 offset);
-};
-
-
 template <typename T>
 class VMArray
 {
