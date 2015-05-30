@@ -365,7 +365,7 @@ enum SKSEVersion
 	kSKSEVersion_1_7_0  = 0x01070000,
 	kSKSEVersion_1_7_1  = 0x01070010,
 	kSKSEVersion_1_7_2  = 0x01070020,
-	kSKSEVersion_1_7_3  = 0x01070020
+	kSKSEVersion_1_7_3  = 0x01070030
 };
 
 
