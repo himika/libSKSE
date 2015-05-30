@@ -11,7 +11,6 @@ class VMState;
 class VMValue;
 class VMClassRegistry;
 struct StaticFunctionTag;
-class EffectSetting;
 
 class VMArgList
 {
@@ -37,7 +36,7 @@ public:
 		VMClassRegistry * registry = (*g_skyrimVM)->GetClassRegistry();
 		PackValue(arr->GetData()+idx, src, registry);
 	}
-	// ==== (himika) ====
+	// himika -->
 	VMArray()						{ arr = NULL; }
 	VMArray(const VMArray& a_array)	{ if (arr=a_array.arr) arr->AddRef(); }
 	~VMArray()						{ if (arr) arr->DecRef(); }
@@ -129,6 +128,17 @@ public:
 		return *(const_reference*)value;
 	}
 
+	void Swap(std::size_t i, std::size_t j) {
+		if (arr) {
+			VMValue tmp;
+			VMValue* data = arr->GetData();
+			CALL_MEMBER_FN(&tmp, Set)(&data[i]);
+			data[i].SetNone();
+			CALL_MEMBER_FN(&data[i], Set)(&data[j]);
+			CALL_MEMBER_FN(&data[j], Set)(&tmp);
+		}
+	}
+
 	bool Allocate(UInt32 size)
 	{
 		VMClassRegistry * registry = (*g_skyrimVM)->GetClassRegistry();
@@ -172,6 +182,7 @@ private:
 		
 		return cont;
 	}
+	// <-- himika
 };
 
 template <typename T>

@@ -91,10 +91,7 @@ public:
 
 		for (int i = 0; i < n; i++)
 		{
-			SInt32 tmp;
-			tmp = arr[i];
-			arr[i] = arr[size-i-1];
-			arr[size-i-1] = tmp;
+			arr.Swap(i, size-i-1);
 		}
 	}
 };
