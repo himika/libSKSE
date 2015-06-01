@@ -81,6 +81,7 @@ public:
 };
 
 // 10
+// BSScript::BSScriptObjectTypeInfo ?
 class VMClassInfo
 {
 public:
@@ -139,7 +140,7 @@ public:
 	DEFINE_MEMBER_FN(GetFunction, IFunction*, 0x00C36540, const char * fnName);
 };
 
-// This type is not fully decoded or correctly sized, just enough to use the functor
+// the same type as VMIdentifier
 class VMScriptInstance
 {
 public:
@@ -153,6 +154,7 @@ public:
 };
 
 // 04
+// BSScript::IForEachScriptObjectFunctor
 class IForEachScriptObjectFunctor
 {
 public:
@@ -166,6 +168,7 @@ public:
 };
 
 // 48+
+// BSScript::UnlinkedTypes
 class VMUnlinkedClassList
 {
 	virtual ~VMUnlinkedClassList()	{ }
@@ -195,6 +198,7 @@ class VMUnlinkedClassList
 };
 
 // 1C?
+// BSScript::BSScriptObject
 class VMIdentifier
 {
 public:
@@ -227,7 +231,7 @@ public:
 };
 
 // 08
-// possibly BSScriptVariable
+// BSScript::BSScriptVariable
 class VMValue
 {
 public:
@@ -257,6 +261,7 @@ public:
 	};
 
 	// 14+
+	// BSScript::BSScriptArray
 	struct ArrayData
 	{
 		volatile SInt32	refCount;	// 00
@@ -430,6 +435,7 @@ public:
 };
 
 // 48
+// BSScript::BSScriptStack ?
 class VMArgList : public BSIntrusiveRefCounted
 {
 public:
