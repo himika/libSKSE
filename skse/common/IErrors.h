@@ -1,5 +1,9 @@
 #pragma once
 
+void _AssertionFailed(const char * file, unsigned long line, const char * desc);
+void _AssertionFailed_ErrCode(const char * file, unsigned long line, const char * desc, unsigned long long code);
+void _AssertionFailed_ErrCode(const char * file, unsigned long line, const char * desc, const char * code);
+
 //! Exit the program if the condition is not true
 #define ASSERT(a)					do { if(!(a)) _AssertionFailed(__FILE__, __LINE__, #a); } while(0)
 //! Exit the program if the condition is not true, with an error message
