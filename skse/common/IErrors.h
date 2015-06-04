@@ -1,9 +1,5 @@
 #pragma once
 
-void _AssertionFailed(const char * file, unsigned long line, const char * desc);
-void _AssertionFailed_ErrCode(const char * file, unsigned long line, const char * desc, unsigned long long code);
-void _AssertionFailed_ErrCode(const char * file, unsigned long line, const char * desc, const char * code);
-
 //! Exit the program if the condition is not true
 #define ASSERT(a)					do { if(!(a)) _AssertionFailed(__FILE__, __LINE__, #a); } while(0)
 //! Exit the program if the condition is not true, with an error message
@@ -29,4 +25,8 @@ template <int x> struct static_assert_test { };
 #define __PREPRO_TOKEN_STR__(a)		__PREPRO_TOKEN_STR2__(a)
 #define __LOC__						__FILE__ "("__PREPRO_TOKEN_STR__(__LINE__)") : "
 
-#define STATIC_ASSERT(a)	typedef static_assert_test <sizeof(StaticAssertFailure<(bool)(a)>)> __MACRO_JOIN__(static_assert_typedef_, __COUNTER__)
+#ifdef _DEBUG
+#define STATIC_ASSERT(a) static_assert((a), "static assert failure: " #a)
+#else
+#define STATIC_ASSERT(a)
+#endif
