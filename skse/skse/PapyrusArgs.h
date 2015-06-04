@@ -3,9 +3,7 @@
 #include "skse/Utilities.h"
 #include "skse/PapyrusVM.h"
 
-#include <vector>
-#include <list>
-#include <deque>
+#include <type_traits>
 
 class VMState;
 class VMValue;
@@ -34,40 +32,84 @@ public:
 		Allocate(size);
 	}
 
-	// vector --> VMArray
-	template <class Alloc>
-	VMArray(const std::vector<T, Alloc>& cont) : arr(NULL) {
-		copy_from(cont);
+	// STL container --> VMArray
+	template <class ContainerT,
+		class value_type = typename ContainerT::value_type,
+		class size_type  = typename ContainerT::size_type,
+		class iterator   = typename ContainerT::iterator,
+		class reference  = typename ContainerT::reference,
+		class enabler    = typename std::enable_if<std::is_same<T, value_type>::value>::type>
+	VMArray(const ContainerT& cont) : arr(NULL) {
+		(*this) = cont;
 	}
 
-	// list --> VMArray
-	template <class Alloc>
-	VMArray(const std::list<T, Alloc>& cont) : arr(NULL) {
-		copy_from(cont);
+	// language built-in arrays --> VMArray
+	template <std::size_t SIZE>
+	VMArray(const T(&a_array)[SIZE]) : ptr() {
+		(*this) = a_array;
+	}
+	
+	// VMArray --> STL container
+	template <class ContainerT,
+		class value_type = typename ContainerT::value_type,
+		class size_type  = typename ContainerT::size_type,
+		class iterator   = typename ContainerT::iterator,
+		class reference  = typename ContainerT::reference,
+		class enabler    = typename std::enable_if<std::is_same<T, value_type>::value>::type>
+	operator ContainerT() {
+		size_type size = GetSize();
+		ContainerT cont(size);
+
+		if (size > 0) {
+			size_type idx = 0;
+			ContainerT::iterator it = cont.begin();
+			while (it != cont.end()) {
+				*it++ = (*this)[idx++];
+			}
+		}
+		return cont;
 	}
 
-	// deque --> VMArray
-	template <class Alloc>
-	VMArray(const std::deque<T, Alloc>& cont) : arr(NULL) {
-		copy_from(cont);
+	VMArray& operator=(const VMArray & a_arr) {
+		if (arr != a_arr.arr) {
+			if (arr)
+				arr->DecRef();
+			arr = a_arr.arr;
+			if (arr)
+				arr->AddRef();
+		}
+		return *this;
 	}
 
-	// VMArray --> vector
-	template <class Alloc>
-	operator std::vector<T, Alloc>() {
-		return convert<std::vector<T, Alloc>>();
+	// STL container
+	template <class ContainerT,
+		class value_type = typename ContainerT::value_type,
+		class size_type  = typename ContainerT::size_type,
+		class iterator   = typename ContainerT::iterator,
+		class reference  = typename ContainerT::reference,
+		class enabler    = typename std::enable_if<std::is_same<T, value_type>::value>::type>
+	VMArray& operator=(const ContainerT& cont) {
+		const size_type size = cont.size();
+		if (size != 0 && Allocate(size)) {
+			size_type idx = 0;
+			ContainerT::const_iterator it = cont.begin();
+			while (it != cont.end()) {
+				(*this)[idx++] = *it++;
+			}
+		}
+		return *this;
 	}
 
-	// VMArray --> list
-	template <class Alloc>
-	operator std::list<T, Alloc>() {
-		return convert<std::list<T, Alloc>>();
-	}
-
-	// VMArray --> deque
-	template <class Alloc>
-	operator std::deque<T, Alloc>() {
-		return convert<std::deque<T, Alloc>>();
+	// language built-in arrays
+	template <std::size_t SIZE>
+	VMArray& operator=(const T(&a_array)[SIZE]) {
+		const size_type size = SIZE;
+		if (size != 0 && Allocate(size)) {
+			for (size_type i = 0; i < size; i++) {
+				(*this)[i] = a_array[i];
+			}
+		}
+		return *this;
 	}
 
 	class const_reference
