@@ -28,6 +28,24 @@
 #define CALL_MEMBER_FN(obj, fn)	\
 	((*(obj)).*(*((obj)->_##fn##_GetPtr())))
 
+#define EMBED_MEMBER_FN(fnName, retnType, addr, ...)												\
+	template <class... _Params>																		\
+	__forceinline retnType fnName(_Params&&... params) {											\
+		typedef retnType(empty_struct::*_##fnName##_type)(__VA_ARGS__);								\
+		const static UInt32 address = addr;															\
+		_##fnName##_type fn = *(_##fnName##_type*)&address;											\
+		return (reinterpret_cast<empty_struct*>(this)->*fn)(params...);								\
+		}
+
+#define EMBED_MEMBER_FN_const(fnName, retnType, addr, ...)											\
+	template <class... _Params>																		\
+	__forceinline retnType fnName(_Params&&... params) {											\
+		typedef retnType(empty_struct::*_##fnName##_type)(__VA_ARGS__) const;						\
+		const static UInt32 address = addr;															\
+		_##fnName##_type fn = *(_##fnName##_type*)&address;											\
+		return (reinterpret_cast<empty_struct*>(this)->*fn)(params...);								\
+		}
+
 const std::string & GetRuntimeDirectory(void);
 const std::string & GetConfigPath(void);
 std::string GetConfigOption(const char * section, const char * key);
