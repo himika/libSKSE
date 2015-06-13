@@ -55,6 +55,12 @@ StringCache::Ref::Ref(const Ref &rhs)
 	data = rhs.data;
 }
 
+StringCache::Ref::Ref(Ref &&rhs)
+{
+	data = rhs.data;
+	rhs.data = nullptr;
+}
+
 StringCache::Ref::~Ref()
 {
 	// fixed memory leak bug
@@ -82,6 +88,15 @@ StringCache::Ref& StringCache::Ref::operator=(const StringCache::Ref& ref)
 	}
 
 	return *this;
+}
+
+StringCache::Ref& StringCache::Ref::operator=(StringCache::Ref&& ref)
+{
+	if (data && data[0])
+		CALL_MEMBER_FN(this, Release)();
+
+	data = ref.data;
+	ref.data = nullptr;
 }
 
 BSString::~BSString()

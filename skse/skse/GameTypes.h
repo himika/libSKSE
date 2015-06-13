@@ -192,12 +192,14 @@ public:
 
 		Ref() :data(NULL) { }
 		Ref(const Ref &ref);
+		Ref(Ref && rhs);
 		Ref(const char * buf);
 		~Ref();						// (himika) fixed memory leak bug.
 
 		operator const char*() const { return data; }
 		Ref& operator=(const char* rhs);
 		Ref& operator=(const Ref& rhf);
+		Ref& operator=(Ref&& rhf);
 
 		bool operator==(const Ref& lhs) const { return data == lhs.data; }
 		bool operator!=(const Ref& lhs) const { return data != lhs.data; }

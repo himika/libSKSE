@@ -25,6 +25,7 @@ public:
 	// himika -->
 	VMArray()						{ arr = NULL; }
 	VMArray(const VMArray& a_array)	{ if (arr=a_array.arr) arr->AddRef(); }
+	VMArray(VMArray&& a_array)		{ arr = a_array.arr; a_array.arr = nullptr; }
 	~VMArray()						{ if (arr) arr->DecRef(); }
 
 	explicit VMArray(std::size_t size) {
@@ -78,6 +79,14 @@ public:
 			if (arr)
 				arr->AddRef();
 		}
+		return *this;
+	}
+
+	VMArray& operator=(VMArray && a_arr) {
+		if (arr)
+			arr->DecRef();
+		arr = a_arr.arr;
+		a_arr.arr = nullptr;
 		return *this;
 	}
 
