@@ -6,19 +6,155 @@
 // core library types (lists, strings, vectors)
 // preferably only the ones that bethesda created (non-netimmerse)
 
-class BSIntrusiveRefCounted
+// 04
+struct BSIntrusiveRefCounted
 {
 public:
-	volatile UInt32	m_refCount;	// 00
+	BSIntrusiveRefCounted() : m_refCount(0) { }
+
+	static void * operator new(std::size_t size)
+	{
+		return FormHeap_Allocate(size);
+	}
+
+	static void * operator new(std::size_t size, const std::nothrow_t &)
+	{
+		return FormHeap_Allocate(size);
+	}
+
+	static void * operator new(std::size_t size, void * ptr)
+	{
+		return ptr;
+	}
+
+	static void operator delete(void * ptr)
+	{
+		FormHeap_Free(ptr);
+	}
+
+	static void operator delete(void * ptr, const std::nothrow_t &)
+	{
+		FormHeap_Free(ptr);
+	}
+
+	static void operator delete(void *, void *)
+	{
+	}
+
+
+protected:
+	volatile long	m_refCount;	// 00
+
+	SInt32 IncrementRefCount(void);
+	SInt32 DecrementRefCount(void);
+
+	template <class _Ty>
+	friend struct BSTSmartPointerIntrusiveRefCount;
+};
+
+template <class _Ty>
+struct BSTSmartPointerIntrusiveRefCount
+{
+	typedef _Ty *pointer;
+
+	static void Destroy(pointer p) {
+		delete p;
+		//p->~_Ty();
+		//FormHeap_Free(p);
+	}
+	static void Attach(pointer p) {
+		p->IncrementRefCount();
+	}
+	static void Detach(pointer p) {
+		if (p->DecrementRefCount() == 0) {
+			Destroy(p);
+		}
+	}
 };
 
 // 04
-template <typename T>
+template <class _Ty, template <class> class _RefManager = BSTSmartPointerIntrusiveRefCount>
 class BSTSmartPointer
 {
 public:
-	// refcounted
-	T	* ptr;
+	typedef _Ty value_type;
+	typedef _Ty *pointer;
+	typedef const _Ty *const_pointer;
+	typedef _RefManager<_Ty> reference_manager;
+	// typedef _Ty &reference;
+	// typedef const _Ty &const_reference;
+
+	BSTSmartPointer() : ptr(nullptr) {
+	}
+	BSTSmartPointer(const BSTSmartPointer & a_p) : ptr(nullptr) {
+		Attach((const_pointer)a_p);
+	}
+	BSTSmartPointer(BSTSmartPointer && a_p) {
+		ptr = a_p.ptr;
+		a_p.ptr = nullptr;
+	}
+	BSTSmartPointer(const_pointer a_p) : ptr(nullptr) {
+		Attach(a_p);
+	}
+
+	~BSTSmartPointer() {
+		Release();
+	}
+
+	operator pointer() {
+		return ptr;
+	}
+	operator const_pointer() const {
+		return ptr;
+	}
+
+	operator bool() const {
+		return ptr != 0;
+	}
+
+	BSTSmartPointer & operator=(const pointer a_p) {
+		Release();
+		Attach(a_p);
+		return *this;
+	}
+	BSTSmartPointer & operator=(const BSTSmartPointer & a_ptr) {
+		Release();
+		Attach((const_pointer)a_ptr);
+		return *this;
+	}
+	BSTSmartPointer & operator=(BSTSmartPointer && a_p) {
+		Release();
+		ptr = a_p.ptr;
+		a_p.ptr = nullptr;
+		return *this;
+	}
+	pointer Get(void) {
+		return ptr;
+	}
+	const_pointer Get(void) const {
+		return ptr;
+	}
+	pointer operator->() {
+		return ptr;
+	}
+	const_pointer operator->() const {
+		return ptr;
+	}
+	void Attach(const_pointer a_p) {
+		ptr = const_cast<pointer>(a_p);
+		if (ptr) {
+			reference_manager::Attach(ptr);
+		}
+	}
+	void Release(void) {
+		if (ptr) {
+			reference_manager::Detach(ptr);
+			ptr = nullptr;
+		}
+	}
+
+protected:
+	pointer ptr;
 };
 
 class SimpleLock
@@ -804,14 +940,14 @@ class tHashSet
 		p = GetEntry(Item::GetHash(&k));
 
 		// Case 3a: Hash collision - insert new entry between target entry and successor
-        if (targetEntry == p)
-        {
+		if (targetEntry == p)
+		{
 			freeEntry->item = *item;
 			freeEntry->next = targetEntry->next;
 			targetEntry->next = freeEntry;
 
 			return kInsert_Success;
-        }
+		}
 		// Case 3b: Bucket overlap
 		else
 		{

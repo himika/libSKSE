@@ -12,13 +12,23 @@ void SimpleLock::Lock(void)
 	while (InterlockedCompareExchange(&threadID, myThreadID, 0))
 		Sleep(++spinCount > kFastSpinThreshold);
 
-    lockCount = 1;
+	lockCount = 1;
 }
 
 void SimpleLock::Release(void)
 {
 	if (--lockCount == 0)
 		InterlockedCompareExchange(&threadID, 0, threadID);
+}
+
+SInt32 BSIntrusiveRefCounted::IncrementRefCount(void)
+{
+	return InterlockedIncrement(&m_refCount);
+}
+
+SInt32 BSIntrusiveRefCounted::DecrementRefCount(void)
+{
+	return InterlockedDecrement(&m_refCount);
 }
 
 StringCache * StringCache::GetSingleton(void)
