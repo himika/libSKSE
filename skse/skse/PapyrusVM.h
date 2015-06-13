@@ -402,30 +402,31 @@ public:
 STATIC_ASSERT(sizeof(VMValue) == 0x08);
 
 // 044
-class VMStackInfo
-{
-public:
-	virtual ~VMStackInfo();
-	
-	// more virtual functions ...
-
-	//void**	_vtbl;			// 000
-	SInt32		refCount;		// 004
-	const char*	rootCallName;	// 008 - not sure if BSFixedString
-	const char*	scriptName;		// 00C - not sure if BSFixedString
-	// ...
-
-};
+// the same type as IFunction
+//class VMStackInfo
+//{
+//public:
+//	virtual ~VMStackInfo();
+//	
+//	// more virtual functions ...
+//
+//	//void**	_vtbl;			// 000
+//	SInt32		refCount;		// 004
+//	const char*	rootCallName;	// 008 - not sure if BSFixedString
+//	const char*	scriptName;		// 00C - not sure if BSFixedString
+//	// ...
+//
+//};
 
 // ??
 class VMState
 {
 public:
 	VMArgList	* argList;		// 00
-	void		* returnAddr;	// 04
-	VMStackInfo	* stackInfo;	// 08
+	VMState		* parent;		// 04
+	IFunction	* func;			// 08
 	void		* unk0C;
-	void		* unk10;
+	UInt32		unk10;
 	VMValue		baseValue;		// 14
 	UInt32		numArgs;		// 1C
 	//VMValue	arg0;
@@ -586,7 +587,7 @@ public:
 	StackTableT	waitingStacks;	// 49E4
 	UInt32		unk4A00[(0x4B04 - 0x4A00) >> 2];	// 4A00
 
-	VMStackInfo* GetStackInfo(UInt32 stackId);
+	VMArgList* GetStack(UInt32 stackId);
 
 	void LogError(const char* message, UInt32 stackId)   { PrintToDebugLog(message, stackId, kLogLevel_Error); }
 	void LogWarning(const char* message, UInt32 stackId) { PrintToDebugLog(message, stackId, kLogLevel_Warning); }

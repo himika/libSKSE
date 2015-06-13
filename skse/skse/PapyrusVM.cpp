@@ -165,9 +165,9 @@ UInt32 VMValue::GetUnmangledType(void)
 	return (type & 1) ? kType_Unk0B : kType_Identifier;
 }
 
-VMStackInfo* VMClassRegistry::GetStackInfo(UInt32 stackId)
+VMArgList* VMClassRegistry::GetStack(UInt32 stackId)
 {
-	VMStackInfo* result = NULL;
+	VMArgList* result = NULL;
 
 	stackLock.Lock();
 
@@ -175,10 +175,7 @@ VMStackInfo* VMClassRegistry::GetStackInfo(UInt32 stackId)
 
 	if (item != NULL && item->data != NULL)
 	{
-		if (item->data->stacks.GetSize() > 0) {
-			VMState* state = (VMState*)item->data->stacks[0].chunk->GetHead();
-			result = state->stackInfo;
-		}
+		result = item->data;
 	}
 
 	stackLock.Release();
