@@ -157,6 +157,54 @@ protected:
 	pointer ptr;
 };
 
+// 0
+template<class _Ty>
+struct BSTSingletonExplicit
+{
+};
+
+template<class _Ty>
+struct BSTSingletonImplicit
+{
+};
+
+
+template <class _Ty>
+struct BSTSingletonSDMOpStaticBuffer
+{
+	_Ty* GetInstance() {
+		static	_Ty buffer;
+		return &buffer;
+	}
+};
+
+
+// 01
+template <class _Ty, class _Singleton>
+struct BSTSDMTraits
+{
+	typedef _Ty Type;
+	typedef _Singleton Singleton;
+
+	UInt8	unk00;
+};
+
+template <class _Traits>
+struct BSTSingletonSDMBase : _Traits, _Traits::Singleton
+{
+	typedef typename _Traits::Type Type;
+	typedef typename _Traits::Singleton Singleton;
+
+	Type* GetSingleton() {
+		return Singleton::GetInstance();
+	}
+};
+
+template <class _Ty, template <class> class _SingletonT = BSTSingletonSDMOpStaticBuffer>
+struct BSTSingletonSDM : BSTSingletonSDMBase<BSTSDMTraits<_Ty, _SingletonT<_Ty>>>
+{
+};
+
 class SimpleLock
 {
 	enum
