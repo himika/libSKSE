@@ -31,44 +31,77 @@ public:
 	UInt32					stateId;		// 0C
 };
 
-class DragonCameraState : public TESCameraState
+class FirstPersonState : public TESCameraState
+{
+public:
+	FirstPersonState();
+	virtual ~FirstPersonState();
+
+	PlayerInputHandler		inputHandler;		// 10
+	NiNode					* cameraNode;		// 18
+	NiNode					* controllerNode;	// 1C
+	float					unk20;				// 20 (himika) rotZ ?
+	float					unk24;				// 24
+	float					unk28;				// 28
+	UInt32					unk2C[0x03];		// 2C
+	UInt8					unk38[0x05];		// 38
+	UInt8					pad3D;				// 3D
+	UInt16					pad3E;				// 3E
+};
+
+class ThirdPersonState : public TESCameraState
+{
+public:
+	ThirdPersonState();
+	virtual ~ThirdPersonState();
+	virtual void Unk_09(void);
+	virtual void Unk_0A(void);
+	virtual void UpdateMode(bool weaponDrawn);
+
+	PlayerInputHandler		inputHandler;		// 10
+	NiNode					* cameraNode;		// 18
+	NiNode					* controllerNode;	// 1C
+	float					unk20[0x03];		// 20
+	UInt32					unk2C[0x04];		// 2C
+	float					fOverShoulderPosX;	// 3C
+	float					fOverShoulderCombatAddY;	// 40
+	float					fOverShoulderPosZ;	// 44
+	float					basePosX;			// 48 | (himika)
+	float					basePosY;			// 4C |
+	float					basePosZ;			// 50 |
+	float					dstPosY;			// 54 | destination
+	float					curPosY;			// 58 | current position
+	float					unk5C;				// 5C | player->rot.z + diffRotZ
+	float					unk60;				// 60 | equal unk5C ?
+	float					unk64;				// 64 | initial position 1st->3rd
+	UInt32					pad68[(0xAC - 0x68) >> 2];
+	float					diffRotZ;			// AC | diff from player rotZ
+	float					diffRotX;			// B0 | diff from player rotX
+	bool					unkB4;				// B4 | weapon sheathed
+	bool					unkB5;				// B5 | auto switch 1st-person camera when dstPosY==curPosY
+	UInt8					unkB6;
+	UInt8					unkB7;
+	UInt8					unkB8;
+	UInt8					unkB9;
+	UInt8					unkBA;
+	UInt8					unkBB;
+};
+
+STATIC_ASSERT(offsetof(ThirdPersonState, fOverShoulderPosX) == 0x3C);
+STATIC_ASSERT(offsetof(ThirdPersonState, basePosX) == 0x48);
+
+class DragonCameraState : public ThirdPersonState
 {
 public:
 	DragonCameraState();
 	virtual ~DragonCameraState();
-
-	PlayerInputHandler		inputHandler;		// 10
-	NiNode					* cameraNode;		// 18
-	NiNode					* controllerNode;	// 1C
-	float					unk20[0x03];		// 20
-	UInt32					unk2C[0x07];		// 2C
-	float					unk48[0x03];		// 48
-	UInt32					unk54[0x11];		// 54
-	float					unk98[0x03];		// 98
-	UInt32					unkA4[0x04];		// A4
-	UInt8					unkB4[0x07];		// B4
-	UInt8					padBB;
-	// More
 };
 
-class HorseCameraState : public TESCameraState
+class HorseCameraState : public ThirdPersonState
 {
 public:
 	HorseCameraState();
 	virtual ~HorseCameraState();
-
-	PlayerInputHandler		inputHandler;		// 10
-	NiNode					* cameraNode;		// 18
-	NiNode					* controllerNode;	// 1C
-	float					unk20[0x03];		// 20
-	UInt32					unk2C[0x07];		// 2C
-	float					unk48[0x03];		// 48
-	UInt32					unk54[0x11];		// 54
-	float					unk98[0x03];		// 98
-	UInt32					unkA4[0x04];		// A4
-	UInt8					unkB4[0x07];		// B4
-	UInt8					padBB;
-	// More
 };
 
 class TweenMenuCameraState : public TESCameraState
@@ -143,83 +176,11 @@ public:
 	UInt32	unk10;	// 10
 };
 
-class FirstPersonState : public TESCameraState
-{
-public:
-	FirstPersonState();
-	virtual ~FirstPersonState();
-
-	PlayerInputHandler		inputHandler;		// 10
-	NiNode					* cameraNode;		// 18
-	NiNode					* controllerNode;	// 1C
-	float					unk20;				// 20 (himika) rotZ ?
-	float					unk24;				// 24
-	float					unk28;				// 28
-	UInt32					unk2C[0x03];		// 2C
-	UInt8					unk38[0x05];		// 38
-	UInt8					pad3D;				// 3D
-	UInt16					pad3E;				// 3E
-};
-
-class ThirdPersonState : public TESCameraState
-{
-public:
-	ThirdPersonState();
-	virtual ~ThirdPersonState();
-	virtual void Unk_09(void);
-	virtual void Unk_0A(void);
-	virtual void UpdateMode(bool weaponDrawn);
-
-	PlayerInputHandler		inputHandler;		// 10
-	NiNode					* cameraNode;		// 18
-	NiNode					* controllerNode;	// 1C
-	float					unk20[0x03];		// 20
-	UInt32					unk2C[0x04];		// 2C
-	float					fOverShoulderPosX;	// 3C
-	float					fOverShoulderCombatAddY;	// 40
-	float					fOverShoulderPosZ;	// 44
-	float					basePosX;			// 48 | (himika)
-	float					basePosY;			// 4C |
-	float					basePosZ;			// 50 |
-	float					dstPosY;			// 54 | destination
-	float					curPosY;			// 58 | current position
-	float					unk5C;				// 5C | player->rot.z + diffRotZ
-	float					unk60;				// 60 | equal unk5C ?
-	float					unk64;				// 64 | initial position 1st->3rd
-	UInt32					pad68[(0xAC - 0x68) >> 2];
-	float					diffRotZ;			// AC | diff from player rotZ
-	float					diffRotX;			// B0 | diff from player rotX
-	bool					unkB4;				// B4 | weapon sheathed
-	bool					unkB5;				// B5 | auto switch 1st-person camera when dstPosY==curPosY
-	UInt8					unkB6;
-	UInt8					unkB7;
-	UInt8					unkB8;
-	UInt8					unkB9;
-	UInt8					unkBA;
-	UInt8					unkBB;
-};
-
-STATIC_ASSERT(offsetof(ThirdPersonState, fOverShoulderPosX) == 0x3C);
-STATIC_ASSERT(offsetof(ThirdPersonState, basePosX) == 0x48);
-
 class BleedoutCameraState : public ThirdPersonState
 {
 public:
 	BleedoutCameraState();
 	virtual ~BleedoutCameraState();
-
-	PlayerInputHandler		inputHandler;		// 10
-	NiNode					* cameraNode;		// 18
-	NiNode					* controllerNode;	// 1C
-	float					unk20[0x03];		// 20
-	UInt32					unk2C[0x07];		// 2C
-	float					unk48[0x03];		// 48
-	UInt32					unk54[0x11];		// 54
-	float					unk98[0x03];		// 98
-	UInt32					unkA4[0x04];		// A4
-	UInt8					unkB4[0x07];		// B4
-	UInt8					padBB;
-	// More
 };
 
 class PlayerCameraTransitionState : public TESCameraState
