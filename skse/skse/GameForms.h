@@ -525,6 +525,7 @@ public:
 	UInt32	unk30;		// 30
 	UInt32	unk34;		// 34
 	UInt32	unk38;		// 38
+	UInt32	unk3C;		// 3C
 	UInt32	unk40;		// 40
 	UInt32	unk44;		// 44
 	float	globalTimeMultiplier;	// 48
