@@ -3283,7 +3283,7 @@ public:
 
 	// parents
 	TESFullName		fullName;	// 14
-	TESTexture		texture;	// 1C
+	TESModel		model;		// 1C fixed by himika
 
 	// members
 
@@ -3324,9 +3324,9 @@ public:
 
 	typedef NiTPointerMap <int, TESObjectCELL *>	CellMap;
 
-	CellMap	* cellMap;	// 024
-	UInt32	unk028;		// 028
-	UInt32	unk02C;		// 02C
+	//CellMap	* cellMap;	// 024 fixed by himika
+	//UInt32	unk028;		// 028
+	//UInt32	unk02C;		// 02C
 	UInt32	unk030;		// 030
 	UInt8	worldSpaceFlags;	// 034
 	UInt8	pad035;		// 035
