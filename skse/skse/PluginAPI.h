@@ -45,7 +45,7 @@ struct SKSEScaleformInterface
 	{
 		Version_1 = 1,
 		Version_2 = 2,
-		CurrentVersion = 1,
+		CurrentVersion = 2,
 		kInterfaceVersion = 2
 	};
 
