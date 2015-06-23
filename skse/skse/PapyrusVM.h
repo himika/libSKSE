@@ -134,10 +134,16 @@ public:
 	void	AddRef(void);
 	void	Release(void);
 
+	// himika -->
+	bool	IsHidden();
+	bool	IsConditional();
+	// <-- himika
+
 	MEMBER_FN_PREFIX(VMClassInfo);
 	DEFINE_MEMBER_FN(Destroy, void, 0x00C34ED0);
 	DEFINE_MEMBER_FN(GetVariable, SInt32, 0x00C33E30, BSFixedString * name);
 	DEFINE_MEMBER_FN(GetFunction, IFunction*, 0x00C36540, const char * fnName);
+	DEFINE_MEMBER_FN(GetScriptFlag, bool, 0x00C33890, const BSFixedString & name, bool arg2);	// himika
 };
 
 // the same type as VMIdentifier

@@ -18,6 +18,18 @@ void VMClassInfo::Release(void)
 	}
 }
 
+bool VMClassInfo::IsHidden()
+{
+	static BSFixedString hidden = "hidden";
+	return CALL_MEMBER_FN(this, GetScriptFlag)(hidden, true);
+}
+
+bool VMClassInfo::IsConditional()
+{
+	static BSFixedString conditional = "conditional";
+	return CALL_MEMBER_FN(this, GetScriptFlag)(conditional, true);
+}
+
 UInt64 VMIdentifier::GetHandle(void)
 {
 	UInt64	result = (*g_objectHandlePolicy)->GetInvalidHandle();
