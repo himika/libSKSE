@@ -124,7 +124,7 @@ public:
 	Data	unk20;	// 20
 };
 
-// 8C
+// 88
 class BGSExplosion : public TESBoundObject
 {
 public:
@@ -134,8 +134,8 @@ public:
 	TESFullName			fullName;		// 20
 	TESModel			model;			// 28
 	TESEnchantableForm	enchantment;	// 3C
-	BGSPreloadable		preloadable;	// 4C
-	TESImageSpaceModifiableForm	imageSpaceModifier;	// 50
+	BGSPreloadable		preloadable;	// 48
+	TESImageSpaceModifiableForm	imageSpaceModifier;	// 4C
 
 	// members
 
