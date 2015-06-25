@@ -2864,7 +2864,7 @@ public:
 	TESForm						* decapitateArmor[2];	// 194
 	UnkArray					unk180[2];
 	void						* unk198[4];
-	void						* unk1A8[2]; // AttackAnimationArrayMap
+	AttackAnimationArrayMap		* attackAnimationArrayMap[2];
 	StringCache::Ref			editorId;
 	BGSMaterialType				* impactMaterial;
 	BGSImpactDataSet			* meleeImpact;

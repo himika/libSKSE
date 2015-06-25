@@ -5,6 +5,7 @@
 #include "GameTypes.h"
 #include "GameEvents.h"
 #include "NiObjects.h"
+#include "BSTArray.h"
 
 class TESObjectSTAT;
 class BGSSoundDescriptorForm;
@@ -1672,3 +1673,22 @@ public:
 	DEFINE_MEMBER_FN(UsePower, bool, 0x006622D0, MagicItem*, UInt32, UInt32, UInt32);
 };
 STATIC_ASSERT(sizeof(ActorMagicCaster) == 0x90);
+
+// 0C
+struct SetEventData
+{
+	BSFixedString					eventName;		// 00
+	BSTSmallArray<BSFixedString>	* clipNames;	// 04
+	UInt32							unk08;			// 08
+};
+
+// 28
+class AttackAnimationArrayMap : public NiRefObject
+{
+public:
+	// members
+	//void		** _vtbl			// 00 - 010A6234
+	UInt32		hashSetTraits;		// 08
+	tHashSet<UInt32, BSTArray<SetEventData> const *> arrayMap;	// 0C
+};
+STATIC_ASSERT(sizeof(AttackAnimationArrayMap) == 0x28);
