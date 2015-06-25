@@ -97,6 +97,7 @@ StringCache::Ref& StringCache::Ref::operator=(StringCache::Ref&& ref)
 
 	data = ref.data;
 	ref.data = nullptr;
+	return *this;
 }
 
 BSString::~BSString()
