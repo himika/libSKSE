@@ -2,8 +2,9 @@
 
 // everything deriving from BaseFormComponent but not TESForm goes here
 
-#include "skse/GameTypes.h"
-#include "skse/GameEvents.h"
+#include "GameTypes.h"
+#include "GameEvents.h"
+#include "NiObjects.h"
 
 class TESObjectSTAT;
 class BGSSoundDescriptorForm;
@@ -80,11 +81,52 @@ class TESTexture1024 : public TESTexture
 
 //// leaf nodes
 
+// 38
+class BGSAttackData : public NiRefObject
+{
+public:
+	// members
+	//void			** _vtbl			// 00 - 010C0130
+	BSFixedString	eventName;			// 08
+	float			damageMult;			// 0C
+	float			attackChance;		// 10
+	SpellItem		* attackSpell;		// 14
+	struct
+	{
+		bool	ignoreWeapon : 1;
+		bool	bashAttack : 1;
+		bool	powerAttack : 1;
+		bool	leftAttack : 1;
+		bool	rotatingAttack : 1;
+	} flags;
+	float			attackAngle;		// 1C
+	float			strikeAngle;		// 20 init'd [01B14FB8]
+	float			stagger;			// 24
+	BGSKeyword		* attackType;		// 28
+	float			knockdown;			// 2C
+	float			recoveryTime;		// 30
+	float			staminaMult;		// 34
+};
+STATIC_ASSERT(sizeof(BGSAttackData) == 0x38);
+
+// 2C
+class BGSAttackDataMap : public NiRefObject
+{
+public:
+	// members
+	//void	** _vtbl	// 00 - 010C013C
+
+	UInt32	hashSetTraits;
+	tHashSet<BSFixedString, BGSAttackData*> map;
+	UInt32	unk28;		// init'd 0
+};
+STATIC_ASSERT(sizeof(BGSAttackDataMap) == 0x2C);
+
 // 08
 class BGSAttackDataForm : public BaseFormComponent
 {
 public:
-	BSTSmartPointer	<void>	unk04;	// 04
+	BGSAttackDataMap	* attackDataMap;	// 04
 };
 
 // 10 - 1.6.89 and earlier
