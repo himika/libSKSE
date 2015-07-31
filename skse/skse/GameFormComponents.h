@@ -86,6 +86,8 @@ class TESTexture1024 : public TESTexture
 class BGSAttackData : public NiRefObject
 {
 public:
+	static BGSAttackData * Create();
+
 	// members
 	//void			** _vtbl			// 00 - 010C0130
 	BSFixedString	eventName;			// 08
@@ -94,12 +96,12 @@ public:
 	SpellItem		* attackSpell;		// 14
 	struct
 	{
-		bool	ignoreWeapon : 1;
-		bool	bashAttack : 1;
-		bool	powerAttack : 1;
-		bool	leftAttack : 1;
-		bool	rotatingAttack : 1;
-	} flags;
+		bool	ignoreWeapon	: 1;		// 0 (0x0001)
+		bool	bashAttack		: 1;		// 1 (0x0002)
+		bool	powerAttack		: 1;		// 2 (0x0004)
+		bool	leftAttack		: 1;		// 3 (0x0008)
+		bool	rotatingAttack	: 1;		// 4 (0x0010)
+	} flags;							// 18
 	float			attackAngle;		// 1C
 	float			strikeAngle;		// 20 init'd [01B14FB8]
 	float			stagger;			// 24
@@ -107,6 +109,9 @@ public:
 	float			knockdown;			// 2C
 	float			recoveryTime;		// 30
 	float			staminaMult;		// 34
+
+private:
+	EMBED_MEMBER_FN(ctor, BGSAttackData*, 0x005B1410);	// called from 005B1B61
 };
 STATIC_ASSERT(sizeof(BGSAttackData) == 0x38);
 
@@ -114,12 +119,13 @@ STATIC_ASSERT(sizeof(BGSAttackData) == 0x38);
 class BGSAttackDataMap : public NiRefObject
 {
 public:
-	// members
-	//void	** _vtbl	// 00 - 010C013C
+	BGSAttackData *	Add(const BSFixedString & eventName);
 
-	UInt32	hashSetTraits;
-	tHashSet<BSFixedString, BGSAttackData*> map;
-	UInt32	unk28;		// init'd 0
+	// members
+	//void	** _vtbl								// 00 - 010C013C
+	UInt32	hashSetTraits;							// 08
+	tHashSet<BGSAttackData*, BSFixedString> map;	// 0C
+	UInt32	unk28;									// init'd 0
 };
 STATIC_ASSERT(sizeof(BGSAttackDataMap) == 0x2C);
 
@@ -1622,31 +1628,31 @@ public:
 	virtual ~ActorMagicCaster();						// 00659AD0
 
 	// @override
-//	virtual void	Unk_03(void);						// 00658D10
-//	virtual bool	Unk_04(void);						// 006588D0
-//	virtual void	Unk_05(void);						// 00658610
-//	virtual void	Unk_06(void);						// 00659360
-//	virtual void	Unk_07(void);						// 006571C0 { if (caster) { caster->Unk_006AB9E0(slot, 0); caster->Unk_006E9840(0); } flags &= 0xFFFFFFFC; unk84 = 0; }
-//	virtual void	Unk_08(UInt32 arg1);				// 00658940
-//	virtual void	Unk_09(UInt32 arg1, UInt32 arg2, UInt32 arg3);		// 00659B00
-//	virtual bool	Unk_0A(UInt32 arg1, UInt32 arg2, float* arg3, UInt32* arg4, UInt32 arg5, UInt32 arg6, UInt32 arg7);	// 00657DC0
-//	virtual Actor	* Unk_0B(void);						// 006572F0 { return caster; }
-//	virtual Actor	* GetCaster();						// 006572F0 { return caster; }
-//	virtual UInt32	Unk_0E(void);						// 00657510 .... if (eax) unk6C = eax->Unk02; return unk6C;
-//	virtual void	Unk_0F(void);						// 006574B0 { unk6C = 0; }
-//	virtual void	Unk_10(UInt32 arg1);				// 00658C40
-//	virtual void	Unk_11(void);						// 006586F0
-//	virtual void	Unk_12(void);						// 00657200
-//	virtual void	Unk_13(void);						// 006571B0 { flags |= 2; }
-//	virtual void	CalculateMagickaCost(void);			// 00657750
-//	virtual UInt32	GetSlot(void);						// 00657300 { return slot; }
-//	virtual bool	Unk_16(void);						// 006574E0 { return flag & 1; }
-//	virtual void	Unk_17(bool b);						// 006574F0 { if (b) { flags |= 1; } else { flags &= 0xFFFFFFFE; } }
-//	virtual void	Unk_18(UInt32 arg1);				// 00657240
-//	virtual void	Unk_19(UInt32 arg1);				// 00657990
-//	virtual void	Unk_1A(UInt32 arg1);				// 00657A80
-//	virtual void	Unk_1B(UInt32 arg1, UInt32 arg2);	// 00657AE0
-//	virtual void	Unk_1C(UInt32 arg1, UInt32 arg2, UInt32 arg3);		// 00657900
+	//virtual void	Unk_03(void);						// 00658D10
+	//virtual bool	Unk_04(void);						// 006588D0
+	//virtual void	Unk_05(void);						// 00658610
+	//virtual void	Unk_06(void);						// 00659360
+	//virtual void	Unk_07(void);						// 006571C0 { if (caster) { caster->Unk_006AB9E0(slot, 0); caster->Unk_006E9840(0); } flags &= 0xFFFFFFFC; unk84 = 0; }
+	//virtual void	Unk_08(UInt32 arg1);				// 00658940
+	//virtual void	Unk_09(UInt32 arg1, UInt32 arg2, UInt32 arg3);		// 00659B00
+	//virtual bool	Unk_0A(UInt32 arg1, UInt32 arg2, float* arg3, UInt32* arg4, UInt32 arg5, UInt32 arg6, UInt32 arg7);	// 00657DC0
+	//virtual Actor	* Unk_0B(void);						// 006572F0 { return caster; }
+	//virtual Actor	* GetCaster();						// 006572F0 { return caster; }
+	//virtual UInt32	Unk_0E(void);						// 00657510 .... if (eax) unk6C = eax->Unk02; return unk6C;
+	//virtual void	Unk_0F(void);						// 006574B0 { unk6C = 0; }
+	//virtual void	Unk_10(UInt32 arg1);				// 00658C40
+	//virtual void	Unk_11(void);						// 006586F0
+	//virtual void	Unk_12(void);						// 00657200
+	//virtual void	Unk_13(void);						// 006571B0 { flags |= 2; }
+	//virtual void	CalculateMagickaCost(void);			// 00657750
+	//virtual UInt32	GetSlot(void);						// 00657300 { return slot; }
+	//virtual bool	Unk_16(void);						// 006574E0 { return flag & 1; }
+	//virtual void	Unk_17(bool b);						// 006574F0 { if (b) { flags |= 1; } else { flags &= 0xFFFFFFFE; } }
+	//virtual void	Unk_18(UInt32 arg1);				// 00657240
+	//virtual void	Unk_19(UInt32 arg1);				// 00657990
+	//virtual void	Unk_1A(UInt32 arg1);				// 00657A80
+	//virtual void	Unk_1B(UInt32 arg1, UInt32 arg2);	// 00657AE0
+	//virtual void	Unk_1C(UInt32 arg1, UInt32 arg2, UInt32 arg3);		// 00657900
 	virtual void	Unk_1D(void);						// 00659680
 
 	// member

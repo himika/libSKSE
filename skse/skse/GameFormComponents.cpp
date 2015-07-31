@@ -120,3 +120,29 @@ void PlayerSkills::SetSkillLegendaryLevel(BSFixedString actorValue, UInt32 level
 			data->legendaryLevel[skillId] = level;
 	}
 }
+
+//===================
+// himika -->
+//===================
+
+BGSAttackData * BGSAttackData::Create()
+{
+	BGSAttackData *attackData = (BGSAttackData*)FormHeap_Allocate(sizeof(BGSAttackData));
+	if (attackData)
+		attackData->ctor();
+
+	return attackData;
+}
+
+BGSAttackData * BGSAttackDataMap::Add(const BSFixedString & eventName)
+{
+	BGSAttackData *attackData = BGSAttackData::Create();
+	if (attackData)
+	{
+		attackData->IncRef();
+		attackData->eventName = eventName;
+		//map.insert(HashMap::storage_type{ attackData->eventName, attackData });
+	}
+
+	return attackData;
+}
