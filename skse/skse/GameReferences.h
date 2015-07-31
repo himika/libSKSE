@@ -12,7 +12,6 @@ class NiPoint3;
 class TESObjectREFR;
 class BSFaceGenNiNode;
 class BSFaceGenAnimationData;
-class ActorMagicCaster;				// himika
 class MagicItem;					//
 
 class InventoryEntryData;
@@ -112,7 +111,7 @@ public:
 	virtual bool	HasKeyword(BGSKeyword* keyword);					// (himika)
 	virtual void	Unk_49(void);
 	virtual BGSScene	* GetCurrentScene(void);						// (himika)
-	virtual void	Unk_4B(void);
+	virtual void	SetCurrentScene(BGSScene *);						// (himika)
 	virtual void	Unk_4C(void);
 	virtual void	Unk_4D(void);
 	virtual void	Unk_4E(void);
@@ -130,8 +129,8 @@ public:
 	virtual void	Unk_59(void);
 	virtual void	Unk_5A(void);
 	virtual void	GetMarkerPosition(NiPoint3 * pos);
-	virtual ActorMagicCaster	* GetActorMagicCaster(UInt32 slot);		// (himika)
-	virtual void	Unk_5D(void);
+	virtual MagicCaster	* GetMagicCaster(UInt32 slot);					// (himika)
+	virtual MagicTarget	* GetMagicTarget(void);							// (himika)
 	virtual bool	IsChild(void);										// (himika)
 	virtual void	Unk_5F(void);
 	virtual void	Unk_60(void);
