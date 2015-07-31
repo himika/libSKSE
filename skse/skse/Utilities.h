@@ -10,6 +10,10 @@
 // all of the weirdness with the _GetType function is because you can't declare a static const pointer
 // inside the class definition. inlining automatically makes the function call go away since it's a const
 
+struct empty_struct
+{
+};
+
 #define MEMBER_FN_PREFIX(className)	\
 	typedef className _MEMBER_FN_BASE_TYPE
 
