@@ -6,10 +6,10 @@ rem 自動でインストールしたくない場合は、下行のコロン(:)を外す。
 rem ===========================================
 
 rem .libファイルのインストール先パスを指定
-set SKSE_LIB=%HOME%\lib\libSKSE
+set SKSE_LIB=%USERPROFILE%\lib\libSKSE
 
 rem .hファイルのインストール先パスを指定
-set SKSE_INC=%HOME%\include\libSKSE
+set SKSE_INC=%USERPROFILE%\include\libSKSE
 
 rem ===========================================
 

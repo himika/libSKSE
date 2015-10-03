@@ -160,14 +160,20 @@
     <ClCompile Include="Utilities.cpp">
       <Filter>internal</Filter>
     </ClCompile>
-    <ClCompile Include="GameResources.cpp" />
-    <ClCompile Include="PapyrusClass.cpp" />
-    <ClCompile Include="GameBSExtraData.cpp" />
     <ClCompile Include="NiAdditionalGeometryData.cpp">
       <Filter>netimmerse</Filter>
     </ClCompile>
     <ClCompile Include="BSTArray.cpp">
       <Filter>internal</Filter>
+    </ClCompile>
+    <ClCompile Include="GameResources.cpp">
+      <Filter>api</Filter>
+    </ClCompile>
+    <ClCompile Include="GameBSExtraData.cpp">
+      <Filter>api</Filter>
+    </ClCompile>
+    <ClCompile Include="PapyrusClass.cpp">
+      <Filter>papyrus</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -347,12 +353,14 @@
     <ClInclude Include="GameSKSEEvents.h">
       <Filter>api</Filter>
     </ClInclude>
-    <ClInclude Include="PapyrusClass.h" />
     <ClInclude Include="NiAdditionalGeometryData.h">
       <Filter>netimmerse</Filter>
     </ClInclude>
     <ClInclude Include="BSTArray.h">
       <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="PapyrusClass.h">
+      <Filter>papyrus</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
