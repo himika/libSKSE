@@ -838,7 +838,7 @@ public:
 
 	UInt8	flags;				// 3C
 	UInt8	impactResult;		// 3D
-	UInt16	pad3E[2];
+	UInt8	pad3E[2];
 
 	BGSTextureSet			* textures[2];	// 40 - texture set
 	BGSSoundDescriptorForm	* sounds[2];	// 48 - sound
