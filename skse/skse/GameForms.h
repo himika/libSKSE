@@ -1607,21 +1607,21 @@ public:
 
 	// members
 
-	// 20
-	struct Data03C
-	{
-		UInt8	data[0x20];	// ### todo
-	};
-
-	// 20
-	struct Data05C
-	{
-		UInt8	data[0x20];	// ### todo
-	};
-
 	// 8
 	struct Data07C
 	{
+		enum {
+			kQuestFlag_Running = 1,
+			kQuestFlag_Completed = 0x02,
+			kQuestFlag_0004 = 0x04,
+			kQuestFlag_AllowRepeatStages = 0x08,
+			kQuestFlag_StartGameEnabled = 0x10,
+			kQuestFlag_Stopping = 0x80,
+			kQuestFlag_RunOnce = 0x100,
+			kQuestFlag_ExcludeFromDialogueExport = 0x200,
+			kQuestFlag_WarnOnAliasFillFailure = 0x400,
+			kQuestFlag_Active = 0x800
+		};
 		UInt32	unk0;
 		UInt16	flags;
 		UInt8	priority;
@@ -1646,31 +1646,27 @@ public:
 		UInt32	unk4;
 	};
 
-	// 20
-	struct Data0A0
-	{
-		UInt8	data[0x1C];	// ### todo
-	};
-
 	UnkArray	unk020;		// 020
 	UInt32		unk02C;		// 02C
 	tArray<BGSBaseAlias*>	aliases;		// 030
-	Data03C		unk03C;		// 03C
-	Data05C		unk05C;		// 05C
+	UInt32					hashTraits05C;	// 03C
+	tHashSet<UInt32, void*>	unk060;			// 040
+	UInt32					hashTraits07C;	// 05C
+	tHashSet<UInt32, void*>	unk080;			// 060
 	Data07C		unk07C;		// 07C
 	UInt32		unk084;		// 084
 	Data088		unk088;		// 088
 	tList<Objective>		objectives;
 	void		* unk098;	// 098 - linked list
 	void		* unk09C;	// 09C - linked list
-	Data0A0		unk0A0;		// 0A0
-	void		* unk0BC;
-	Data0A0		unk0C0;
-	UInt32		unk0DC;
+	UInt32					hashTraits0AC;	// 0A0
+	tHashSet<UInt32, void*>	unk0A4;			// 0A4
+	UInt32					hashTraits0C0;	// 0C0
+	tHashSet<UInt32, void*>	unk0C4;			// 0C4
 	UnkArray	unk0E0[6];	// 0E0
 	UnkArray	unk128;		// 128
 	void		* unk134;	// 134 - linked list
-	UInt16		unk138;		// 138
+	UInt16		currentStageID;				// 138
 	UInt8		unk13A;		// 13A
 	UInt8		pad13B;		// 13B
 	BSString	questID;	// 13C
@@ -1688,6 +1684,12 @@ public:
 	// himika -->
 	bool IsRunning(void) const;
 	BGSBaseAlias* GetAlias(UInt32 iAliasID);
+	UInt32 GetCurrentStageID(void) const {
+		return currentStageID;
+	}
+	bool IsActive(void) const {
+		return (unk07C.flags & Data07C::kQuestFlag_Active) != 0;
+	}
 	// <-- himika
 };
 
@@ -3336,7 +3338,8 @@ public:
 	UnkArray	unk05C;	// 05C
 	UInt32	unk068;		// 068
 	UInt32	unk06C;		// 06C
-	TESQuest::Data05C	unk070;	// 070
+	UInt32	hashTraits070;			// 05C;
+	tHashSet<UInt32, void*>	unk074;	// 074 - same type of TESQuest::unk060 because of same hash-sentinel
 	void	* unk090;	// 090 - refcounted ptr
 	UInt32	unk094;		// 094
 	UInt32	unk098;		// 098
