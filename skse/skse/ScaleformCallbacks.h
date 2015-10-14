@@ -145,11 +145,11 @@ public:
 		DEFINE_MEMBER_FN(SetText, bool, 0x009233A0, void * obj, const char * text, bool html);
 		//DEFINE_MEMBER_FN(PopBack, bool, 0x00000000, void * obj, GFxValue * value);
 		DEFINE_MEMBER_FN(GetArraySize, UInt32, 0x00920E80, void * obj);
-		//DEFINE_MEMBER_FN(SetArraySize, bool, 0x00000000, void * obj, UInt32 size);
+		DEFINE_MEMBER_FN(SetArraySize, bool, 0x00920450, void * obj, UInt32 size);
 		DEFINE_MEMBER_FN(GetElement, bool, 0x00923AD0, void * obj, UInt32 index, GFxValue * value);
-		//DEFINE_MEMBER_FN(SetElement, bool, 0x00000000, void * obj, UInt32 index, GFxValue * value);
+		DEFINE_MEMBER_FN(SetElement, bool, 0x00920EA0, void * obj, UInt32 index, GFxValue * value);
 		DEFINE_MEMBER_FN(GotoLabeledFrame, bool, 0x00920660, void * obj, const char * frameLabel, bool stop);
-		//DEFINE_MEMBER_FN(GotoFrame, bool, 0x00000000, void * obj, UInt32 frameNumber, bool stop);
+		DEFINE_MEMBER_FN(GotoFrame, bool, 0x009206E0, void * obj, UInt32 frameNumber, bool stop);
 		DEFINE_MEMBER_FN(GetDisplayInfo, bool, 0x00920F90, void * obj, DisplayInfo * displayInfo);
 		DEFINE_MEMBER_FN(SetDisplayInfo, bool, 0x009211B0, void * obj, DisplayInfo * displayInfo);
 
