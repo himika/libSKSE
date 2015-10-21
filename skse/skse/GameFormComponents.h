@@ -233,7 +233,7 @@ public:
 	virtual	BGSEquipSlot *	GetEquipSlot(void);
 	virtual void			SetEquipSlot(BGSEquipSlot * type);
 
-	BGSEquipType * unk04;	// 04
+	BGSEquipSlot * unk04;	// 04
 };
 
 // 10
