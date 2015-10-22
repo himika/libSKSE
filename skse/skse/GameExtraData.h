@@ -10,7 +10,25 @@
  //	ExtraCellWaterType
  //	ExtraRegionList
  //	ExtraSeenData
- //	ExtraEditorID
+
+ // 0C
+class ExtraEditorID : public BSExtraData
+{
+public:
+	enum { kExtraTypeID = kExtraData_EditorID };
+
+	ExtraEditorID(const char *str) { ctor(str); }
+	virtual ~ExtraEditorID();					// 0040ED50
+
+	// @override
+	virtual UInt32	GetType(void) override;		// 00491870 { return kExtraTypeID; }
+
+	// @members
+	BSFixedString editorID;
+private:
+	EMBED_MEMBER_FN(ctor, ExtraEditorID*, 0x0040A2E0, const char *str);
+};
+
  //	ExtraCellMusicType
  //	ExtraCellSkyRegion
  //	ExtraProcessMiddleLow
