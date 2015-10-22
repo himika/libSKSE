@@ -1437,7 +1437,7 @@ class TESRegionDataGrass : public TESRegionData
 public:
 	virtual ~TESRegionDataGrass();
 
-	TESRegionGrassObjectList * grassObjectList;	// 0C
+	TESRegionGrassObjectList * grassObjectList;	// 08
 };
 
 // 18
