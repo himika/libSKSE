@@ -605,14 +605,14 @@ public:
 			UInt32	flags;	// 04
 		};
 
-		Data0	unk00;	// 00
-		UInt32	type;	// 08
-		float	castTime;	// 0C
-		UInt32	castType;	// 10
-		UInt32	unk14;	// 14
-		UInt32	unk18;	// 18
-		UInt32	unk1C;	// 1C
-		BGSPerk*	spellPerk;	// 20
+		Data0		unk00;			// 00
+		UInt32		type;			// 08
+		float		castTime;		// 0C
+		UInt32		castType;		// 10
+		UInt32		deliveryType;	// 14
+		UInt32		unk18;			// 18
+		UInt32		unk1C;			// 1C
+		BGSPerk*	spellPerk;		// 20
 	};
 
 	Data	data;	// 6C
