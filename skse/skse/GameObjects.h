@@ -13,7 +13,7 @@ public:
 	virtual UInt32	Unk_3B(void);
 	virtual bool	CanAnimate(void);
 	virtual UInt32	Unk_3D(void);
-	virtual bool	Unk_3E(void);
+	virtual bool	IsAutoCalc(void);
 	virtual void	Unk_3F(UInt32 arg);
 	virtual UInt32	Unk_40(UInt32 arg0, UInt32 arg1);
 	virtual void	Unk_41(void * arg);
