@@ -350,7 +350,21 @@ public:
 	virtual UInt32	GetUnk20(void);
 
 	enum {
-		kFlag_PCLevelMult = 0x80
+		kFlag_Female = 0x01,
+		kFlag_Essential = 0x02,
+		kFlag_Respawn = 0x08,
+		kFlag_AutoCalc = 0x10,
+		kFlag_Unique = 0x20,
+		kFlag_DontAffectStealthMeter = 0x40,
+		kFlag_PCLevelMult = 0x80,
+		kFlag_Protected = 0x800,
+		kFlag_Summonable = 0x4000,
+		kFlag_DoesntBleed = 0x10000,
+		kFlag_BleedoutOverride = 0x40000,
+		kFlag_OppositeGenderAnims = 0x80000,
+		kFlag_SimpleActor = 0x100000,
+		kFlag_Ghost = 0x20000000,
+		kFlag_Invulnerable = 0x80000000
 	};
 
 	UInt32				flags;	// 04 - init'd to 0
