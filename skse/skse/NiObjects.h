@@ -22,6 +22,8 @@ class NiTriBasedGeom;
 class NiTriShape;
 class NiTriStrips;
 class BSSegmentedTriShape;
+class NiParticles;
+class NiLines;
 class NiRenderTargetGroup;
 class NiProperty;
 class NiSourceTexture;
@@ -76,11 +78,11 @@ public:
 	virtual NiTriShape		* GetAsNiTriShape(void);
 	virtual BSSegmentedTriShape * GetAsBSSegmentedTriShape(void);
 	virtual UInt32			Unk_0C(void);
-	virtual UInt32			Unk_0D(void);
-	virtual UInt32			Unk_0E(void);
-	virtual UInt32			Unk_0F(void);
+	virtual NiParticles *	GetAsNiParticles(void);
+	virtual NiLines *		GetAsNiLines(void);
+	virtual UInt32			Unk_0F(void);		// bhkNiCollisionObject::Unk_0F { return this; }
 	virtual UInt32			Unk_10(void);
-	virtual UInt32			Unk_11(void);
+	virtual UInt32			Unk_11(void);		// bhkRigidBody::Unk_11 { return this; }
 	virtual UInt32			Unk_12(void);
 
 	// then back to NetImmerse
