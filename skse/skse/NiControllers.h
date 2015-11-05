@@ -78,12 +78,12 @@ public:
 	virtual void		Stop(void);
 	virtual void		Update(float time) = 0;
 	virtual void		SetTarget(NiObjectNET * node);
-	virtual bool		Unk_17(void);
-	virtual bool		Unk_18(void);
-	virtual void		Unk_19(void);
-	virtual bool		Unk_1A(void);
-	virtual bool		Unk_1B(void);
-	virtual bool		Unk_1C(void) = 0;
+	virtual bool		Unk_25(void);
+	virtual bool		Unk_26(void);
+	virtual void		Unk_27(void);
+	virtual void		Unk_28(void);
+	virtual bool		Unk_29(void);
+	virtual bool		Unk_2A(void) = 0;
 
 	enum
 	{
@@ -124,18 +124,19 @@ public:
 	NiInterpController();
 	~NiInterpController();
 
-	virtual UInt16	GetNumInterpolators(void) = 0;	// 1D
+	virtual UInt16	GetNumInterpolators(void) = 0;	// 2B
 	virtual char *	GetInterpolatorName(UInt16 idx) = 0;
 	virtual UInt16	GetInterpolatorIdx(char * name) = 0;
+	virtual UInt16	Unk_2E(UInt32 arg) = 0;
 	virtual NiInterpolator *	GetInterpolator(UInt16 idx) = 0;
 	virtual void	SetInterpolator(NiInterpolator * _interpolator, UInt16 idx) = 0;
-	virtual void	Unk_22(void);
+	virtual void	Unk_31(void);
 	virtual char *	GetName(void);
-	virtual void	Unk_24(UInt16 idx) = 0;	// create interpolators
-	virtual void	Unk_25(void) = 0;
-	virtual void	Unk_26(UInt16 idx) = 0;	// create blend interpolators
-	virtual void	Unk_27(void) = 0;
-	virtual void	Unk_28(void * arg, UInt16 idx) = 0;
+	virtual void	Unk_33(UInt16 idx) = 0;	// create interpolators
+	virtual void	Unk_34(void) = 0;
+	virtual void	Unk_35(UInt16 idx) = 0;	// create blend interpolators
+	virtual void	Unk_36(void) = 0;
+	virtual void	Unk_37(void * arg, UInt16 idx) = 0;
 
 	enum
 	{
@@ -150,7 +151,7 @@ public:
 	NiSingleInterpController();
 	~NiSingleInterpController();
 
-	virtual bool	Unk_29(void * arg) = 0;
+	virtual bool	Unk_38(void * arg) = 0;
 
 	NiInterpolator	* interpolator;	// 03C
 };
@@ -162,5 +163,5 @@ public:
 	NiFloatInterpController();
 	~NiFloatInterpController();
 
-	virtual void	Unk_2A(float * out) = 0;
+	virtual void	Unk_39(float * out) = 0;
 };
