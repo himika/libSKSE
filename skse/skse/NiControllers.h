@@ -78,12 +78,12 @@ public:
 	virtual void		Stop(void);
 	virtual void		Update(float time) = 0;
 	virtual void		SetTarget(NiObjectNET * node);
-	virtual bool		Unk_25(void);
-	virtual bool		Unk_26(void);
-	virtual void		Unk_27(void);
-	virtual void		Unk_28(void);
-	virtual bool		Unk_29(void);
-	virtual bool		Unk_2A(void) = 0;
+	virtual bool		IsTransformController(void) const;		// return false;
+	virtual bool		IsVertexController(void) const;			// return false;
+	virtual float		ComputeScaledTime(float time);
+	virtual void		OnPreDisplay(void);						// return;
+	virtual bool		IsStreamable(void) const;				// return true;
+	virtual bool		TargetIsRequiredType(void) const = 0;	// for debugging purposes?
 
 	enum
 	{
