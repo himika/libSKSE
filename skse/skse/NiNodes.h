@@ -87,26 +87,30 @@ public:
 class NiCullingProcess
 {
 public:
-	virtual ~NiCullingProcess();
-	virtual void	Unk_01(void); // 01 - 10 unused
-	virtual void	Unk_02(void);
-	virtual void	Unk_03(void);
-	virtual void	Unk_04(void);
-	virtual void	Unk_05(void);
-	virtual void	Unk_06(void);
-	virtual void	Unk_07(void);
-	virtual void	Unk_08(void);
-	virtual void	Unk_09(void);
-	virtual void	Unk_0A(void);
-	virtual void	Unk_0B(void);
-	virtual void	Unk_0C(void);
-	virtual void	Unk_0D(void);
-	virtual void	Unk_0E(void);
-	virtual void	Unk_0F(void);
-	virtual void	Unk_10(void);
-	virtual void	Unk_11(void);
-	virtual void	Unk_12(void);
-	virtual void	Unk_13(void);
+	virtual NiRTTI *		GetRTTI(void) const;
+
+	// 01 - 10 unused
+	virtual NiNode			* GetAsNiNode(void);
+	virtual NiSwitchNode	* GetAsNiSwitchNode(void);
+	virtual void			* Unk_05(void);
+	virtual void			* Unk_06(void);
+	virtual NiGeometry		* GetAsNiGeometry(void);
+	virtual NiTriBasedGeom	* GetAsNiTriBasedGeom(void);
+	virtual NiTriStrips		* GetAsNiTriStrips(void);
+	virtual NiTriShape		* GetAsNiTriShape(void);
+	virtual BSSegmentedTriShape * GetAsBSSegmentedTriShape(void);
+	virtual void			* Unk_0A(void);
+	virtual NiParticles		* GetAsNiParticles(void);
+	virtual NiLines			* GetAsNiLines(void);
+	virtual void			* Unk_0D(void);
+	virtual void			* Unk_0E(void);
+	virtual void			* Unk_0F(void);
+	virtual void			* Unk_10(void);
+
+	virtual ~NiCullingProcess();	// 11
+	virtual void			Unk_12(UInt32 arg);
+	virtual void			Unk_13(UInt32 arg1, UInt32 arg2, UInt32 arg3);
+	virtual void			Unk_14(UInt32 arg);								// { DebugBreak(); }
 
 	UInt8	unk04;									// 04 Perhaps refcount?
 	UInt8	pad05[3];
@@ -131,9 +135,8 @@ class BSCullingProcess : public NiCullingProcess
 {
 public:
 	virtual ~BSCullingProcess();
-	virtual void	Unk_14(void);
-	virtual void	Unk_15(void);
-	virtual void	Unk_16(void);
+	virtual void	Unk_15(UInt32 arg);
+	virtual void	Unk_16(UInt32 arg);
 	virtual void	Unk_17(void);
 	virtual void	Unk_18(void);
 
