@@ -11,10 +11,12 @@ public:
 	enum
 	{
 		kTypeAlpha = 0,
-		kTypeShade = 1
+		kTypeShade = 1,
+		kTypeFog = 4
 	};
 
 	virtual SInt32 GetType(void);
+	virtual void   Update(float time);
 };
 
 class NiAlphaProperty : public NiProperty
@@ -32,6 +34,12 @@ public:
 	virtual ~NiShadeProperty();
 
 	virtual void Unk_23(void);
+};
+
+class NiFogProperty : public NiProperty
+{
+public:
+	virtual ~NiFogProperty();
 };
 
 // 114EB18
