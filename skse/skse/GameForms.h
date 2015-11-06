@@ -2979,7 +2979,7 @@ public:
 	Words	words[Words::kNumWords];	// 38
 };
 
-// 38
+// 3C
 class TESTopic : public TESForm
 {
 public:
@@ -2989,13 +2989,16 @@ public:
 	TESFullName			fullName;	// 14
 
 	// members
-	UInt8				unk1C[4];	// 1C
-	UInt32				unk20;		// 20
-	UInt32				unk24;		// 24
-	UInt32				unk28;		// 28
-	void				** unk2C;	// 2C - buf[unk30]
-	UInt32				unk30;		// 30 - len
-	StringCache::Ref	unk34;		// 34
+	UInt8				unk1C;		// 1C - init'd 0
+	UInt8				unk1D;		// 1D - init'd arg1
+	UInt8				pad1E[2];	// 1E - init'd 0
+	UInt32				unk20;		// 20 - init'd 0x32000000
+	UInt32				unk24;		// 24 - init'd 0
+	UInt32				unk28;		// 28 - init'd 0
+	UInt32				unk2C;		// 2C - init'd 0
+	void				** unk30;	// 30- - buf[unk30]
+	UInt32				unk34;		// 34 - len
+	StringCache::Ref	unk38;		// 38 - init'd 0
 };
 
 // 2C
