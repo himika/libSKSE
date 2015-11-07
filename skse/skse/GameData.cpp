@@ -164,7 +164,8 @@ void MagicFavorites::SetHotkey(TESForm * form, SInt8 idx)
 
 	if (IsFavorited(form))
 	{
-		hotkeys[oldIdx] = NULL;
+		if (oldIdx >= 0)
+			hotkeys[oldIdx] = NULL;
 		hotkeys[idx] = form;
 	}	
 }
