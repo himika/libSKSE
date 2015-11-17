@@ -152,8 +152,8 @@ public:
 	virtual NiNode	* GetNiNode(void);	// Root of the skeleton (Get3D)
 	virtual void	Unk_71(void);
 	virtual void	Unk_72(void);
-	virtual void	Unk_73(void);
-	virtual void	Unk_74(void);
+	virtual NiPoint3	* GetBoundLeftFrontBottom(NiPoint3 *) const;
+	virtual NiPoint3	* GetBoundRightBackTop(NiPoint3 *) const;
 	virtual void	Unk_75(void);
 	virtual void	Unk_76(void);
 	virtual void	Unk_77(void);
@@ -242,6 +242,14 @@ public:
 	}
 	TESObjectCELL	* GetParentCell(void) {
 		return parentCell;
+	}
+	float GetHeight() const {
+		NiPoint3 p1, p2;
+		return GetBoundRightBackTop(&p1)->z - GetBoundLeftFrontBottom(&p2)->z;
+	}
+	float GetWidth() const {
+		NiPoint3 p1, p2;
+		return GetBoundRightBackTop(&p1)->x - GetBoundLeftFrontBottom(&p2)->x;
 	}
 
 	MEMBER_FN_PREFIX(TESObjectREFR);
