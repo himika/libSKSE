@@ -365,7 +365,7 @@ public:
 	virtual void Unk_C7(void);
 	virtual void Unk_C8(void);
 	virtual void Unk_C9(void);
-	virtual void Unk_CA(void);
+	virtual void DropItem(UInt32 *droppedItemHandle, TESForm *akItem, BaseExtraList *extraList, UInt32 count, UInt32 arg5, UInt32 arg6);
 	virtual void Unk_CB(void);
 	virtual void Unk_CC(void);
 	virtual void Unk_CD(void);
