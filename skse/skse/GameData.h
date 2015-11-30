@@ -17,8 +17,8 @@ struct FormRecordData
 
 struct ChunkHeader
 {
-	UInt32	type : 4;	// i.e. 'XGRD', 'DATA'
-	UInt16	size : 2;
+	UInt32	type;	// i.e. 'XGRD', 'DATA'
+	UInt16	size;
 };
 
 struct ModInfo		// referred to by game as TESFile
