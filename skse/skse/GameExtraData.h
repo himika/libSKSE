@@ -268,7 +268,7 @@ public:
 	ExtraCount();
 	virtual ~ExtraCount();
 
-	UInt32 count;
+	UInt16 count;
 
 	static ExtraCount* Create();
 };
