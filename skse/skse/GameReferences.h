@@ -492,11 +492,12 @@ public:
 	DEFINE_MEMBER_FN(UpdateArmorAbility, void, 0x006E8650, TESForm*, BaseExtraList * extraData);
 	DEFINE_MEMBER_FN(IsHostileToActor, bool, 0x006D4360, Actor * actor);
 	DEFINE_MEMBER_FN(ResetAI, void, 0x51EA30, UInt32 unk1, UInt32 unk2);
+	DEFINE_MEMBER_FN(IsRunning, bool, 0x006AB210);
 
 	TESForm * GetEquippedObject(bool abLeftHand);
 	void UpdateSkinColor();
 	void UpdateHairColor();
-
+	bool IsRunning();
 
 	class FactionVisitor
 	{

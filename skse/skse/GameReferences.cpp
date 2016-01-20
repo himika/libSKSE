@@ -103,6 +103,11 @@ void Actor::UpdateHairColor()
 	}
 }
 
+bool Actor::IsRunning()
+{
+	CALL_MEMBER_FN(this, IsRunning)();
+}
+
 void Actor::UpdateSkinColor()
 {
 	TESNPC* npc = DYNAMIC_CAST(baseForm, TESForm, TESNPC);
