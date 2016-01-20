@@ -95,4 +95,4 @@
 // Event	LocationCleared																												0xDEADBEEF
 // Event	ShoutMastered																												0xDEADBEEF
 
-BSTEventSource<BGSFootstepEvent>& g_footstepEventSource = *(BSTEventSource<BGSFootstepEvent>*)0x01B2E9C0;
+BSTEventSource<BGSFootstepEvent>*& g_footstepEventSource = *(BSTEventSource<BGSFootstepEvent>**)0x01B2E9C0;
