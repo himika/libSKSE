@@ -105,7 +105,7 @@ void Actor::UpdateHairColor()
 
 bool Actor::IsRunning()
 {
-	CALL_MEMBER_FN(this, IsRunning)();
+	return CALL_MEMBER_FN(this, IsRunning)();
 }
 
 void Actor::UpdateSkinColor()
